@@ -1,0 +1,70 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/xepdb1
+    username: hoxy
+    password: hoxy
+  jpa:
+    hibernate:
+      ddl-auto: update
+      format_sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+        show_sql: true
+        type: trace
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+
+jwt:
+  header: Authorization
+  #HS512 ????? ??? ??? ??? 512bit, ? 64byte ??? secret key? ???? ??.
+  #echo 'hyundai-itne-fullstack-edu-3rd-project-team-hoxy-total-interior-platform-hLivv'|base64  -> 78byte
+  secret: aHl1bmRhaS1pdG5lLWZ1bGxzdGFjay1lZHUtM3JkLXByb2plY3QtdGVhbS1ob3h5LXRvdGFsLWludGVyaW9yLXBsYXRmb3JtLWhMaXZ2
+  token-validity-in-seconds: 86400
+
+springdoc:
+  swagger-ui:
+    # swagger-ui ?? ??. default ?? /swagger-ui.html??.
+    path: /swagger-ui.html
+
+    # ? API? ?? ?? ??
+    # path, query, body, response ??? ??
+    groups-order: DESC
+
+    # ?? ?? ??.
+    # alpha: ??? ? ??
+    # method: OpenAPI specification file? ??? ?? ?? ?? ?? ??
+    tags-sorter: alpha
+
+    # ???? ?? ??.
+    # method? delete - get - patch - post - put ??? ????.
+    # alpha? ??? ??? ??? ??? ? ??.
+    operations-sorter: method
+
+    # swagger-ui default url? petstore html? ???? ??
+    disable-swagger-default-url: true
+
+    # swagger-ui?? try ?? ? request duration? ???? ??
+    display-request-duration: true
+
+  # openAPI ?? ??. default ?? /v3/api-docs ??.
+  api-docs:
+    path: /api-docs
+
+  # Spring Actuator? endpoint?? ??? ????
+  show-actuator: true
+
+  # request media type ? ?? ?
+  default-consumes-media-type: application/json
+
+  # response media type ? ?? ?
+  default-produces-media-type: application/json
+
+  # ?? ??? ???? controller? swagger-ui? ????.
+  paths-to-match:
+    - /api/**
+
