@@ -9,7 +9,7 @@ spring:
     password: sangwon
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       format_sql: true
     properties:
       hibernate:
@@ -72,6 +72,6 @@ springdoc:
   default-produces-media-type: application/json
 
   # ?? ??? ???? controller? swagger-ui? ????.
-  paths-to-match:
-    - /api/**
+#  paths-to-match:
+#    - /api2/**
 
