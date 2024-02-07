@@ -1,8 +1,12 @@
 spring:
+#  datasource:
+#    url: jdbc:oracle:thin:@localhost:1521/xepdb1
+#    username: hoxy
+#    password: hoxy
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/xepdb1
-    username: hoxy
-    password: hoxy
+    url: jdbc:oracle:thin:@sophons.iptime.org:1521:xe
+    username: sangwon
+    password: sangwon
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,6 +16,9 @@ spring:
         dialect: org.hibernate.dialect.OracleDialect
         show_sql: true
         type: trace
+  sql:
+    init:
+      mode: always
 
 logging:
   level:
