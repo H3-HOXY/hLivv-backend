@@ -1,7 +1,6 @@
 package hoxy.hLivv.repository;
 
 import hoxy.hLivv.entity.Member;
-import hoxy.hLivv.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

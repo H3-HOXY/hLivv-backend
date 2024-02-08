@@ -1,16 +1,13 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.MemberDto;
-import hoxy.hLivv.dto.UserDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
-import hoxy.hLivv.entity.User;
 import hoxy.hLivv.exception.DuplicateMemberException;
 import hoxy.hLivv.exception.NotFoundMemberException;
 import hoxy.hLivv.repository.AuthorityRepository;
 import hoxy.hLivv.repository.MemberRepository;
-import hoxy.hLivv.repository.UserRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
