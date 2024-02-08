@@ -1,9 +1,7 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.MemberDto;
-import hoxy.hLivv.dto.UserDto;
 import hoxy.hLivv.service.MemberService;
-import hoxy.hLivv.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api2")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;

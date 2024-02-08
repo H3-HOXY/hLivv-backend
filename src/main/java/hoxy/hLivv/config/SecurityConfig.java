@@ -5,7 +5,6 @@ import hoxy.hLivv.jwt.JwtAccessDeniedHandler;
 import hoxy.hLivv.jwt.JwtAuthenticationEntryPoint;
 import hoxy.hLivv.jwt.JwtSecurityConfig;
 import hoxy.hLivv.jwt.TokenProvider;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -57,11 +56,9 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             )
-
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers("/api/hello", "/api/login", "/api/signup","/api2/hello", "/api2/authenticate", "/api2/signup"
+                .requestMatchers("/api/hello", "/api/login", "/api/signup"
                         ,"/swagger-ui/**","/api-docs/**","/swagger-ui.html").permitAll()
-//                .requestMatchers(PathRequest.toH2Console()).permitAll()
                 .anyRequest().authenticated()
             )
 
@@ -69,12 +66,9 @@ public class SecurityConfig {
             .sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-
-            // enable h2-console
             .headers(headers ->
                 headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
             )
-
             .with(new JwtSecurityConfig(tokenProvider), customizer -> {});
         return http.build();
     }
