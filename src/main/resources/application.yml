@@ -9,7 +9,7 @@ spring:
     password: sangwon
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       format_sql: true
     properties:
       hibernate:

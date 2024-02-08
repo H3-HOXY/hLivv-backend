@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,22 +42,38 @@ public class Member {
     @Column(name = "interior_type")
     private String interiorType;
 
+    @Column(name = "points")
+    private Long points;
+
     @Column(name = "grade")
     private String grade;
 
     @Column(name = "oauth_token")
     private String oauthToken;
 
-//    @OneToMany(mappedBy = "member")
-//    private Set<Address> addresses;
-
-//    @OneToMany(mappedBy = "member")
-//    private Set<Points> points;
-
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MemberAuthority> authorities;
 
-//    @OneToMany(mappedBy = "member")
-//    private Set<Orders> orders;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
+//
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Orders> orders;
+//
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<RaffleMember> raffles;
+//
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Restore> restores;
+//
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<MemberCoupon> coupons;
+//
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Review> reviews;
+//
+//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Cart> carts;
+
 
 }
