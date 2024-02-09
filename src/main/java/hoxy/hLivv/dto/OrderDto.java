@@ -1,9 +1,11 @@
 package hoxy.hLivv.dto;
 
+import hoxy.hLivv.entity.OrderProduct;
 import hoxy.hLivv.entity.enums.OrderStatus;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -24,4 +26,5 @@ public class OrderDto {
     private OrderStatus orderStatus; // 주문 상태
     private Long orderCoupon; // 쿠폰 결제액
     private Date requestDate; // 배송희망일
+    private List<OrderProduct> products;
 }

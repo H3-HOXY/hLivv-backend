@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "orders")
 @Getter
@@ -49,5 +51,8 @@ public class Order {
 
     @Column(name = "request_date")
     private Date requestDate;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderProduct> products;
 
 }
