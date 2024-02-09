@@ -37,4 +37,5 @@ public class Address {
 
     @Column(name = "request_msg")
     private String requestMsg;
+
 }
