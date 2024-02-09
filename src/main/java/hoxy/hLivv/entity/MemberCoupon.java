@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 public class MemberCoupon {
     @Id
-    private String mcId;
+    private Long mcId;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
