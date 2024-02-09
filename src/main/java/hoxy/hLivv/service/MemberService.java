@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -37,26 +39,25 @@ public class MemberService {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
-        Authority authority = Authority.builder()
-                .authorityName("ROLE_USER")// 유저로만 가입되게 되어있음
-                .build();
-
-
+        Authority auth = authorityRepository.findByAuthorityName("ROLE_USER")
+                .orElseGet(() -> authorityRepository.save(Authority.builder()
+                        .authorityName("ROLE_USER")
+                                .memberAuthorities(new HashSet<>())
+                        .build()));
 
         Member member = Member.builder()
                 .loginId(memberDto.getLoginId())
                 .loginPw(passwordEncoder.encode(memberDto.getLoginPw()))
                 .name(memberDto.getName())
-//                .authorities(Collections.singleton(memberAuthority))
                 .build();
 
         MemberAuthority memberAuthority = MemberAuthority.builder()
-                .authority(authority)
+                .authority(auth)
                 .member(member)
                 .build();
+        auth.getMemberAuthorities().add(memberAuthority);
         member.setAuthorities(Collections.singleton(memberAuthority));
-        authority.setMemberAuthorities(Collections.singleton(memberAuthority));
-        authorityRepository.save(authority);
+
         return MemberDto.from(memberRepository.save(member));
     }
 
