@@ -20,6 +20,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Authority {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,16 +35,4 @@ public class Authority {
 
 }
 
-//@Entity
-//@Table(name = "authority")
-//@Getter
-//@Setter
-//@Builder
-//@AllArgsConstructor
-//@NoArgsConstructor
-//public class Authority {
-//
-//   @Id
-//   @Column(name = "authority_name", length = 50)
-//   private String authorityName;
-//}
+
