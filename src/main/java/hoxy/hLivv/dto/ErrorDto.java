@@ -13,6 +13,7 @@ public class ErrorDto {
     private final int status;
     private final String message;
     private List<FieldError> fieldErrors = new ArrayList<>();
+
     public void addFieldError(String objectName, String path, String message) {
         FieldError error = new FieldError(objectName, path, message);
         fieldErrors.add(error);

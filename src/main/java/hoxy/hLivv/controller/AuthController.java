@@ -1,10 +1,10 @@
 package hoxy.hLivv.controller;
 
-import jakarta.validation.Valid;
 import hoxy.hLivv.dto.LoginDto;
 import hoxy.hLivv.dto.TokenDto;
 import hoxy.hLivv.jwt.JwtFilter;
 import hoxy.hLivv.jwt.TokenProvider;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +34,10 @@ public class AuthController {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getLoginPw());
 
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Authentication authentication = authenticationManagerBuilder.getObject()
+                                                                    .authenticate(authenticationToken);
+        SecurityContextHolder.getContext()
+                             .setAuthentication(authentication);
 
         String jwt = tokenProvider.createToken(authentication);
 
