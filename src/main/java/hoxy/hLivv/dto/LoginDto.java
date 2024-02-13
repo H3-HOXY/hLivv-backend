@@ -11,11 +11,11 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginDto {
 
-   @NotNull
-   @Size(min = 3, max = 50)
-   private String loginId;
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String loginId;
 
-   @NotNull
-   @Size(min = 3, max = 100)
-   private String loginPw;
+    @NotNull
+    @Size(min = 3, max = 100)
+    private String loginPw;
 }

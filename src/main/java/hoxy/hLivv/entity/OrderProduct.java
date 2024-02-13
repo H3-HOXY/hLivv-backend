@@ -1,4 +1,5 @@
 package hoxy.hLivv.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 

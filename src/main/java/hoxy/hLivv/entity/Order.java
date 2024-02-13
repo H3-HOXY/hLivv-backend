@@ -1,4 +1,5 @@
 package hoxy.hLivv.entity;
+
 import hoxy.hLivv.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
