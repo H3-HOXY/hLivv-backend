@@ -1,7 +1,9 @@
 package hoxy.hLivv.handler;
 
 import hoxy.hLivv.dto.ErrorDto;
+import hoxy.hLivv.exception.DuplicateMemberCouponException;
 import hoxy.hLivv.exception.DuplicateMemberException;
+import hoxy.hLivv.exception.NotFoundCouponException;
 import hoxy.hLivv.exception.NotFoundMemberException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,14 +20,14 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(CONFLICT)
-    @ExceptionHandler(value = {DuplicateMemberException.class})
+    @ExceptionHandler(value = {DuplicateMemberException.class, DuplicateMemberCouponException.class})
     @ResponseBody
     protected ErrorDto conflict(RuntimeException ex, WebRequest request) {
         return new ErrorDto(CONFLICT.value(), ex.getMessage());
     }
 
     @ResponseStatus(FORBIDDEN)
-    @ExceptionHandler(value = {NotFoundMemberException.class, AccessDeniedException.class})
+    @ExceptionHandler(value = {NotFoundMemberException.class, NotFoundCouponException.class,AccessDeniedException.class})
     @ResponseBody
     protected ErrorDto forbidden(RuntimeException ex, WebRequest request) {
         return new ErrorDto(FORBIDDEN.value(), ex.getMessage());

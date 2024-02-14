@@ -1,16 +1,24 @@
 package hoxy.hLivv.service;
 
+import hoxy.hLivv.dto.CouponDto;
+import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
+import hoxy.hLivv.entity.MemberCoupon;
 import hoxy.hLivv.exception.DuplicateMemberException;
 import hoxy.hLivv.exception.NotFoundMemberException;
 import hoxy.hLivv.repository.AuthorityRepository;
+import hoxy.hLivv.repository.MemberCouponRepository;
 import hoxy.hLivv.repository.MemberRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +31,7 @@ import java.util.HashSet;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final MemberCouponRepository memberCouponRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -76,4 +85,14 @@ public class MemberService {
                             .orElseThrow(() -> new NotFoundMemberException("Member not found"))
         );
     }
+
+    @Transactional(readOnly = true)
+    public Page<MemberCouponDto> getUnusedCoupons(Pageable pageable) {
+        Member member= SecurityUtil.getCurrentUsername()
+                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
+                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+        Page<MemberCoupon> coupons=memberCouponRepository.findByMemberAndIsUsedFalse(member, pageable);
+        return coupons.map(MemberCouponDto::from);
+    }
+
 }
