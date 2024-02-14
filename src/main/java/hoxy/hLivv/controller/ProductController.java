@@ -1,6 +1,8 @@
 package hoxy.hLivv.controller;
 
-import hoxy.hLivv.dto.ProductDto;
+import hoxy.hLivv.dto.product.ProductDto;
+import hoxy.hLivv.dto.review.ReviewDto;
+import hoxy.hLivv.dto.review.WriteReview;
 import hoxy.hLivv.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,4 +38,15 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getProduct() {
         return ResponseEntity.ok(productService.getAllProduct());
     }
+
+    @PostMapping("/product/{productId}/review")
+    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long productId, @RequestBody WriteReview.Request writeReviewRequest) {
+        return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest));
+    }
+
+    @GetMapping("/product/{productId}/review")
+    public ResponseEntity<List<ReviewDto>> getReviewsByProductId(@PathVariable(name = "productId") Long productId) {
+        return ResponseEntity.ok(productService.getReviewsByProductId(productId));
+    }
+
 }

@@ -1,8 +1,8 @@
-package hoxy.hLivv.dto;
+package hoxy.hLivv.dto.product;
 
-import hoxy.hLivv.entity.Collabo;
-import hoxy.hLivv.entity.CollaboProduct;
+import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.ProductImage;
+import hoxy.hLivv.entity.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,17 +12,33 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuperBuilder
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollaboDto extends ProductDto {
-    private List<CollaboProductDto> collaboProduct = new ArrayList<>();
+public class ProductDto {
+    protected Long id;
 
-    @Override
-    public Collabo toEntity() {
-        var collabo = Collabo.builder()
+    protected String name;
+
+    protected String productDesc;
+
+    protected ProductType productType;
+
+    protected int price;
+
+    protected int stockQuantity;
+    protected int discountPercent;
+    protected boolean isArSupported;
+    protected boolean isQrSupported;
+    protected boolean isRestore;
+    protected boolean isEco;
+    protected String productBrand;
+    List<ProductImageDto> productImages = new ArrayList<>();
+
+    public Product toEntity() {
+        var product = Product.builder()
                              .id(id)
                              .name(name)
                              .productDesc(productDesc)
@@ -35,13 +51,12 @@ public class CollaboDto extends ProductDto {
                              .isEco(isEco)
                              .productBrand(productBrand)
                              .build();
-        collabo.setProductImages(productImages.stream()
-                                              .map(item -> new ProductImage(collabo, item.getImageUrl()))
-                                              .toList());
-        collabo.setCollaboProduct(collaboProduct.stream()
-                                                .map(dto -> new CollaboProduct(collabo, dto.getProduct()
-                                                                                           .toEntity(), dto.getQuantity()))
-                                                .toList());
-        return collabo;
+
+        product.setProductImages(
+                productImages.stream()
+                             .map(item -> new ProductImage(product, item.getImageUrl()))
+                             .toList()
+        );
+        return product;
     }
 }

@@ -1,6 +1,6 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.ProductDto;
+import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.entity.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
