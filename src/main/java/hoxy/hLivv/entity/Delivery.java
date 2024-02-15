@@ -20,6 +20,7 @@ public class Delivery {
     private Long deliveryId;
 
     @Column(name = "delivery_status")
+    @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
     @Column(name = "delivery_start")

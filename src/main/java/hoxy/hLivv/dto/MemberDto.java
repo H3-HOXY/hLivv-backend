@@ -2,10 +2,12 @@ package hoxy.hLivv.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hoxy.hLivv.entity.Member;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,11 +32,20 @@ public class MemberDto {
     @Size(min = 3, max = 50)
     private String name;
 
+    private String phone;
+
+    @Email
+    private String email;
+
+    private Date signupDate;
+    private String interiorType;
+    private Long points;
+    private String grade;
+
     private Set<AuthorityDto> authorityDtoSet;
 
     public static MemberDto from(Member member) {
         if (member == null) return null;
-
         return MemberDto.builder()
                         .loginId(member.getLoginId())
                         .name(member.getName())
