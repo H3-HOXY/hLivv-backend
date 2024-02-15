@@ -24,7 +24,7 @@ public class CartDto {
     public static CartDto from(Cart cart) {
         Product product = cart.getProduct();
         long price = 0L;
-        Integer stock = Integer.MAX_VALUE;
+        int stock = Integer.MAX_VALUE;
         if (ProductType.getProductType(product) == ProductType.COLLABO) {
             if (product instanceof Collabo collabo) {
                 for (ProductCollabo productCollabo : collabo.getProductCollabo()) {
@@ -36,7 +36,7 @@ public class CartDto {
                 }
             }
         } else {
-            price = (long) product.getPrice();
+            price = product.getPrice();
             stock = product.getStockQuantity();
         }
         return CartDto.builder()
