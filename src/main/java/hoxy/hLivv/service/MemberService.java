@@ -1,6 +1,7 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.MemberDto;
+import hoxy.hLivv.dto.SignupDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
@@ -33,33 +34,33 @@ public class MemberService {
 //    }
 
     @Transactional
-    public MemberDto signup(MemberDto memberDto) {
-        if (memberRepository.findOneWithAuthoritiesByLoginId(memberDto.getLoginId())
-                            .orElse(null) != null) {
+    public SignupDto signup(SignupDto signupDto) {
+        if (memberRepository.findOneWithAuthoritiesByLoginId(signupDto.getLoginId())
+                .orElse(null) != null) {
             throw new DuplicateMemberException("이미 가입되어 있는 멤버입니다.");
         }
 
         Authority auth = authorityRepository.findByAuthorityName("ROLE_USER")
-                                            .orElseGet(() -> authorityRepository.save(Authority.builder()
-                                                                                               .authorityName("ROLE_USER")
-                                                                                               .memberAuthorities(new HashSet<>())
-                                                                                               .build()));
+                .orElseGet(() -> authorityRepository.save(Authority.builder()
+                        .authorityName("ROLE_USER")
+                        .memberAuthorities(new HashSet<>())
+                        .build()));
 
         Member member = Member.builder()
-                              .loginId(memberDto.getLoginId())
-                              .loginPw(passwordEncoder.encode(memberDto.getLoginPw()))
-                              .name(memberDto.getName())
-                              .build();
+                .loginId(signupDto.getLoginId())
+                .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
+                .name(signupDto.getName())
+                .build();
 
         MemberAuthority memberAuthority = MemberAuthority.builder()
-                                                         .authority(auth)
-                                                         .member(member)
-                                                         .build();
+                .authority(auth)
+                .member(member)
+                .build();
         auth.getMemberAuthorities()
-            .add(memberAuthority);
+                .add(memberAuthority);
         member.setAuthorities(Collections.singleton(memberAuthority));
 
-        return MemberDto.from(memberRepository.save(member));
+        return SignupDto.from(memberRepository.save(member));
     }
 
     @Transactional(readOnly = true)

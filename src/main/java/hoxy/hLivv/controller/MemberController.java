@@ -1,8 +1,8 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.MemberDto;
+import hoxy.hLivv.dto.SignupDto;
 import hoxy.hLivv.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +29,16 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<MemberDto> signup(
-            @Valid @RequestBody MemberDto memberDto
+    public ResponseEntity<SignupDto> signup(
+            @Valid @RequestBody SignupDto signupDto
     ) {
-        return ResponseEntity.ok(memberService.signup(memberDto));
+        return ResponseEntity.ok(memberService.signup(signupDto));
     }
+
 
     @GetMapping("/member")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<MemberDto> getMyUserInfo(HttpServletRequest request) {
+    public ResponseEntity<MemberDto> getMyUserInfo() {
         return ResponseEntity.ok(memberService.getMyMemberWithAuthorities());
     }
 
