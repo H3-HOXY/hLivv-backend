@@ -14,10 +14,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         // @EntityGraph를 사용할 때, attributePaths 속성에 지정된 연관 경로들은 메서드가 실행될 때 즉시 로드
     Optional<Member> findOneWithAuthoritiesByLoginId(String loginId);//유저네임으로 권한과 유저함께
 
-    @Query(value = """
-            SELECT MEMBER_ID
-            FROM MEMBER 
-            WHERE LOGIN_ID = :LOGIN_ID
-             """, nativeQuery = true)
-    Optional<Long> getMemberByLoginId(@Param("LOGIN_ID") String loginId);
+    Optional<Member> findByLoginId(String loginId);
 }

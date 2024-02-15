@@ -44,16 +44,32 @@ public class Review {
     @Column(name = "star")
     private Integer star;
 
-    public Review(Long memberId, Long productId, ReviewImage... images) {
-        member = Member.builder()
-                       .memberId(memberId)
-                       .build();
-        product = Product.builder()
-                         .id(productId)
-                         .build();
+    public Review(Member member, Product product, ReviewImage... images) {
+        this.member = member;
+        this.product = product;
         for (var image : images) {
             image.setReview(this);
             reviewImages.add(image);
         }
+    }
+
+    public void updateImage(List<String> newImageList) {
+        var removedList = reviewImages.stream()
+                                      .filter(image -> !newImageList.contains(image.getReviewImageUrl()))
+                                      .peek(reviewImage -> reviewImage.setReview(null))
+                                      .toList();
+        reviewImages.removeAll(removedList);
+
+        var filteredList = reviewImages.stream()
+                                       .map(ReviewImage::getReviewImageUrl)
+                                       .toList();
+        newImageList.stream()
+                    .filter(image -> !filteredList.contains(image))
+                    .forEach(image -> {
+                        var reviewImage = new ReviewImage();
+                        reviewImage.setReview(this);
+                        reviewImage.setReviewImageUrl(image);
+                        reviewImages.add(reviewImage);
+                    });
     }
 }

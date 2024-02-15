@@ -44,6 +44,10 @@ public class ProductController {
         return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest));
     }
 
+    @PutMapping("/product/{productId}/review")
+    public ResponseEntity<WriteReview.Response> updateProductReview(@PathVariable(name = "productId") Long productId, @RequestBody WriteReview.Request writeReviewRequest) {
+        return ResponseEntity.ok(productService.updateReview(productId, writeReviewRequest));
+    }
     @GetMapping("/product/{productId}/review")
     public ResponseEntity<List<ReviewDto>> getReviewsByProductId(@PathVariable(name = "productId") Long productId) {
         return ResponseEntity.ok(productService.getReviewsByProductId(productId));

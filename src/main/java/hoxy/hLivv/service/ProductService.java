@@ -3,7 +3,9 @@ package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.review.ReviewDto;
+import hoxy.hLivv.dto.review.ReviewImageDto;
 import hoxy.hLivv.dto.review.WriteReview;
+import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.Review;
 import hoxy.hLivv.entity.ReviewImage;
@@ -75,29 +77,51 @@ public class ProductService {
      */
     @Transactional
     public WriteReview.Response writeReviewToProduct(Long productId, WriteReview.Request request) {
+        var loginId = SecurityUtil.getCurrentUsername()
+                                  .orElseThrow(() -> new RuntimeException("로그인이 필요합니다."));
+        var member = memberRepository.findByLoginId(loginId)
+                                     .orElseThrow(() -> new RuntimeException("회원정보를 찾을 수 없습니다."));
 
-        var loginId = SecurityUtil.getCurrentUsername();
-        if (loginId.isEmpty()) return null;
+        var product = productRepository.findById(productId)
+                                       .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
 
-        var memberId = memberRepository.getMemberByLoginId(loginId.get());
-        if (memberId.isEmpty()) return null;
+        reviewRepository.getReviewByProductAndMember(product, member)
+                        .ifPresent(review -> {
+                            throw new RuntimeException("이미 리뷰가 존재합니다.");
+                        });
 
         Date now = Calendar.getInstance()
                            .getTime();
-        var review = new Review(memberId.get(), productId, request.getReviewImages()
-                                                                  .stream()
-                                                                  .map(img -> {
-                                                                      var reviewImage = new ReviewImage();
-                                                                      reviewImage.setReviewImageUrl(img.getReviewImageUrl());
-                                                                      return reviewImage;
-                                                                  })
-                                                                  .toArray(ReviewImage[]::new));
-        review.getMember()
-              .setLoginId(loginId.get());
-        review.setReviewDate(now);
-        review.setUpdatedDate(now);
+        return new WriteReview.Response(reviewRepository.save(toReview(request, member, product, now)));
+    }
+
+
+    @Transactional
+    public WriteReview.Response updateReview(Long productId, WriteReview.Request request) {
+        var loginId = SecurityUtil.getCurrentUsername()
+                                  .orElseThrow(() -> new RuntimeException("로그인이 필요합니다."));
+
+        var member = memberRepository.findByLoginId(loginId)
+                                     .orElseThrow(() -> new RuntimeException("회원정보를 찾을 수 없습니다."));
+
+        var product = productRepository.findById(productId)
+                                       .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+
+        var review = reviewRepository.getReviewByProductAndMember(product, member)
+                                     .orElseThrow(() -> new RuntimeException("리뷰가 존재하지 않습니다."));
+
+
+        review.updateImage(request.getReviewImages()
+                                  .stream()
+                                  .map(ReviewImageDto::getReviewImageUrl)
+                                  .toList());
+
         review.setReviewText(request.getReviewText());
+        review.setUpdatedDate(Calendar.getInstance()
+                                      .getTime());
+
         review.setStar(request.getStar());
+
         return new WriteReview.Response(reviewRepository.save(review));
     }
 
@@ -107,5 +131,21 @@ public class ProductService {
         return reviewList.stream()
                          .map(ReviewDto::new)
                          .toList();
+    }
+
+    private static Review toReview(WriteReview.Request request, Member member, Product product, Date now) {
+        var review = new Review(member, product, request.getReviewImages()
+                                                        .stream()
+                                                        .map(img -> {
+                                                            var reviewImage = new ReviewImage();
+                                                            reviewImage.setReviewImageUrl(img.getReviewImageUrl());
+                                                            return reviewImage;
+                                                        })
+                                                        .toArray(ReviewImage[]::new));
+        review.setReviewDate(now);
+        review.setUpdatedDate(now);
+        review.setReviewText(request.getReviewText());
+        review.setStar(request.getStar());
+        return review;
     }
 }
