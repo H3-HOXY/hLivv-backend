@@ -26,9 +26,9 @@ public class ProductCollabo {
     private Product product;
 
     @Column(name = "quantity")
-    private Long quantity;
+    private Integer quantity;
 
-    public ProductCollabo(Collabo collabo, Product product, Long quantity) {
+    public ProductCollabo(Collabo collabo, Product product, Integer quantity) {
         this.collabo = collabo;
         this.product = product;
         this.quantity = quantity;

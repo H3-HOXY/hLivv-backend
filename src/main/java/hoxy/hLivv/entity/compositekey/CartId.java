@@ -13,5 +13,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CartId implements Serializable {
     private Long memberId;
-    private Long productId;
+    private Long id;
 }

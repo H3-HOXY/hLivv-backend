@@ -1,5 +1,6 @@
 package hoxy.hLivv.entity;
 
+import hoxy.hLivv.entity.compositekey.CartId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -72,8 +73,22 @@ public class Member {
 //    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Review> reviews;
 //
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Cart> carts;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cart> carts;
+
+    public Cart addProductToCart(Product product, Integer qty) {
+        Cart cart = Cart.builder()
+                .cartId(new CartId(this.getMemberId(), product.getId()))
+                .member(this)
+                .product(product)
+                .cartQty(qty)
+                .build();
+        this.carts.add(cart);
+        return cart;
+    }
 
 
+    public void removeCart(Cart cart) {
+        this.carts.remove(cart);
+    }
 }

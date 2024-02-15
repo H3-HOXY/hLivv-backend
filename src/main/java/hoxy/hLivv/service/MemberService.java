@@ -1,5 +1,6 @@
 package hoxy.hLivv.service;
 
+import hoxy.hLivv.dto.CartDto;
 import hoxy.hLivv.dto.CouponDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.MemberDto;
@@ -10,6 +11,7 @@ import hoxy.hLivv.entity.MemberCoupon;
 import hoxy.hLivv.exception.DuplicateMemberException;
 import hoxy.hLivv.exception.NotFoundMemberException;
 import hoxy.hLivv.repository.AuthorityRepository;
+import hoxy.hLivv.repository.CartRepository;
 import hoxy.hLivv.repository.MemberCouponRepository;
 import hoxy.hLivv.repository.MemberRepository;
 import hoxy.hLivv.util.SecurityUtil;
@@ -32,6 +34,7 @@ import java.util.HashSet;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
+    private final CartRepository cartRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -91,8 +94,17 @@ public class MemberService {
         Member member= SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-        Page<MemberCoupon> coupons=memberCouponRepository.findByMemberAndIsUsedFalse(member, pageable);
-        return coupons.map(MemberCouponDto::from);
+        return memberCouponRepository.findByMemberAndIsUsedFalse(member, pageable)
+                .map(MemberCouponDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CartDto> getCartsByMember(Pageable pageable) {
+        Member member= SecurityUtil.getCurrentUsername()
+                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
+                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+        return cartRepository.findByMember(member, pageable)
+                .map(CartDto::from);
     }
 
 }

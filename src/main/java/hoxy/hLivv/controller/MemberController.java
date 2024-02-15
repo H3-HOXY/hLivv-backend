@@ -1,5 +1,6 @@
 package hoxy.hLivv.controller;
 
+import hoxy.hLivv.dto.CartDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.entity.Member;
@@ -58,5 +59,10 @@ public class MemberController {
     public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable, HttpServletRequest request) {
         Page<MemberCouponDto> coupons = memberService.getUnusedCoupons(pageable);
         return ResponseEntity.ok(coupons);
+    }
+
+    @GetMapping("member/cart")
+    public ResponseEntity<Page<CartDto>> getCarts( @PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable,HttpServletRequest request){
+        return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 }
