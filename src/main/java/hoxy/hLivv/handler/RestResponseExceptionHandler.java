@@ -23,7 +23,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ResponseStatus(FORBIDDEN)
-    @ExceptionHandler(value = {NotFoundMemberException.class, NotFoundCouponException.class, NotFoundCartItemException.class,AccessDeniedException.class})
+    @ExceptionHandler(value = {NotFoundMemberException.class, NotFoundCouponException.class, NotFoundCartItemException.class, AccessDeniedException.class})
     @ResponseBody
     protected ErrorDto forbidden(RuntimeException ex, WebRequest request) {
         return new ErrorDto(FORBIDDEN.value(), ex.getMessage());

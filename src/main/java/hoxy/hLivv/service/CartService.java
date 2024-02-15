@@ -45,6 +45,7 @@ public class CartService {
         cart.updateQuantity(cart.getCartQty() + qty);
         return cart;
     }
+
     @Transactional
     public CartDto updateCart(Long productId, Integer qty) {
         Member member = SecurityUtil.getCurrentUsername()

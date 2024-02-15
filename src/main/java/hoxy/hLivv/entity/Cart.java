@@ -45,7 +45,7 @@ public class Cart {
     public Cart(Member member, Product product, Integer qty) {
         this.cartId = new CartId(member.getMemberId(), product.getId());
         this.member = member;
-        this.product=product;
+        this.product = product;
         this.cartQty = qty;
     }
 

@@ -20,7 +20,7 @@ public class MemberCouponDto {
     private Double discountRate;
     private boolean isUsed;
 
-    public static MemberCouponDto from(MemberCoupon memberCoupon){
+    public static MemberCouponDto from(MemberCoupon memberCoupon) {
         return MemberCouponDto.builder()
                 .expireDate(memberCoupon.getExpireDate())
                 .couponDesc(memberCoupon.getCoupon().getCouponDesc())

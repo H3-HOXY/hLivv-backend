@@ -47,15 +47,15 @@ public class MemberDto {
     public static MemberDto from(Member member) {
         if (member == null) return null;
         return MemberDto.builder()
-                        .loginId(member.getLoginId())
-                        .name(member.getName())
-                        .authorityDtoSet(member.getAuthorities()
-                                               .stream()
-                                               .map(authority -> AuthorityDto.builder()
-                                                                             .authorityName(authority.getAuthority()
-                                                                                                     .getAuthorityName())
-                                                                             .build())
-                                               .collect(Collectors.toSet()))
-                        .build();
+                .loginId(member.getLoginId())
+                .name(member.getName())
+                .authorityDtoSet(member.getAuthorities()
+                        .stream()
+                        .map(authority -> AuthorityDto.builder()
+                                .authorityName(authority.getAuthority()
+                                        .getAuthorityName())
+                                .build())
+                        .collect(Collectors.toSet()))
+                .build();
     }
 }

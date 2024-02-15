@@ -10,5 +10,6 @@ import java.util.Optional;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
     Page<MemberCoupon> findByMemberAndIsUsedFalse(Member member, Pageable pageable);
+
     Optional<MemberCoupon> findByMcId_MemberIdAndMcId_CouponIdAndIsUsed(Long memberId, Long couponId, Boolean isUsed);
 }

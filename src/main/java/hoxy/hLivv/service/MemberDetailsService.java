@@ -28,18 +28,18 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String loginId) {
         // 로그인시 DB에서 유저 정보와 권한정보를 가저오고 해당 정보를 기반으로 User 객체를 생성해서 리턴
         return memberRepository.findOneWithAuthoritiesByLoginId(loginId)
-                               .map(this::createUser)
-                               .orElseThrow(() -> new UsernameNotFoundException(loginId + " -> 데이터베이스에서 찾을 수 없습니다."));
+                .map(this::createUser)
+                .orElseThrow(() -> new UsernameNotFoundException(loginId + " -> 데이터베이스에서 찾을 수 없습니다."));
     }
 
     private User createUser(Member member) {
 
 
         List<GrantedAuthority> grantedAuthorities = member.getAuthorities()
-                                                          .stream()
-                                                          .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()
-                                                                                                                .getAuthorityName()))
-                                                          .collect(Collectors.toList());
+                .stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()
+                        .getAuthorityName()))
+                .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(member.getLoginId(),
                 member.getLoginPw(),

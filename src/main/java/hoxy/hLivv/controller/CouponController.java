@@ -2,12 +2,10 @@ package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.CouponDto;
 import hoxy.hLivv.dto.MemberCouponDto;
-import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.CouponService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

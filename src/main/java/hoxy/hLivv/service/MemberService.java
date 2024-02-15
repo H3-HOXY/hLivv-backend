@@ -48,7 +48,7 @@ public class MemberService {
     public MemberDto signup(MemberDto memberDto) {
         if (memberRepository.findOneWithAuthoritiesByLoginId(memberDto.getLoginId())
                             .orElse(null) != null) {
-            throw new DuplicateMemberException("이미 가입되어 있는 멤버입니다.");
+            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
         Authority auth = authorityRepository.findByAuthorityName("ROLE_USER")

@@ -1,6 +1,5 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.CouponDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,22 +17,22 @@ public class Coupon {
     private Long couponId;
     @Column(name = "coupon_duration")
     private Integer couponDuration;
-    @Column(name="coupon_desc")
+    @Column(name = "coupon_desc")
     private String couponDesc;
-    @Column(columnDefinition = "NUMBER",name = "discount_rate")
+    @Column(columnDefinition = "NUMBER", name = "discount_rate")
     private Double discountRate;
     //private Long raffleProduct;
 
     @Builder
     public Coupon(Integer duration, String desc, Double discountRate) {
-        this.couponDuration=duration;
-        this.couponDesc=desc;
-        this.discountRate=discountRate;
+        this.couponDuration = duration;
+        this.couponDesc = desc;
+        this.discountRate = discountRate;
     }
 
     public void update(Integer duration, String desc, Double discountRate) {
-        this.couponDuration=duration;
-        this.couponDesc=desc;
-        this.discountRate=discountRate;
+        this.couponDuration = duration;
+        this.couponDesc = desc;
+        this.discountRate = discountRate;
     }
 }

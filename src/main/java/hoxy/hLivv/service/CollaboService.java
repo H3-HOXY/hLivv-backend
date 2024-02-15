@@ -25,14 +25,14 @@ public class CollaboService {
 
     public CollaboDto getCollaboProductWith(Long id) {
         return collaboRepository.getReferenceById(id)
-                                .toDto();
+                .toDto();
     }
 
     public List<CollaboDto> getAllCollaboProduct() {
         return collaboRepository.findAll()
-                                .stream()
-                                .map(Collabo::toDto)
-                                .toList();
+                .stream()
+                .map(Collabo::toDto)
+                .toList();
     }
 
     @Transactional

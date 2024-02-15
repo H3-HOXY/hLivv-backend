@@ -1,7 +1,5 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.CouponDto;
-import hoxy.hLivv.dto.ProductDto;
 import hoxy.hLivv.entity.compositekey.MemberCouponId;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +29,9 @@ public class MemberCoupon {
     private Coupon coupon;
 
     @Temporal(TemporalType.DATE)
-    @Column(name="expire_date")
+    @Column(name = "expire_date")
     private Date expireDate;
-    @Column(name="is_used")
+    @Column(name = "is_used")
     private Boolean isUsed;
 
     // 생성자, 게터, 세터는 Lombok 어노테이션으로 대체
