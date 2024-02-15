@@ -1,6 +1,6 @@
 package hoxy.hLivv.service;
 
-import hoxy.hLivv.dto.CollaboDto;
+import hoxy.hLivv.dto.product.CollaboDto;
 import hoxy.hLivv.entity.Collabo;
 import hoxy.hLivv.repository.CollaboRepository;
 import lombok.RequiredArgsConstructor;
