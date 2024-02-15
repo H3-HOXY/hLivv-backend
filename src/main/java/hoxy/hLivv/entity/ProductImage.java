@@ -1,6 +1,6 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.ProductImageDto;
+import hoxy.hLivv.dto.product.ProductImageDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,6 @@ public class ProductImage {
 
     @Column(name = "image_url")
     private String imageUrl;
-
 
     public ProductImage(Product product, @NotNull String imageUrl) {
         this.product = product;

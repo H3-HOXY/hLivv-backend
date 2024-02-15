@@ -1,6 +1,6 @@
 package hoxy.hLivv.controller;
 
-import hoxy.hLivv.dto.CollaboDto;
+import hoxy.hLivv.dto.product.CollaboDto;
 import hoxy.hLivv.service.CollaboService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

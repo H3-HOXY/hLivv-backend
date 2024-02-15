@@ -1,6 +1,6 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.CollaboProductDto;
+import hoxy.hLivv.dto.product.ProductCollaboDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CollaboProduct {
+public class ProductCollabo {
 
     @Id
     @GeneratedValue
@@ -28,13 +28,13 @@ public class CollaboProduct {
     @Column(name = "quantity")
     private Long quantity;
 
-    public CollaboProduct(Collabo collabo, Product product, Long quantity) {
+    public ProductCollabo(Collabo collabo, Product product, Long quantity) {
         this.collabo = collabo;
         this.product = product;
         this.quantity = quantity;
     }
 
-    public CollaboProductDto toDto() {
-        return new CollaboProductDto(product.toDto(), quantity);
+    public ProductCollaboDto toDto() {
+        return new ProductCollaboDto(product.getId(), quantity);
     }
 }

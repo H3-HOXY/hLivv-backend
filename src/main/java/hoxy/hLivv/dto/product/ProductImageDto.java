@@ -1,4 +1,4 @@
-package hoxy.hLivv.dto;
+package hoxy.hLivv.dto.product;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
