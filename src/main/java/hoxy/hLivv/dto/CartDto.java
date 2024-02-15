@@ -2,8 +2,8 @@ package hoxy.hLivv.dto;
 
 import hoxy.hLivv.entity.Cart;
 import hoxy.hLivv.entity.Collabo;
-import hoxy.hLivv.entity.CollaboProduct;
 import hoxy.hLivv.entity.Product;
+import hoxy.hLivv.entity.ProductCollabo;
 import hoxy.hLivv.entity.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,10 +28,10 @@ public class CartDto {
         if (ProductType.getProductType(product) == ProductType.COLLABO) {
             if (product instanceof Collabo) {
                 Collabo collabo = (Collabo) product;
-                for (CollaboProduct collaboProduct : collabo.getCollaboProduct()) {
-                    if (collaboProduct.getProduct() != null && collaboProduct.getQuantity() != null) {
-                        Product product1 = collaboProduct.getProduct();
-                        price += product1.getPrice() * collaboProduct.getQuantity();
+                for (ProductCollabo productCollabo : collabo.getProductCollabo()) {
+                    if (productCollabo.getProduct() != null && productCollabo.getQuantity() != null) {
+                        Product product1 = productCollabo.getProduct();
+                        price += product1.getPrice() * productCollabo.getQuantity();
                         stock = Math.min(stock, product1.getStockQuantity());
                     }
                 }
