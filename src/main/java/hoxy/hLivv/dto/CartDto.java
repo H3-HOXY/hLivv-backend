@@ -23,15 +23,14 @@ public class CartDto {
 
     public static CartDto from(Cart cart) {
         Product product = cart.getProduct();
-        Long price = 0L;
+        long price = 0L;
         Integer stock = Integer.MAX_VALUE;
         if (ProductType.getProductType(product) == ProductType.COLLABO) {
-            if (product instanceof Collabo) {
-                Collabo collabo = (Collabo) product;
+            if (product instanceof Collabo collabo) {
                 for (ProductCollabo productCollabo : collabo.getProductCollabo()) {
                     if (productCollabo.getProduct() != null && productCollabo.getQuantity() != null) {
                         Product product1 = productCollabo.getProduct();
-                        price += product1.getPrice() * productCollabo.getQuantity();
+                        price += (long) product1.getPrice() * productCollabo.getQuantity();
                         stock = Math.min(stock, product1.getStockQuantity());
                     }
                 }
