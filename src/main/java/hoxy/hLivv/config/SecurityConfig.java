@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity
@@ -48,31 +49,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // token을 사용하는 방식이기 때문에 csrf를 disable
-                .csrf(AbstractHttpConfigurer::disable)
+//            .csrf(csrf -> csrf
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .ignoringRequestMatchers("/api/**") // API 경로에 대해서는 CSRF 보호 비활성화
+//            )
+            // token을 사용하는 방식이기 때문에 csrf를 disable
+            .csrf(AbstractHttpConfigurer::disable)
 
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedHandler(jwtAccessDeniedHandler)
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                )
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/api/hello", "/api/login", "/api/signup"
-                                , "/swagger-ui/**", "/api-docs/**", "/swagger-ui.html")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
-                )
-
+            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(exceptionHandling -> exceptionHandling
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            )
+            .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                .requestMatchers("/api/hello", "/api/login", "/api/signup"
+                        ,"/backoffice/login","/backoffice/signup","/backoffice/css/**","/backoffice/img/**","/backoffice/js/**","/backoffice/scss/**","/backoffice/vendor/**"
+                        ,"/swagger-ui/**","/api-docs/**","/swagger-ui.html").permitAll()
+                .anyRequest().authenticated()
+            )
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
-                .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .headers(headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                )
-                .with(new JwtSecurityConfig(tokenProvider), customizer -> {
-                });
+            .sessionManagement(sessionManagement ->
+                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .headers(headers ->
+                    headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+            )
+            .with(new JwtSecurityConfig(tokenProvider), customizer -> {
+            });
         return http.build();
     }
 }

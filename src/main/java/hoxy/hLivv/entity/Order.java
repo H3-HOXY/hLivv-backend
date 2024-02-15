@@ -20,8 +20,9 @@ public class Order {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
     @Column(name = "address_id")
     private Long addressId;
@@ -45,6 +46,7 @@ public class Order {
     private Double orderPoint;
 
     @Column(name = "order_status")
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @Column(name = "order_coupon")
