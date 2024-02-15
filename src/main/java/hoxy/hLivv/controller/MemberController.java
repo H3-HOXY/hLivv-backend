@@ -54,13 +54,13 @@ public class MemberController {
     }
 
     @GetMapping("/member/coupons")
-    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable, HttpServletRequest request) {
+    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<MemberCouponDto> coupons = memberService.getUnusedCoupons(pageable);
         return ResponseEntity.ok(coupons);
     }
 
     @GetMapping("member/cart")
-    public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable, HttpServletRequest request) {
+    public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 }

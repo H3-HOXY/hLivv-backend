@@ -13,13 +13,11 @@ import hoxy.hLivv.repository.MemberRepository;
 import hoxy.hLivv.repository.ProductRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class CartService {
     private final MemberRepository memberRepository;
@@ -36,7 +34,6 @@ public class CartService {
         Cart cart = cartRepository.findById(new CartId(member.getMemberId(), product.getId()))
                 .map(existingCart -> updateCart(existingCart, qty))
                 .orElseGet(() -> member.addProductToCart(product, qty));
-        log.info(cart.getCartId().toString());
         return CartDto.from(cart);
     }
 
@@ -71,46 +68,5 @@ public class CartService {
                 .orElseThrow(() -> new NotFoundCartItemException("장바구니에 해당 상품이 없습니다."));
         member.removeCart(cart);
     }
-
-//    // C
-//    @Transactional
-//    public void addToCart(Long itemId, CartItemType cartItemType, Integer qty) {
-//        Member member = SecurityUtil.getCurrentUsername()
-//                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
-//                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-//        Cart cart = cartRepository.findByMemberAndItemIdAndItemType(member, itemId, cartItemType)
-//                .orElseGet(() -> {
-//                    Cart newCart = new Cart(member, itemId, cartItemType, qty);
-//                    member.getCarts().add(newCart);
-//                    return cartRepository.save(newCart);
-//                });
-//        cart.updateQuantity(cart.getCartQty() + qty);
-//    }
-//
-//    // U
-//    @Transactional
-//    public void updateCart(Long itemId, CartItemType cartItemType, Integer qty) {
-//        Member member = SecurityUtil.getCurrentUsername()
-//                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
-//                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-//        Cart cart = cartRepository.findByMemberAndItemIdAndItemType(member, itemId, cartItemType)
-//                .orElseThrow(() -> new NotFoundCartItemException("장바구니에 해당 상품이 없습니다."));
-//        cart.updateQuantity(qty);
-//        if (cart.isEmpty()) {
-//            cartRepository.delete(cart);
-//        }
-//    }
-//
-//    // D
-//    @Transactional
-//    public void deleteFromCart(Long itemId, CartItemType cartItemType) {
-//        Member member = SecurityUtil.getCurrentUsername()
-//                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
-//                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-//        Cart cart = cartRepository.findByMemberAndItemIdAndItemType(member, itemId, cartItemType)
-//                .orElseThrow(() -> new NotFoundCartItemException("장바구니에 해당 상품이 없습니다."));
-//        member.getCarts().remove(cart);
-//        cartRepository.delete(cart);
-//    }
 
 }

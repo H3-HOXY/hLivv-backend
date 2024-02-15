@@ -6,6 +6,7 @@ import hoxy.hLivv.service.CouponService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class CouponController {
     private final CouponService couponService;
 
     @PostMapping("/coupons/{couponId}/issue")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<MemberCouponDto> issueCoupon(@PathVariable Long couponId, HttpServletRequest request) {
         MemberCouponDto memberCouponDto = couponService.issueCoupon(couponId);
         return ResponseEntity.ok(memberCouponDto);
