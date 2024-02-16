@@ -7,7 +7,7 @@ import lombok.*;
 @Table(name = "coupon")
 @SequenceGenerator(name = "coupon_seq", sequenceName = "COUPON_SEQ", allocationSize = 1)
 @Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Coupon {
@@ -22,13 +22,6 @@ public class Coupon {
     @Column(columnDefinition = "NUMBER", name = "discount_rate")
     private Double discountRate;
     //private Long raffleProduct;
-
-    @Builder
-    public Coupon(Integer duration, String desc, Double discountRate) {
-        this.couponDuration = duration;
-        this.couponDesc = desc;
-        this.discountRate = discountRate;
-    }
 
     public void update(Integer duration, String desc, Double discountRate) {
         this.couponDuration = duration;

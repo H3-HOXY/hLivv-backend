@@ -26,8 +26,8 @@ public class CouponDto {
 
     public Coupon toEntity() {
         return Coupon.builder()
-                .duration(this.getCouponDuration())
-                .desc(this.getCouponDesc())
+                .couponDuration(this.getCouponDuration())
+                .couponDesc(this.getCouponDesc())
                 .discountRate(this.getDiscountRate())
                 .build();
 

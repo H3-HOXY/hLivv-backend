@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 
@@ -94,7 +95,7 @@ public class MemberService {
         Member member= SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-        return memberCouponRepository.findByMemberAndIsUsedFalse(member, pageable)
+        return memberCouponRepository.findByMemberAndIsUsedFalseAndExpireDateAfter(member, LocalDate.now(), pageable)
                 .map(MemberCouponDto::from);
     }
 
