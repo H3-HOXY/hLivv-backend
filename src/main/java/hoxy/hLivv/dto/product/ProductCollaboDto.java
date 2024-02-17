@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductCollaboDto {
     private Long productId;
-    private Long quantity;
+    private Integer quantity;
 }

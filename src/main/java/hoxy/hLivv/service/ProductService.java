@@ -42,14 +42,14 @@ public class ProductService {
     // R
     public ProductDto getProductWith(Long id) {
         return productRepository.getReferenceById(id)
-                                .toDto();
+                .toDto();
     }
 
     public List<ProductDto> getAllProduct() {
         return productRepository.findAll()
-                                .stream()
-                                .map(Product::toDto)
-                                .toList();
+                .stream()
+                .map(Product::toDto)
+                .toList();
     }
 
 

@@ -1,11 +1,17 @@
 package hoxy.hLivv.controller;
 
+import hoxy.hLivv.dto.CartDto;
+import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.dto.SignupDto;
 import hoxy.hLivv.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +52,16 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<MemberDto> getUserInfo(@PathVariable String loginId) {
         return ResponseEntity.ok(memberService.getMemberWithAuthorities(loginId));
+    }
+
+    @GetMapping("/member/coupons")
+    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<MemberCouponDto> coupons = memberService.getUnusedCoupons(pageable);
+        return ResponseEntity.ok(coupons);
+    }
+
+    @GetMapping("member/cart")
+    public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 }

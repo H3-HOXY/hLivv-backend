@@ -39,23 +39,23 @@ public class ProductDto {
 
     public Product toEntity() {
         var product = Product.builder()
-                             .id(id)
-                             .name(name)
-                             .productDesc(productDesc)
-                             .price(price)
-                             .stockQuantity(stockQuantity)
-                             .discountPercent(discountPercent)
-                             .isArSupported(isArSupported)
-                             .isQrSupported(isQrSupported)
-                             .isRestore(isRestore)
-                             .isEco(isEco)
-                             .productBrand(productBrand)
-                             .build();
+                .id(id)
+                .name(name)
+                .productDesc(productDesc)
+                .price(price)
+                .stockQuantity(stockQuantity)
+                .discountPercent(discountPercent)
+                .isArSupported(isArSupported)
+                .isQrSupported(isQrSupported)
+                .isRestore(isRestore)
+                .isEco(isEco)
+                .productBrand(productBrand)
+                .build();
 
         product.setProductImages(
                 productImages.stream()
-                             .map(item -> new ProductImage(product, item.getImageUrl()))
-                             .toList()
+                        .map(item -> new ProductImage(product, item.getImageUrl()))
+                        .toList()
         );
         return product;
     }

@@ -54,21 +54,21 @@ public class Product {
 
     public ProductDto toDto() {
         return ProductDto.builder()
-                         .id(id)
-                         .name(name)
-                         .productDesc(productDesc)
-                         .productType(ProductType.getProductType(this))
-                         .price(price)
-                         .stockQuantity(stockQuantity)
-                         .productImages(productImages.stream()
-                                                     .map(ProductImage::toDto)
-                                                     .toList())
-                         .discountPercent(discountPercent)
-                         .isArSupported(isArSupported)
-                         .isQrSupported(isQrSupported)
-                         .isRestore(isRestore)
-                         .isEco(isEco)
-                         .productBrand(productBrand)
-                         .build();
+                .id(id)
+                .name(name)
+                .productDesc(productDesc)
+                .productType(ProductType.getProductType(this))
+                .price(price)
+                .stockQuantity(stockQuantity)
+                .productImages(productImages.stream()
+                        .map(ProductImage::toDto)
+                        .toList())
+                .discountPercent(discountPercent)
+                .isArSupported(isArSupported)
+                .isQrSupported(isQrSupported)
+                .isRestore(isRestore)
+                .isEco(isEco)
+                .productBrand(productBrand)
+                .build();
     }
 }
