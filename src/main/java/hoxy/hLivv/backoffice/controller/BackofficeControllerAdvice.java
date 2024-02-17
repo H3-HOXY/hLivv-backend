@@ -24,7 +24,7 @@ public class BackofficeControllerAdvice {
         // 현재 요청의 URL을 가져옵니다.
         String requestURI = request.getRequestURI();
 
-        if (!requestURI.startsWith("/backoffice/login") || !requestURI.startsWith("/backoffice/register")) {
+        if (!requestURI.startsWith("/backoffice/login") && !requestURI.startsWith("/backoffice/register")) {
             MemberDto memberDto = memberService.getMyMemberWithAuthorities();
             model.addAttribute("memberDto", memberDto);
         }

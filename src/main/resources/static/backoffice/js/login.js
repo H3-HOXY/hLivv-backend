@@ -57,4 +57,32 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('#logoutModal').on('shown.bs.modal', function() {
+        // #logout 버튼에 클릭 이벤트 핸들러 등록
+        $('#logout').on('click', function(e) {
+            e.preventDefault(); // 기본 앵커 동작 방지
+
+            // AJAX 요청을 통해 서버에 로그아웃을 알림 (옵션)
+            $.ajax({
+                type: 'POST', // 또는 GET, 서버 구현에 따라 다름
+                url: '/backoffice/logout', // 서버의 로그아웃 처리 URL
+                // 성공적으로 로그아웃 처리 시 쿠키 삭제 및 페이지 이동
+                success: function() {
+                    // JWT 토큰 삭제
+
+                    // document.cookie = 'Authorization=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
+                    // 로그인 페이지로 리다이렉트
+                    window.location.href = '/backoffice/login';
+                },
+                error: function() {
+                    alert('Logout failed');
+                }
+            });
+        });
+    });
+    function deleteCookie(name) {
+        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
 });

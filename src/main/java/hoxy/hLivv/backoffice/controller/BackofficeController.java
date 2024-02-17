@@ -53,7 +53,7 @@ public class BackofficeController {
     }
 
     @GetMapping("/login")
-    public String login(@ModelAttribute LoginDto loginDto) {
+    public String login() {
         return "backoffice/login";
     }
 
@@ -82,13 +82,23 @@ public class BackofficeController {
 //        return ResponseEntity.ok().headers(httpHeaders).body("backoffice/home");
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+
+        Cookie cookie = new Cookie(JwtFilter.AUTHORIZATION_HEADER, null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // 쿠키 만료
+        response.addCookie(cookie);
+
+    }
+
     @GetMapping("/home")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String home(Model model) {
         Optional<String> username = SecurityUtil.getCurrentUsername();
         model.addAttribute("memberDto", memberService.getMyMemberWithAuthorities());
-
-
         return "backoffice/home";
     }
 
