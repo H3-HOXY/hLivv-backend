@@ -40,7 +40,8 @@ public class SignupDto {
         return SignupDto.builder()
                 .loginId(member.getLoginId())
                 .name(member.getName())
-
+                .phone(member.getPhone())
+                .email(member.getEmail())
                 .build();
     }
 }

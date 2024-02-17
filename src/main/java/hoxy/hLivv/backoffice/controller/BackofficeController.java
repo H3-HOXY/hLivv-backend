@@ -2,6 +2,8 @@ package hoxy.hLivv.backoffice.controller;
 
 
 import hoxy.hLivv.dto.LoginDto;
+import hoxy.hLivv.dto.MemberDto;
+import hoxy.hLivv.dto.SignupDto;
 import hoxy.hLivv.dto.TokenDto;
 import hoxy.hLivv.jwt.JwtFilter;
 import hoxy.hLivv.jwt.TokenProvider;
@@ -40,6 +42,14 @@ public class BackofficeController {
     @GetMapping("/register")
     public String signupPage() {
         return "backoffice/register";
+    }
+
+    @PostMapping("/register")
+    public void signup(
+            @Valid @RequestBody SignupDto signupDto
+    ) {
+        memberService.signupAdmin(signupDto);
+//        return ResponseEntity.ok();
     }
 
     @GetMapping("/login")
@@ -84,7 +94,10 @@ public class BackofficeController {
 
     @GetMapping("/members")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public String members() {
+    public String members(Model model) {
+
+        model.addAttribute("members",memberService.getAllMembers());
+
         return "backoffice/members";
     }
 

@@ -39,6 +39,58 @@
 
                 <!-- Topbar -->
                 <div th:replace="~{backoffice/fragments/fragment :: header}"></div>
+
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">고객 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>이름</th>
+                                        <th>ID</th>
+                                        <th>Email</th>
+                                        <th>전화번호</th>
+                                        <th>포인트</th>
+                                        <th>가입일</th>
+                                        <th>인테리어타입</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="member : ${members}">
+                                        <td th:text="${member.name}">ID</td>
+                                        <td th:text="${member.loginId}">Name</td>
+                                        <td th:text="${member.email}">Description</td>
+                                        <td th:text="${member.phone}">Description</td>
+                                        <td th:text="${member.points}">Description</td>
+                                        <td th:text="${member.signupDate}">Description</td>
+                                        <td th:text="${member.interiorType}">Description</td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td>Brielle Williamson</td>-->
+<!--                                        <td>Integration Specialist</td>-->
+<!--                                        <td>New York</td>-->
+<!--                                        <td>61</td>-->
+<!--                                        <td>2012/12/02</td>-->
+<!--                                        <td>$372,000</td>-->
+<!--                                    </tr>-->
+<!--                                    <tr>-->
+<!--                                        <td>Herrod Chandler</td>-->
+<!--                                        <td>Sales Assistant</td>-->
+<!--                                        <td>San Francisco</td>-->
+<!--                                        <td>59</td>-->
+<!--                                        <td>2012/08/06</td>-->
+<!--                                        <td>$137,500</td>-->
+<!--                                    </tr>-->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -94,11 +146,11 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/datatables-demo.js"></script>
 
 </body>
 

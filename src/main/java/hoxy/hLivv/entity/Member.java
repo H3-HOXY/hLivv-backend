@@ -1,6 +1,7 @@
 package hoxy.hLivv.entity;
 
 import hoxy.hLivv.entity.compositekey.CartId;
+import hoxy.hLivv.entity.enums.MemberGrade;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,7 +48,8 @@ public class Member {
     private Long points;
 
     @Column(name = "grade")
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private MemberGrade grade;
 
     @Column(name = "oauth_token")
     private String oauthToken;

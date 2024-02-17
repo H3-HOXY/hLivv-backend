@@ -4,6 +4,7 @@ import hoxy.hLivv.dto.CartDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.dto.SignupDto;
+import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -35,12 +36,11 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupDto> signup(
+    public ResponseEntity<MemberDto> signup(
             @Valid @RequestBody SignupDto signupDto
     ) {
         return ResponseEntity.ok(memberService.signup(signupDto));
     }
-
 
     @GetMapping("/member")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -63,5 +63,11 @@ public class MemberController {
     @GetMapping("member/cart")
     public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
+    }
+
+    @PutMapping("/{memberId}")
+    public ResponseEntity<MemberDto> updateMember(@PathVariable Long memberId, @Valid @RequestBody MemberDto memberDto) {
+        Member updatedMember = memberService.updateMember(memberId, memberDto);
+        return ResponseEntity.ok(MemberDto.from(updatedMember));
     }
 }
