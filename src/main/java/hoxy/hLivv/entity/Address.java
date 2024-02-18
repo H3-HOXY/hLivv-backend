@@ -38,4 +38,7 @@ public class Address {
     @Column(name = "request_msg")
     private String requestMsg;
 
+    @Column(name = "default_yn")
+    private boolean defaultYn;
+
 }

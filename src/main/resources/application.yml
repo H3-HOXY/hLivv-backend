@@ -10,9 +10,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      format_sql: true
+
     properties:
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.OracleDialect
         show_sql: true
         type: trace

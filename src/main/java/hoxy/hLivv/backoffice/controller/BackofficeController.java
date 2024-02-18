@@ -2,6 +2,8 @@ package hoxy.hLivv.backoffice.controller;
 
 
 import hoxy.hLivv.dto.LoginDto;
+import hoxy.hLivv.dto.MemberDto;
+import hoxy.hLivv.dto.SignupDto;
 import hoxy.hLivv.dto.TokenDto;
 import hoxy.hLivv.jwt.JwtFilter;
 import hoxy.hLivv.jwt.TokenProvider;
@@ -42,8 +44,16 @@ public class BackofficeController {
         return "backoffice/register";
     }
 
+    @PostMapping("/register")
+    public void signup(
+            @Valid @RequestBody SignupDto signupDto
+    ) {
+        memberService.signupAdmin(signupDto);
+//        return ResponseEntity.ok();
+    }
+
     @GetMapping("/login")
-    public String login(@ModelAttribute LoginDto loginDto) {
+    public String login() {
         return "backoffice/login";
     }
 
@@ -72,19 +82,32 @@ public class BackofficeController {
 //        return ResponseEntity.ok().headers(httpHeaders).body("backoffice/home");
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        SecurityContextHolder.clearContext();
+
+        Cookie cookie = new Cookie(JwtFilter.AUTHORIZATION_HEADER, null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // 쿠키 만료
+        response.addCookie(cookie);
+
+    }
+
     @GetMapping("/home")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String home(Model model) {
         Optional<String> username = SecurityUtil.getCurrentUsername();
         model.addAttribute("memberDto", memberService.getMyMemberWithAuthorities());
-
-
         return "backoffice/home";
     }
 
     @GetMapping("/members")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public String members() {
+    public String members(Model model) {
+
+        model.addAttribute("members",memberService.getAllMembers());
+
         return "backoffice/members";
     }
 
