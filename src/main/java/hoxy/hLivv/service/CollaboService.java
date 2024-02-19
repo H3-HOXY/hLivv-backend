@@ -1,7 +1,6 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.product.CollaboDto;
-import hoxy.hLivv.entity.Collabo;
 import hoxy.hLivv.repository.CollaboRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,15 +23,14 @@ public class CollaboService {
     }
 
     public CollaboDto getCollaboProductWith(Long id) {
-        return collaboRepository.getReferenceById(id)
-                .toDto();
+        return CollaboDto.from(collaboRepository.getReferenceById(id));
     }
 
     public List<CollaboDto> getAllCollaboProduct() {
         return collaboRepository.findAll()
-                .stream()
-                .map(Collabo::toDto)
-                .toList();
+                                .stream()
+                                .map(CollaboDto::from)
+                                .toList();
     }
 
     @Transactional

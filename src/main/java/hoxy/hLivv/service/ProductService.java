@@ -15,6 +15,8 @@ import hoxy.hLivv.repository.ReviewRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,22 +36,22 @@ public class ProductService {
     // C
     @Transactional
     public ProductDto saveProduct(ProductDto productDto) {
-        var product = productRepository.save(productDto.toEntity());
-        return product.toDto();
+        return ProductDto.from(productRepository.save(productDto.toEntity()));
     }
 
 
     // R
     public ProductDto getProductWith(Long id) {
-        return productRepository.getReferenceById(id)
-                .toDto();
+        return ProductDto.from(productRepository.getReferenceById(id));
     }
 
-    public List<ProductDto> getAllProduct() {
-        return productRepository.findAll()
-                .stream()
-                .map(Product::toDto)
-                .toList();
+    public List<ProductDto> getAllProduct(int pageNo, int pageSize) {
+        pageSize = Math.min(pageSize, 100);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return productRepository.findAll(pageable)
+                                .stream()
+                                .map(ProductDto::from)
+                                .toList();
     }
 
 
