@@ -1,6 +1,7 @@
 package hoxy.hLivv.entity;
 
 import hoxy.hLivv.entity.compositekey.CartId;
+import hoxy.hLivv.entity.enums.MemberGrade;
 import jakarta.persistence.*;
 import lombok.*;
 

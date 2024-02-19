@@ -3,6 +3,8 @@ spring:
 #    url: jdbc:oracle:thin:@localhost:1521/xepdb1
 #    username: hoxy
 #    password: hoxy
+  profiles:
+    active: pay
   datasource:
     url: jdbc:oracle:thin:@sophons.iptime.org:1523:xe
     username: junghyeon
