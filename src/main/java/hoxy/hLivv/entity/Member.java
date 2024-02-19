@@ -47,7 +47,8 @@ public class Member {
     private Long points;
 
     @Column(name = "grade")
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private MemberGrade grade;
 
     @Column(name = "oauth_token")
     private String oauthToken;

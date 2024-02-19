@@ -14,5 +14,6 @@ public class AddressDto {
     private String telephoneNumber;
     private String mobilePhoneNumber;
     private String requestMsg;
+    private String defaultYn;
 
 }
