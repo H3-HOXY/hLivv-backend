@@ -1,5 +1,6 @@
 package hoxy.hLivv.dto.product;
 
+import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.ProductImage;
 import hoxy.hLivv.entity.enums.ProductType;
@@ -35,28 +36,52 @@ public class ProductDto {
     protected boolean isRestore;
     protected boolean isEco;
     protected String productBrand;
+    protected CategoryDto category;
     List<ProductImageDto> productImages = new ArrayList<>();
 
     public Product toEntity() {
         var product = Product.builder()
-                .id(id)
-                .name(name)
-                .productDesc(productDesc)
-                .price(price)
-                .stockQuantity(stockQuantity)
-                .discountPercent(discountPercent)
-                .isArSupported(isArSupported)
-                .isQrSupported(isQrSupported)
-                .isRestore(isRestore)
-                .isEco(isEco)
-                .productBrand(productBrand)
-                .build();
+                             .id(id)
+                             .name(name)
+                             .productDesc(productDesc)
+                             .price(price)
+                             .stockQuantity(stockQuantity)
+                             .discountPercent(discountPercent)
+                             .isArSupported(isArSupported)
+                             .isQrSupported(isQrSupported)
+                             .isRestore(isRestore)
+                             .isEco(isEco)
+                             .category(category.toEntity())
+                             .productBrand(productBrand)
+                             .build();
 
         product.setProductImages(
                 productImages.stream()
-                        .map(item -> new ProductImage(product, item.getImageUrl()))
-                        .toList()
+                             .map(item -> new ProductImage(product, item.getImageUrl()))
+                             .toList()
         );
         return product;
+    }
+
+    public static ProductDto from(Product product) {
+        return ProductDto.builder()
+                         .id(product.getId())
+                         .name(product.getName())
+                         .productDesc(product.getProductDesc())
+                         .productType(ProductType.getProductType(product))
+                         .price(product.getPrice())
+                         .category(CategoryDto.from(product.getCategory()))
+                         .stockQuantity(product.getStockQuantity())
+                         .productImages(product.getProductImages()
+                                               .stream().
+                                               map(ProductImage::toDto)
+                                               .toList())
+                         .discountPercent(product.getDiscountPercent())
+                         .isArSupported(product.isArSupported())
+                         .isQrSupported(product.isQrSupported())
+                         .isRestore(product.isRestore())
+                         .isEco(product.isEco())
+                         .productBrand(product.getProductBrand())
+                         .build();
     }
 }
