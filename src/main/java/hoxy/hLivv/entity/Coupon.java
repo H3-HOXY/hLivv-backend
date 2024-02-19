@@ -5,7 +5,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "coupon")
-@SequenceGenerator(name = "coupon_seq", sequenceName = "COUPON_SEQ", allocationSize = 1)
 @Getter
 @Builder
 @AllArgsConstructor
@@ -13,6 +12,7 @@ import lombok.*;
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coupon_seq")
+    @SequenceGenerator(name = "coupon_seq", sequenceName = "COUPON_SEQ", allocationSize = 1)
     @Column(name = "coupon_id")
     private Long couponId;
     @Column(name = "coupon_duration")

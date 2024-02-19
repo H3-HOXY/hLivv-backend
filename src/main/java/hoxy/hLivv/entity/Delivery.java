@@ -15,7 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class Delivery {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="delivery_seq")
+    @SequenceGenerator(name="delivery_seq", sequenceName="delivery_seq", allocationSize=1)
     @Column(name = "delivery_id")
     private Long deliveryId;
 

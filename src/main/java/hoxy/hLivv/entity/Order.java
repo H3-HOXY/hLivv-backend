@@ -4,6 +4,7 @@ import hoxy.hLivv.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="order_seq")
+    @SequenceGenerator(name="order_seq", sequenceName="order_seq", allocationSize=1)
     @Column(name = "order_id")
     private Long orderId;
 
@@ -28,7 +30,7 @@ public class Order {
     private Long addressId;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    private LocalDate orderDate;
 
     @Column(name = "request_msg")
     private String requestMsg;
@@ -53,7 +55,7 @@ public class Order {
     private Long orderCoupon;
 
     @Column(name = "request_date")
-    private Date requestDate;
+    private LocalDate requestDate;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> products;
