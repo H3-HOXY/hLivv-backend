@@ -4,6 +4,7 @@ import hoxy.hLivv.entity.Collabo;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.ProductCollabo;
 import hoxy.hLivv.entity.ProductImage;
+import hoxy.hLivv.entity.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,5 +53,32 @@ public class CollaboDto extends ProductDto {
                                                 })
                                                 .toList());
         return collabo;
+    }
+
+    public static CollaboDto from(Collabo collabo) {
+        return CollaboDto.builder()
+                         .id(collabo.getId())
+                         .name(collabo.getName())
+                         .productDesc(collabo.getProductDesc())
+                         .productType(ProductType.getProductType(collabo))
+                         .price(collabo.getPrice())
+                         .stockQuantity(collabo.getStockQuantity())
+                         .productImages(collabo.getProductImages()
+                                               .stream()
+                                               .map(ProductImage::toDto)
+                                               .toList())
+                         .discountPercent(collabo.getDiscountPercent())
+                         .isArSupported(collabo.isArSupported())
+                         .isQrSupported(collabo.isQrSupported())
+                         .isRestore(collabo.isRestore())
+                         .isEco(collabo.isEco())
+                         .productBrand(collabo.getProductBrand())
+                         .startDate(collabo.getStartDate())
+                         .endDate(collabo.getEndDate())
+                         .collaboProduct(collabo.getProductCollabo()
+                                                .stream()
+                                                .map(ProductCollabo::toDto)
+                                                .toList())
+                         .build();
     }
 }

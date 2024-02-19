@@ -1,7 +1,5 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.product.ProductDto;
-import hoxy.hLivv.entity.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,40 +33,32 @@ public class Product {
     @Column(name = "product_price")
     protected int price;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_category")
+    protected Category category;
+
     @Column(name = "product_stock")
     protected int stockQuantity;
+
     @Column(name = "discount_percent")
     protected int discountPercent;
+
     @Column(name = "ar_supported")
     protected boolean isArSupported;
+
     @Column(name = "qr_supported")
     protected boolean isQrSupported;
+
     @Column(name = "is_restore")
     protected boolean isRestore;
+
     @Column(name = "is_eco")
     protected boolean isEco;
+
     @Column(name = "product_brand")
     protected String productBrand;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<ProductImage> productImages = new ArrayList<>();
 
-    public ProductDto toDto() {
-        return ProductDto.builder()
-                .id(id)
-                .name(name)
-                .productDesc(productDesc)
-                .productType(ProductType.getProductType(this))
-                .price(price)
-                .stockQuantity(stockQuantity)
-                .productImages(productImages.stream()
-                        .map(ProductImage::toDto)
-                        .toList())
-                .discountPercent(discountPercent)
-                .isArSupported(isArSupported)
-                .isQrSupported(isQrSupported)
-                .isRestore(isRestore)
-                .isEco(isEco)
-                .productBrand(productBrand)
-                .build();
-    }
 }

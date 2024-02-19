@@ -1,7 +1,5 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.dto.product.CollaboDto;
-import hoxy.hLivv.entity.enums.ProductType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -27,30 +25,4 @@ public class Collabo extends Product {
 
     private Date startDate;
     private Date endDate;
-
-    @Override
-    public CollaboDto toDto() {
-        return CollaboDto.builder()
-                         .id(id)
-                         .name(name)
-                         .productDesc(productDesc)
-                         .productType(ProductType.getProductType(this))
-                         .startDate(startDate)
-                         .endDate(endDate)
-                         .price(price)
-                         .stockQuantity(stockQuantity)
-                         .productImages(productImages.stream()
-                                                     .map(ProductImage::toDto)
-                                                     .toList())
-                         .discountPercent(discountPercent)
-                         .isArSupported(isArSupported)
-                         .isQrSupported(isQrSupported)
-                         .isRestore(isRestore)
-                         .isEco(isEco)
-                         .productBrand(productBrand)
-                         .collaboProduct(productCollabo.stream()
-                                                       .map(ProductCollabo::toDto)
-                                                       .toList())
-                         .build();
-    }
 }
