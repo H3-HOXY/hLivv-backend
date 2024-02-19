@@ -12,6 +12,7 @@ import hoxy.hLivv.exception.NotFoundProductException;
 import hoxy.hLivv.exception.NotFoundRestoreException;
 import hoxy.hLivv.repository.MemberRepository;
 import hoxy.hLivv.repository.ProductRepository;
+import hoxy.hLivv.repository.RestoreImageRepository;
 import hoxy.hLivv.repository.RestoreRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class RestoreService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final RestoreRepository restoreRepository;
+    private final RestoreImageRepository restoreImageRepository;
     @Transactional
     public RestoreDto restoreRegister(RestoreDto restoreDto) {
 
@@ -58,15 +61,7 @@ public class RestoreService {
                 .restoreStatus(RestoreStatus.접수완료)
                 .build();
 
-        List<RestoreImage> restoreImages = new ArrayList<>();
-        for (String restoreImageUrl : restoreDto.getRestoreImageUrls()) {
-            RestoreImage restoreImage = RestoreImage.builder()
-                    .restore(restore)
-                    .riUrl(restoreImageUrl)
-                    .build();
-            restoreImages.add(restoreImage);
-        }
-        restore.setRestoreImages(restoreImages);
+        restoreImageSetting(restoreDto, restore);
 
         return RestoreDto.from(restoreRepository.save(restore));
     }
@@ -111,8 +106,41 @@ public class RestoreService {
         restore.setPayback(restoreDto.getPayback());
         restore.setWhenRejected(restoreDto.getWhenRejected());
         restore.setRestoreStatus(restoreDto.getRestoreStatus());
-//        restore.setRestoreImages(restoreDto.getRestoreImageUrls().stream().map(item -> ));
+
+        // restoreImages 업데이트
+        List<String> newImageUrls = restoreDto.getRestoreImageUrls();
+        List<RestoreImage> existingImages = restore.getRestoreImages();
+
+        // 기존 이미지 URL 목록
+        List<String> originImageUrls = existingImages.stream()
+                .map(RestoreImage::getRiUrl)
+                .toList();
+
+        if (!originImageUrls.equals(newImageUrls)) {
+            existingImages.clear();
+            if (newImageUrls != null) {
+                for (String imageUrl : newImageUrls) {
+                    RestoreImage newImage = RestoreImage.builder()
+                            .restore(restore)
+                            .riUrl(imageUrl)
+                            .build();
+                    existingImages.add(newImage);
+                }
+            }
+        }
 
         return RestoreDto.from(restoreRepository.save(restore));
+    }
+
+    private static void restoreImageSetting(RestoreDto restoreDto, Restore restore) {
+        List<RestoreImage> restoreImages = new ArrayList<>();
+        for (String restoreImageUrl : restoreDto.getRestoreImageUrls()) {
+            RestoreImage restoreImage = RestoreImage.builder()
+                    .restore(restore)
+                    .riUrl(restoreImageUrl)
+                    .build();
+            restoreImages.add(restoreImage);
+        }
+        restore.setRestoreImages(restoreImages);
     }
 }
