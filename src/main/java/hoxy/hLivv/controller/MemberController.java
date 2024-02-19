@@ -1,13 +1,8 @@
 package hoxy.hLivv.controller;
 
-import hoxy.hLivv.dto.CartDto;
-import hoxy.hLivv.dto.MemberCouponDto;
-import hoxy.hLivv.dto.MemberDto;
-import hoxy.hLivv.dto.SignupDto;
+import hoxy.hLivv.dto.*;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,15 +21,17 @@ import java.io.IOException;
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello");
-    }
+//    @GetMapping("/hello")
+//    public ResponseEntity<String> hello() {
+//        return ResponseEntity.ok("hello");
+//    }
+//
+//    @PostMapping("/test-redirect")
+//    public void testRedirect(HttpServletResponse response) throws IOException {
+//        response.sendRedirect("/api2/member");
+//    }
 
-    @PostMapping("/test-redirect")
-    public void testRedirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/api2/member");
-    }
+
 
     @PostMapping("/signup")
     public ResponseEntity<MemberDto> signup(
@@ -68,8 +65,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
-
-    @PutMapping("/{memberId}")
+    @PutMapping("/member/{memberId}")
     public ResponseEntity<MemberDto> updateMember(@PathVariable Long memberId, @Valid @RequestBody MemberDto memberDto) {
         Member updatedMember = memberService.updateMember(memberId, memberDto);
         return ResponseEntity.ok(MemberDto.from(updatedMember));
