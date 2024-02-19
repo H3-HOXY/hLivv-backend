@@ -1,13 +1,11 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.CartDto;
-import hoxy.hLivv.dto.CouponDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
-import hoxy.hLivv.entity.MemberCoupon;
 import hoxy.hLivv.exception.DuplicateMemberException;
 import hoxy.hLivv.exception.NotFoundMemberException;
 import hoxy.hLivv.repository.AuthorityRepository;
@@ -19,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

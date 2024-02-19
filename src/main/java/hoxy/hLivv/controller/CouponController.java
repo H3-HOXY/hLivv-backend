@@ -17,9 +17,9 @@ import java.util.List;
 public class CouponController {
     private final CouponService couponService;
 
-    @PostMapping("/coupons/{couponId}/issue")
+    @PostMapping("/coupons/{couponId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<MemberCouponDto> issueCoupon(@PathVariable Long couponId, HttpServletRequest request) {
+    public ResponseEntity<MemberCouponDto> issueCoupon(@PathVariable Long couponId) {
         MemberCouponDto memberCouponDto = couponService.issueCoupon(couponId);
         return ResponseEntity.ok(memberCouponDto);
     }

@@ -54,12 +54,14 @@ public class MemberController {
     }
 
     @GetMapping("/member/coupons")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<MemberCouponDto> coupons = memberService.getUnusedCoupons(pageable);
         return ResponseEntity.ok(coupons);
     }
 
     @GetMapping("member/cart")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }

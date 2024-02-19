@@ -4,9 +4,9 @@ spring:
 #    username: hoxy
 #    password: hoxy
   datasource:
-    url: jdbc:oracle:thin:@sophons.iptime.org:1521:xe
-    username: sangwon
-    password: sangwon
+    url: jdbc:oracle:thin:@sophons.iptime.org:1523:xe
+    username: junghyeon
+    password: ubca@2573
   jpa:
     hibernate:
       ddl-auto: update
