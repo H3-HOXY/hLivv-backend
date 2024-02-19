@@ -63,7 +63,7 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 .requestMatchers("/api/hello", "/api/login", "/api/signup"
-                        ,"/backoffice/login","/backoffice/logout","/backoffice/signup","/backoffice/css/**","/backoffice/img/**","/backoffice/js/**","/backoffice/scss/**","/backoffice/vendor/**"
+                        ,"/backoffice/login","/backoffice/logout","/backoffice/register","/backoffice/signup","/backoffice/css/**","/backoffice/img/**","/backoffice/js/**","/backoffice/scss/**","/backoffice/vendor/**"
                         ,"/swagger-ui/**","/api-docs/**","/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
             )
