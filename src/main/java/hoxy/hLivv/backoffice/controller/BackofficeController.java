@@ -4,18 +4,19 @@ package hoxy.hLivv.backoffice.controller;
 import hoxy.hLivv.dto.LoginDto;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.dto.SignupDto;
-import hoxy.hLivv.dto.TokenDto;
 import hoxy.hLivv.jwt.JwtFilter;
 import hoxy.hLivv.jwt.TokenProvider;
 import hoxy.hLivv.service.MemberService;
+import hoxy.hLivv.service.ProductService;
+import hoxy.hLivv.service.RestoreService;
 import hoxy.hLivv.util.SecurityUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -37,6 +39,8 @@ public class BackofficeController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final MemberService memberService;
+    private final RestoreService restoreService;
+    private final ProductService productService;
 
 
     @GetMapping("/register")
@@ -104,10 +108,8 @@ public class BackofficeController {
 
     @GetMapping("/members")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public String members(Model model) {
-
-        model.addAttribute("members",memberService.getAllMembers());
-
+    public String memberPage(Model model, @PageableDefault(size=50) Pageable pageable) {
+        model.addAttribute("members", memberService.getAllMembersWithPagination(pageable));
         return "backoffice/members";
     }
 
@@ -115,5 +117,27 @@ public class BackofficeController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public String auth() {
         return "backoffice/request_auth";
+    }
+
+
+    @GetMapping("/restores")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public String restores(Model model) {
+        model.addAttribute("restores",restoreService.getAllRestores(0,100));
+        return "backoffice/restores";
+    }
+
+    @GetMapping("/products")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public String products(Model model, @PageableDefault(size=50) Pageable pageable) {
+        model.addAttribute("products", productService.getAllProductsWithPagination(pageable));
+        return "backoffice/products";
+    }
+
+    @PostMapping("/updateMember")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @ResponseBody
+    public ResponseEntity<MemberDto> updateMember(@RequestBody MemberDto memberDto) {
+        return ResponseEntity.ok(MemberDto.from(memberService.updateMember(memberDto)));
     }
 }

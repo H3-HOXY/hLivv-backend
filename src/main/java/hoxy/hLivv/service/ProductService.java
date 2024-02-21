@@ -1,6 +1,7 @@
 package hoxy.hLivv.service;
 
 
+import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.review.ReviewDto;
 import hoxy.hLivv.dto.review.ReviewImageDto;
@@ -15,6 +16,7 @@ import hoxy.hLivv.repository.ReviewRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,10 @@ public class ProductService {
                                 .stream()
                                 .map(ProductDto::from)
                                 .toList();
+    }
+
+    public Page<ProductDto> getAllProductsWithPagination(Pageable pageable) {
+        return productRepository.findAll(pageable).map(ProductDto::from);
     }
 
 
