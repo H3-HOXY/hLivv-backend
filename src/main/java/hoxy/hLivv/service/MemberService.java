@@ -4,14 +4,6 @@ import hoxy.hLivv.dto.*;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
-import hoxy.hLivv.dto.CartDto;
-import hoxy.hLivv.dto.MemberCouponDto;
-import hoxy.hLivv.dto.CartDto;
-import hoxy.hLivv.dto.CouponDto;
-import hoxy.hLivv.dto.MemberCouponDto;
-import hoxy.hLivv.dto.MemberDto;
-import hoxy.hLivv.dto.SignupDto;
-import hoxy.hLivv.dto.order.OrderProductReqDto;
 import hoxy.hLivv.entity.*;
 import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.entity.enums.MemberGrade;
@@ -26,11 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -240,8 +228,14 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public List<CartDto> getSelectedItems(List<CartId> cartIds) {
+    public List<CartDto> getSelectedItems(List<Long> productIds) {
+        Member member = getMember();
+        List<CartId> cartIds = productIds.stream()
+                .map(productId -> new CartId(member.getMemberId(), productId))
+                .collect(Collectors.toList());
+
         List<Cart> carts = cartRepository.findByCartIdIn(cartIds);
+
         return carts.stream()
                 .map(CartDto::from)
                 .collect(Collectors.toList());
@@ -253,5 +247,55 @@ public class MemberService {
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
     }
+
+//    @Transactional(readOnly = true)
+//    public List<MemberDto> getAllMembers() {
+//
+//        // 서비스 또는 컨트롤러 메소드 내부
+////        int page = 0; // 요청된 페이지 번호 (0부터 시작)
+////        int size = 10; // 페이지 당 항목 수
+////        Pageable pageable = PageRequest.of(page, size);
+////        Page<Member> pageResult = memberRepository.findAll(pageable);
+////        List<Member> Members = pageResult.getContent(); // 현재 페이지의 데이터
+//        List<MemberDto> memberDtoList = new ArrayList<>();
+//        List<Member> Members = memberRepository.findAll();
+//        for (Member member : Members) {
+//            if (member.getAuthorities().iterator().next().getAuthority().getAuthorityName().equals("ROLE_USER")) {
+//                memberDtoList.add(MemberDto.from(member));
+//            }
+//
+//        }
+//
+//        return memberDtoList;
+//    }
+//
+//    public List<MemberDto> getAllMembers(int pageNo, int pageSize) {
+//        pageSize = Math.min(pageSize, 100);
+//        Pageable pageable = PageRequest.of(pageNo, pageSize);
+//        return memberRepository.findAll(pageable)
+//                .stream()
+//                .map(MemberDto::from)
+//                .toList();
+//    }
+//
+//    public Map<String, Object> getAllMembersWithPaginationInfo(int pageNo, int pageSize) {
+//        pageSize = Math.min(pageSize, 100); // 요청된 페이지 크기를 100으로 제한
+//        Pageable pageable = PageRequest.of(pageNo, pageSize);
+//        Page<Member> memberPage = memberRepository.findAll(pageable);
+//
+//        List<MemberDto> members = memberPage.getContent()
+//                .stream()
+//                .map(MemberDto::from)
+//                .collect(Collectors.toList());
+//
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("memberPage", memberPage);
+//        response.put("members", members);
+//        response.put("currentPage", memberPage.getNumber());
+//        response.put("totalItems", memberPage.getTotalElements());
+//        response.put("totalPages", memberPage.getTotalPages());
+//
+//        return response;
+//    }
 
 }

@@ -1,17 +1,15 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.*;
-import hoxy.hLivv.dto.order.OrderProductReqDto;
 import hoxy.hLivv.entity.Member;
-import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -67,26 +65,28 @@ public class MemberController {
 
     @GetMapping("/member/coupons")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "expireDate"));
         Page<MemberCouponDto> coupons = memberService.getUnusedCoupons(pageable);
         return ResponseEntity.ok(coupons);
     }
 
     @GetMapping("member/cart")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Page<CartDto>> getCarts(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "lastModifiedDate", "createdDate"));
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
     @PostMapping("member/cart/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<List<CartDto>> getSelectedItems(@RequestBody List<CartId> cartIds) {
-        return ResponseEntity.ok(memberService.getSelectedItems(cartIds));
+    public ResponseEntity<List<CartDto>> getSelectedItems(@RequestBody List<Long> productIds) {
+        return ResponseEntity.ok(memberService.getSelectedItems(productIds));
     }
 
-    @PutMapping("/member/{memberId}")
-    public ResponseEntity<MemberDto> updateMember(@PathVariable Long memberId, @Valid @RequestBody MemberDto memberDto) {
-        Member updatedMember = memberService.updateMember(memberId, memberDto);
+    @PutMapping("/updateMember")
+    public ResponseEntity<MemberDto> updateMember(@Valid @RequestBody MemberDto memberDto) {
+        Member updatedMember = memberService.updateMember(memberDto);
         return ResponseEntity.ok(MemberDto.from(updatedMember));
     }
 }
