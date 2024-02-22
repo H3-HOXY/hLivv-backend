@@ -4,12 +4,12 @@ import hoxy.hLivv.entity.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 @Table(name = "delivery")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,11 +25,19 @@ public class Delivery {
     private DeliveryStatus deliveryStatus;
 
     @Column(name = "delivery_start")
-    @Temporal(TemporalType.DATE)
-    private Date deliveryStart;
+    private LocalDate deliveryStart;
 
     @Column(name = "delivery_end")
-    @Temporal(TemporalType.DATE)
-    private Date deliveryEnd;
+    private LocalDate deliveryEnd;
+
+    public static Delivery prepareDelivery(){
+        return Delivery.builder()
+                .deliveryStatus(DeliveryStatus.배송접수)
+                .build();
+    }
+
+    public void updateDeliveryCompletedStatus(){
+        this.deliveryStatus=DeliveryStatus.배송완료;
+    }
 
 }

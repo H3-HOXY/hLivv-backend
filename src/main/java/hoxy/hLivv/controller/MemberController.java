@@ -1,7 +1,9 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.order.OrderProductReqDto;
 import hoxy.hLivv.entity.Member;
+import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -63,6 +66,12 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
+    }
+
+    @PostMapping("member/cart/order")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<List<CartDto>> getSelectedItems(@RequestBody List<CartId> cartIds) {
+        return ResponseEntity.ok(memberService.getSelectedItems(cartIds));
     }
 
     @PutMapping("/member/{memberId}")

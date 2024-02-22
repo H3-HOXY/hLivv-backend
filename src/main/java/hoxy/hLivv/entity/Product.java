@@ -1,6 +1,9 @@
 package hoxy.hLivv.entity;
 
+import hoxy.hLivv.entity.enums.ProductType;
+import hoxy.hLivv.exception.StockOverFlowException;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +40,7 @@ public class Product {
     @JoinColumn(name = "product_category")
     protected Category category;
 
+    @Min(0)
     @Column(name = "product_stock")
     protected int stockQuantity;
 
@@ -60,5 +64,31 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<ProductImage> productImages = new ArrayList<>();
+
+//    public void decreaseStock(int qty) {
+//        if (this.stockQuantity < qty) {
+//            throw new StockOverFlowException("Not enough stock for product with id: " + this.id);
+//        }
+//        this.stockQuantity -= qty;
+//    }
+
+    public void decreaseStock(int qty) {
+        if (ProductType.getProductType(this) == ProductType.COLLABO) {
+            if (this instanceof Collabo collabo) {
+                for (ProductCollabo productCollabo : collabo.getProductCollabo()) {
+                    if (productCollabo.getProduct() != null && productCollabo.getQuantity() != null) {
+                        Product product = productCollabo.getProduct();
+                        product.decreaseStock(qty * productCollabo.getQuantity());
+                    }
+                }
+            }
+        } else {
+            if (this.stockQuantity < qty) {
+                throw new StockOverFlowException("Not enough stock for product with id: " + this.id);
+            }
+            this.stockQuantity -= qty;
+        }
+    }
+
 
 }

@@ -20,10 +20,10 @@ public class Coupon {
     @Column(name = "coupon_desc")
     private String couponDesc;
     @Column(columnDefinition = "NUMBER", name = "discount_rate")
-    private Double discountRate;
+    private Integer discountRate;
     //private Long raffleProduct;
 
-    public void update(Integer duration, String desc, Double discountRate) {
+    public void update(Integer duration, String desc, Integer discountRate) {
         this.couponDuration = duration;
         this.couponDesc = desc;
         this.discountRate = discountRate;

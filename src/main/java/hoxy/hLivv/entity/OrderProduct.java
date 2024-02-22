@@ -1,12 +1,12 @@
 package hoxy.hLivv.entity;
 
+import hoxy.hLivv.entity.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Table(name = "order_product")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,9 +25,17 @@ public class OrderProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(name="order_product_qty")
+    private Integer orderProductQty;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
+    public void confirmPurchase() {
+        if (this.delivery.getDeliveryStatus() == DeliveryStatus.배송완료) {
+            this.order.updateOrderCompletedStatus();
+        }
+    }
 
 }

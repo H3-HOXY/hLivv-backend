@@ -17,7 +17,7 @@ public class MemberCouponDto {
     @Temporal(TemporalType.DATE)
     private LocalDate expireDate;
     private String couponDesc;
-    private Double discountRate;
+    private Integer discountRate;
     private boolean isUsed;
 
     public static MemberCouponDto from(MemberCoupon memberCoupon) {

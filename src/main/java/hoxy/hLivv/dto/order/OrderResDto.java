@@ -1,12 +1,16 @@
 package hoxy.hLivv.dto.order;
 
+
 import hoxy.hLivv.dto.AddressDto;
-import hoxy.hLivv.entity.OrderProduct;
-import hoxy.hLivv.entity.enums.OrderStatus;
+import hoxy.hLivv.entity.Coupon;
+import hoxy.hLivv.entity.Order;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -15,17 +19,40 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderResDto {
-    private Long orderId; // 주문번호
-    private String memberName; // 멤버이름
-    private AddressDto addressDto; // 주소
-    private LocalDate orderDate; // 주문일
-    private String requestMsg; //배송 요청 메세지
-    private Double subTotal; // 쿠폰, 할인 등 적용 전 금액
-    private Double orderTotal; // 최종 금액
-    private Double orderCash; // 현금 결제액
-    private Double orderPoint; // 포인트 결제액
-    private OrderStatus orderStatus; // 주문 상태
-    private Double orderCoupon; // 쿠폰 결제액
-    private LocalDate requestDate; // 배송희망일
-    private List<OrderProduct> products; //주문상품목록
+    private Long orderId;
+    private OrderRequesterDto orderRequesterDto;
+    private AddressDto addressDto;
+    private LocalDateTime orderDate;
+    private String requestMsg;
+    private Long subTotal;
+    private Long orderTotal;
+    private Long orderCash;
+    private Long orderPoint;
+    private String couponName;
+    private LocalDate requestDate;
+    private List<OrderProductResDto> products;
+
+
+    public static OrderResDto from(Order order){
+        List<OrderProductResDto> productResDtoList = order.getProducts().stream()
+                .map(OrderProductResDto::from)
+                .collect(Collectors.toList());
+        Coupon coupon = order.getOrderCoupon();
+        String couponDesc = coupon != null ? coupon.getCouponDesc() : "No coupon applied";
+        return OrderResDto.builder()
+                .orderId(order.getOrderId())
+                .orderRequesterDto(OrderRequesterDto.from(order.getMember(), (long) (order.getOrderCash()*0.001)))
+                .addressDto(AddressDto.from(order.getAddress()))
+                .orderDate(order.getOrderDate())
+                .requestMsg(order.getRequestMsg())
+                .subTotal(order.getSubTotal())
+                .orderTotal(order.getOrderTotal())
+                .orderCash(order.getOrderCash())
+                .orderPoint(order.getOrderPoint())
+                .couponName(couponDesc)
+                .requestDate(order.getRequestDate())
+                .products(productResDtoList)
+                .build();
+    }
+
 }

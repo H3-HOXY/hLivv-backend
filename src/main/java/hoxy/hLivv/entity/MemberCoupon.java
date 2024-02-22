@@ -1,6 +1,8 @@
 package hoxy.hLivv.entity;
 
 import hoxy.hLivv.entity.compositekey.MemberCouponId;
+import hoxy.hLivv.exception.AlreadyUsedCouponException;
+import hoxy.hLivv.exception.ExpiredCouponException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +44,17 @@ public class MemberCoupon {
                 .expireDate(expireDate)
                 .isUsed(false)
                 .build();
+    }
+
+    public void use() {
+        if (isUsed) {
+            throw new AlreadyUsedCouponException("Coupon is already used.");
+        }
+
+        if (expireDate.isBefore(LocalDate.now())) {
+            throw new ExpiredCouponException("Coupon has expired.");
+        }
+        this.isUsed = true;
     }
 
 }

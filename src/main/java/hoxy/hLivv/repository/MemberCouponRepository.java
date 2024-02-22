@@ -1,5 +1,6 @@
 package hoxy.hLivv.repository;
 
+import hoxy.hLivv.entity.Coupon;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberCoupon;
 import org.springframework.data.domain.Page;
@@ -20,4 +21,6 @@ public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long
             Pageable pageable);
 
     Optional<MemberCoupon> findByMcId_MemberIdAndMcId_CouponIdAndIsUsed(Long memberId, Long couponId, Boolean isUsed);
+
+    Optional<MemberCoupon> findByMemberAndCoupon(Member member, Coupon coupon);
 }
