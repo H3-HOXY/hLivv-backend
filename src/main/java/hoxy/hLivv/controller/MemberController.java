@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -41,11 +42,20 @@ public class MemberController {
         return ResponseEntity.ok(memberService.signup(signupDto));
     }
 
+    @PostMapping("/signup-data-gen")
+    public ResponseEntity<String> signupDataGen(
+            @Valid @RequestBody List<SignupDataGenDto> signupDataGenDtos
+    ) {
+        memberService.signupDataGen(signupDataGenDtos);
+        return ResponseEntity.ok("성공");
+    }
+
     @GetMapping("/member")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<MemberDto> getMyUserInfo() {
         return ResponseEntity.ok(memberService.getMyMemberWithAuthorities());
     }
+
 
     @GetMapping("/member/{loginId}")
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -64,9 +74,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
-    @PutMapping("/member/{memberId}")
-    public ResponseEntity<MemberDto> updateMember(@PathVariable Long memberId, @Valid @RequestBody MemberDto memberDto) {
-        Member updatedMember = memberService.updateMember(memberId, memberDto);
+    @PutMapping("/updateMember")
+    public ResponseEntity<MemberDto> updateMember(@Valid @RequestBody MemberDto memberDto) {
+        Member updatedMember = memberService.updateMember(memberDto);
         return ResponseEntity.ok(MemberDto.from(updatedMember));
     }
 }

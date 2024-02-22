@@ -1,9 +1,28 @@
 .logo-icon{
-    width: 35px !important;
-    height: 35px !important;
+    width: 36px !important;
+    height: 36px !important;
 }
 
 .login-image{
     width: 100%;
     height: 100%;
 }
+
+.modal-item:hover, .modal-item:focus {
+    color: #2e2f37;
+    text-decoration: none;
+    background-color: #eaecf4;
+}
+
+.modal-item.active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #2f4d30;
+}
+
+.modal-item.disabled, .modal-item:disabled {
+    color: #b7b9cc;
+    pointer-events: none;
+    background-color: transparent;
+}
+
