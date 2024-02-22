@@ -2,6 +2,8 @@ package hoxy.hLivv.repository;
 
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +14,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @EntityGraph(attributePaths = "products")
         // lazy가 아닌 eager 조회
     List<Order> findWithProductsByMember(Member member);//멤버 아이디로 주문목록 가져올 때 상품도 가져오기
+    @EntityGraph(attributePaths = "products")
+    Page<Order> findByMember(Member member, Pageable pageable);
     Optional<Order> findByImpUid(String impUid);
 }

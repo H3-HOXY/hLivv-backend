@@ -1,6 +1,7 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
@@ -9,10 +10,7 @@ import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.entity.enums.MemberGrade;
 import hoxy.hLivv.exception.DuplicateMemberException;
 import hoxy.hLivv.exception.NotFoundMemberException;
-import hoxy.hLivv.repository.AuthorityRepository;
-import hoxy.hLivv.repository.CartRepository;
-import hoxy.hLivv.repository.MemberCouponRepository;
-import hoxy.hLivv.repository.MemberRepository;
+import hoxy.hLivv.repository.*;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +34,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
     private final CartRepository cartRepository;
+    private final OrderRepository orderRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -225,6 +224,13 @@ public class MemberService {
         Member member= getMember();
         return cartRepository.findByMember(member, pageable)
                 .map(CartDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderResDto> getOrdersByMember(Pageable pageable) {
+        Member member= getMember();
+        return orderRepository.findByMember(member, pageable)
+                .map(OrderResDto::from);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -78,7 +79,14 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
-    @PostMapping("member/cart/order")
+    @PostMapping("member/order")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Page<OrderResDto>> getOrders(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "orderDate"));
+        return ResponseEntity.ok(memberService.getOrdersByMember(pageable));
+    }
+
+    @GetMapping("member/cart/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<CartDto>> getSelectedItems(@RequestBody List<Long> productIds) {
         return ResponseEntity.ok(memberService.getSelectedItems(productIds));
