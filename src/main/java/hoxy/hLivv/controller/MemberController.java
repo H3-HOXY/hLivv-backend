@@ -5,6 +5,7 @@ import hoxy.hLivv.dto.order.OrderProductReqDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,11 +44,20 @@ public class MemberController {
         return ResponseEntity.ok(memberService.signup(signupDto));
     }
 
+    @PostMapping("/signup-data-gen")
+    public ResponseEntity<String> signupDataGen(
+            @Valid @RequestBody List<SignupDataGenDto> signupDataGenDtos
+    ) {
+        memberService.signupDataGen(signupDataGenDtos);
+        return ResponseEntity.ok("성공");
+    }
+
     @GetMapping("/member")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<MemberDto> getMyUserInfo() {
         return ResponseEntity.ok(memberService.getMyMemberWithAuthorities());
     }
+
 
     @GetMapping("/member/{loginId}")
     @PreAuthorize("hasAnyRole('ADMIN')")

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>hLivv</title>
+    <title>H.Livv Admin</title><link rel="icon" type="image/png" sizes="32x32" th:href="@{/backoffice/img/favicon-32x32.png}">
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -53,7 +53,7 @@
                                     <thead>
                                     <tr>
                                         <th>신청 고객 ID</th>
-                                        <th>신청 상품</th>
+                                        <th>신청 상품 ID</th>
                                         <th>진행 상태</th>
                                         <th>신청일</th>
                                         <th>회수요청일</th>
@@ -61,20 +61,30 @@
                                         <th>검수 등급</th>
                                         <th>검수 가격</th>
                                         <th>폐기 옵션</th>
-                                        <th>거부 사유</th>
-                                        <th>리스토어 관리</th>
+                                        <th>검수 결과 메세지</th>
+<!--                                        <th>리스토어 관리</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
-<!--                                    <tr th:each="member : ${members}">-->
-<!--                                        <td th:text="${member.name}">ID</td>-->
-<!--                                        <td th:text="${member.loginId}">Name</td>-->
-<!--                                        <td th:text="${member.email}">Description</td>-->
-<!--                                        <td th:text="${member.phone}">Description</td>-->
-<!--                                        <td th:text="${member.points}">Description</td>-->
-<!--                                        <td th:text="${member.signupDate}">Description</td>-->
-<!--                                        <td th:text="${member.interiorType}">Description</td>-->
-<!--                                    </tr>-->
+                                    <tr th:each="restore : ${restores}">
+                                        <td th:text="${restore.memberId}"></td>
+                                        <td th:text="${restore.productId}"></td>
+                                        <td th:text="${restore.restoreStatus}"></td>
+                                        <td th:text="${restore.regDate}"></td>
+                                        <td th:text="${restore.pickUpDate}"></td>
+                                        <td th:text="${restore.requestGrade}"></td>
+
+                                        <!-- inspectedGrade가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
+                                        <td th:if="${restore.inspectedGrade != null}" th:text="${restore.inspectedGrade}"></td>
+                                        <td th:if="${restore.inspectedGrade == null}">검수중</td>
+                                        <!-- payback가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
+                                        <td th:if="${restore.payback != null}" th:text="${restore.payback}"></td>
+                                        <td th:if="${restore.payback == null}">검수중</td>
+
+                                        <td th:text="${restore.whenRejected}"></td>
+                                        <td th:text="${restore.rejectMsg}"></td>
+<!--                                        <td th:text="${restore.inspectedGrade}"></td>-->
+                                    </tr>
 <!--                                    <tr>-->
 <!--                                        <td>Brielle Williamson</td>-->
 <!--                                        <td>Integration Specialist</td>-->

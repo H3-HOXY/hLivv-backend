@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragment</title>
+
+    <link th:href="@{/backoffice/css/backoffice.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/backoffice/css/modal.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/backoffice/js/login.js}"></script>
+    <script th:src="@{/backoffice/js/modal.js}"></script>
+</head>
+<body>
+<!-- Logout Modal-->
+    <div th:fragment="logoutModal" class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">로그아웃을 하실래요?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a id="logout" class="btn btn-primary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div th:fragment="userDetailModal" class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userDetailModalLabel">사용자 상세 정보</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div data-v-8b96a82e="" data-v-708ef468="" class="profile_group">
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">고객 ID</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+                                <p id="loginId" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""></p>
+                            </div>
+                        </div>
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">고객 이름</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+                                <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                                <p id="name" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> 이상원 </p>
+                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                            </div>
+                        </div>
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">HP</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+                                <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                                <p id="hp" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> r5f1oq </p>
+                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                            </div>
+                        </div>
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">Email</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+                                <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                                <p id="email" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> 이상원 </p>
+                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                            </div>
+                        </div>
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">가입일</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+<!--                                <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>-->
+                                <p id="signupDate" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> r5f1oq </p>
+<!--                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>-->
+<!--                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>-->
+<!--                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>-->
+                            </div>
+                        </div>
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">포인트</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+                                <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                                <p id="point" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> 이상원 </p>
+                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                            </div>
+                        </div>
+                        <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                            <h5 data-v-0c9f3f9e="" class="title">등급</h5>
+                            <div data-v-0c9f3f9e="" class="unit_content">
+                                <div id="grade" class="radio_buttons">
+                                    <input type="radio" id="flower" name="grade" value="FLOWER" disabled>
+                                    <label for="flower">FLOWER</label>
+                                    <input type="radio" id="tree" name="grade" value="TREE" disabled>
+                                    <label for="tree">TREE</label>
+                                    <input type="radio" id="forest" name="grade" value="FOREST" disabled>
+                                    <label for="forest">FOREST</label>
+                                </div>
+                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="updateMember" class="btn btn-primary">수정 반영</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div th:fragment="productDetailModal" class="modal fade" id="productDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productDetailModalLabel">상품 상세 정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div data-v-8b96a82e="" data-v-708ef468="" class="profile_group">
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">상품명</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                            <p id="productName" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""></p>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">상품 가격</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                            <p id="productPrice" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> 이상원 </p>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">현재 할인률</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                            <p id="discountPercent" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> r5f1oq </p>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">상품 타입</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <div id="productType" class="radio_buttons">
+                                <input type="radio" id="product" name="grade" value="PRODUCT" disabled>
+                                <label for="product">PRODUCT</label>
+                                <input type="radio" id="collabo" name="grade" value="COLLABO" disabled>
+                                <label for="collabo">COLLABO</label>
+                            </div>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">카테고리</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <!--                                <input data-v-5ee806c3="" type="text" placeholder="이름" autocomplete="off" maxlength="25" class="input_txt text_fill"/>-->
+                            <p id="category" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> r5f1oq </p>
+                            <!--                                <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>-->
+                            <!--                                <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>-->
+                            <!--                                <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>-->
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">재고</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <input data-v-5ee806c3="" type="text" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                            <p id="stockQuantity" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> </p>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">브랜드</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <input data-v-5ee806c3="" type="text" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                            <p id="productBrand" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> </p>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a id="updateProduct" class="btn btn-primary">수정 반영</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

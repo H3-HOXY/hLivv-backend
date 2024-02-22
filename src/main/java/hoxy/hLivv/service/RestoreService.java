@@ -1,5 +1,6 @@
 package hoxy.hLivv.service;
 
+import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.restore.RestoreDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Product;
@@ -17,6 +18,8 @@ import hoxy.hLivv.repository.RestoreRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +84,13 @@ public class RestoreService {
         }
 
         return restoreDtoList;
+    }
+
+    @Transactional
+    public List<RestoreDto> getAllRestores(int pageNo, int pageSize) {
+        pageSize = Math.min(pageSize, 100);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return restoreRepository.findAll(pageable).stream().map(RestoreDto::from).toList();
     }
 
     @Transactional
