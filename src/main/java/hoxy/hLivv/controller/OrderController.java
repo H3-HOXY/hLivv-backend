@@ -17,10 +17,9 @@ import java.io.IOException;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/order/payment/{orderId}/{impUid}")
+    @PutMapping("/order/payment/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> validatePayment(@PathVariable String orderId,@PathVariable String impUid) {
         try {
-            //OrderResDto orderResDto = orderService.paymentValidation(impUid);
             OrderResDto orderResDto=orderService.requestPayment(orderId,impUid);
             return ResponseEntity.ok(orderResDto);
         } catch (IamportResponseException | IOException e) {
@@ -30,12 +29,24 @@ public class OrderController {
 
     @PostMapping("/order")
     public ResponseEntity<OrderResDto> createOrder(@RequestBody OrderReqDto orderReqDto) {
-        OrderResDto orderResDto = orderService.testSaveOrder(orderReqDto);
+        OrderResDto orderResDto = orderService.saveOrder(orderReqDto);
         return ResponseEntity.ok(orderResDto);
     }
 
+    @PutMapping("/order/payment/cancel/{orderId}/{impUid}")
+    public ResponseEntity<OrderResDto> requestCancelPayment(@PathVariable String orderId,@PathVariable String impUid){
+        try {
+            OrderResDto orderResDto=orderService.requestCancelPayment(orderId,impUid);
+            return ResponseEntity.ok(orderResDto);
+        } catch (IamportResponseException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
-
-
+    @PutMapping("/order/payment/cancel/{orderId}")
+    public ResponseEntity<OrderResDto> requestCancelPaymentByOrder(@PathVariable String orderId){
+        OrderResDto orderResDto=orderService.requestCancelPaymentByOrder(orderId);
+        return ResponseEntity.ok(orderResDto);
+    }
 
 }

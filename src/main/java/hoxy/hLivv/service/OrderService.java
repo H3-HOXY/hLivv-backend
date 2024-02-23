@@ -34,7 +34,7 @@ public class OrderService {
 
 
     @Transactional
-    public OrderResDto testSaveOrder(OrderReqDto orderReqDto) {
+    public OrderResDto saveOrder(OrderReqDto orderReqDto) {
         // 1. DTO로부터 정보 추출
         Member member = getMember();
         Address address = getAddress(orderReqDto.getAddressId());
@@ -44,7 +44,7 @@ public class OrderService {
         List<Product> products = decreaseProductsStock(orderReqDto.getProductList());
 
         // 3. 주문 생성
-        Order order = testCreateOrder(orderReqDto, member, address, coupon, products);
+        Order order = createOrder(orderReqDto, member, address, coupon, products);
 
         // 4. 주문 저장
         orderRepository.save(order);
@@ -53,7 +53,7 @@ public class OrderService {
         return OrderResDto.from(order);
     }
     @Transactional
-    public Order testCreateOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon, List<Product> products) {
+    public Order createOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon, List<Product> products) {
         Order order = orderReqDto.testPrepareOrder(member, address, coupon);
 
         for (int i = 0; i < orderReqDto.getProductList().size(); i++) {
@@ -78,7 +78,7 @@ public class OrderService {
 
 
     @Transactional
-    public OrderResDto saveOrder(String impUid,OrderReqDto orderReqDto) {
+    public OrderResDto testSaveOrder(String impUid,OrderReqDto orderReqDto) {
         // 1. DTO로부터 정보 추출
         Member member = getMember();
         Address address = getAddress(orderReqDto.getAddressId());
@@ -88,7 +88,7 @@ public class OrderService {
         List<Product> products = decreaseProductsStock(orderReqDto.getProductList());
 
         // 3. 주문 생성
-        Order order = createOrder(orderReqDto, member, address, coupon, products,impUid);
+        Order order = testCreateOrder(orderReqDto, member, address, coupon, products,impUid);
 
         // 4. 주문 저장
         orderRepository.save(order);
@@ -103,12 +103,10 @@ public class OrderService {
         IamportResponse<Payment> response = getPaymentInfo(impUid);
         Long amount = response.getResponse().getAmount().longValue();
 
-        //imUid 말고 다른 걸로 조회해야 -> 다른 메서드 필요
         Order order=orderRepository.getById(Long.valueOf(orderId));
         OrderResDto orderResDto =OrderResDto.from(order);
 
         if(!amount.equals(orderResDto.getOrderCash()) ) {
-            cancelPayment(impUid);
             order.updatePaymentCancelStatus();
             throw new InvalidPaymentException("Payment validation failed");
         } else{
@@ -151,6 +149,25 @@ public class OrderService {
         CancelData cancelData = new CancelData(impUid,true);
         iamportClient.cancelPaymentByImpUid(cancelData);
     }
+
+    @Transactional
+    public OrderResDto requestCancelPayment(String orderId, String impUid) throws IamportResponseException, IOException {
+        Order order=orderRepository.getById(Long.valueOf(orderId));
+        OrderResDto orderResDto =OrderResDto.from(order);
+        order.updatePaymentCancelStatus();
+        CancelData cancelData = new CancelData(impUid,true);
+        iamportClient.cancelPaymentByImpUid(cancelData);
+        return orderResDto;
+    }
+
+    @Transactional
+    public OrderResDto requestCancelPaymentByOrder(String orderId){
+        Order order=orderRepository.getById(Long.valueOf(orderId));
+        OrderResDto orderResDto =OrderResDto.from(order);
+        order.updatePaymentCancelStatus();
+        return orderResDto;
+    }
+
 
 
     private Member getMember() {
@@ -199,7 +216,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Order createOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon, List<Product> products, String imUid) {
+    public Order testCreateOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon, List<Product> products, String imUid) {
         Order order = orderReqDto.prepareOrder(member, address, coupon,imUid);
 
         for (int i = 0; i < orderReqDto.getProductList().size(); i++) {
