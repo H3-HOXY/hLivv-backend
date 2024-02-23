@@ -85,6 +85,13 @@ public class RestoreService {
     }
 
     @Transactional
+    public List<RestoreDto> getAllRestores(int pageNo, int pageSize) {
+        pageSize = Math.min(pageSize, 100);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return restoreRepository.findAll(pageable).stream().map(RestoreDto::from).toList();
+    }
+
+    @Transactional
     public RestoreDto getRestore(Long restoreId) {
         Restore restore = restoreRepository.findById(restoreId).orElseThrow(() -> new NotFoundRestoreException("Re-store not found"));
         Member member =  SecurityUtil.getCurrentUsername()

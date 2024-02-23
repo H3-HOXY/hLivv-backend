@@ -128,4 +128,10 @@ public class BackofficeController {
         return "backoffice/products";
     }
 
+    @PostMapping("/updateMember")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @ResponseBody
+    public ResponseEntity<MemberDto> updateMember(@RequestBody MemberDto memberDto) {
+        return ResponseEntity.ok(MemberDto.from(memberService.updateMember(memberDto)));
+    }
 }
