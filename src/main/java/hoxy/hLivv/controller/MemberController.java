@@ -23,18 +23,6 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
 
-//    @GetMapping("/hello")
-//    public ResponseEntity<String> hello() {
-//        return ResponseEntity.ok("hello");
-//    }
-//
-//    @PostMapping("/test-redirect")
-//    public void testRedirect(HttpServletResponse response) throws IOException {
-//        response.sendRedirect("/api2/member");
-//    }
-
-
-
     @PostMapping("/signup")
     public ResponseEntity<MemberDto> signup(
             @Valid @RequestBody SignupDto signupDto
@@ -62,6 +50,10 @@ public class MemberController {
     public ResponseEntity<MemberDto> getUserInfo(@PathVariable String loginId) {
         return ResponseEntity.ok(memberService.getMemberWithAuthorities(loginId));
     }
+
+
+
+
 
     @GetMapping("/member/coupons")
     public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable) {
