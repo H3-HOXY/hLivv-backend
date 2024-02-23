@@ -17,10 +17,11 @@ import java.io.IOException;
 public class OrderController {
     private final OrderService orderService;
 
-    @PostMapping("/order/payment/{impUid}")
-    public ResponseEntity<OrderResDto> validatePayment(@PathVariable String impUid) {
+    @PostMapping("/order/payment/{orderId}/{impUid}")
+    public ResponseEntity<OrderResDto> validatePayment(@PathVariable String orderId,@PathVariable String impUid) {
         try {
-            OrderResDto orderResDto = orderService.paymentValidation(impUid);
+            //OrderResDto orderResDto = orderService.paymentValidation(impUid);
+            OrderResDto orderResDto=orderService.requestPayment(orderId,impUid);
             return ResponseEntity.ok(orderResDto);
         } catch (IamportResponseException | IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

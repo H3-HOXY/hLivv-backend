@@ -97,6 +97,26 @@ public class OrderService {
         return OrderResDto.from(order);
     }
 
+
+    @Transactional
+    public OrderResDto requestPayment(String orderId, String impUid) throws IamportResponseException, IOException {
+        IamportResponse<Payment> response = getPaymentInfo(impUid);
+        Long amount = response.getResponse().getAmount().longValue();
+
+        //imUid 말고 다른 걸로 조회해야 -> 다른 메서드 필요
+        Order order=orderRepository.getById(Long.valueOf(orderId));
+        OrderResDto orderResDto =OrderResDto.from(order);
+
+        if(!amount.equals(orderResDto.getOrderCash()) ) {
+            cancelPayment(impUid);
+            order.updatePaymentCancelStatus();
+            throw new InvalidPaymentException("Payment validation failed");
+        } else{
+            order.updatePaymentImUid(impUid);
+            order.updatePaymentCompleteStatus();
+        }
+        return orderResDto;
+    }
     @Transactional
     public OrderResDto paymentValidation(String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = getPaymentInfo(impUid);

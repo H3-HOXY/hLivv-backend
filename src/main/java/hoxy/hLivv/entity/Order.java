@@ -154,6 +154,10 @@ public class Order {
     public void updatePaymentCompleteStatus(){
         this.orderStatus= OrderStatus.주문접수;
     }
+
+    public void updatePaymentImUid(String impUid){
+        this.impUid=impUid;
+    }
     public void updatePaymentCancelStatus(){
         this.orderStatus= OrderStatus.결제실패;
     }
