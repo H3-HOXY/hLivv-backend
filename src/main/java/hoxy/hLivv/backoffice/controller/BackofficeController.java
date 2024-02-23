@@ -64,7 +64,6 @@ public class BackofficeController {
     @PostMapping("/login")
     public void authorize(@Valid @RequestBody LoginDto loginDto,
                           HttpServletResponse response) {
-
         log.info(loginDto.toString());
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getLoginPw());
@@ -80,10 +79,6 @@ public class BackofficeController {
         cookie.setMaxAge(24 * 60 * 60); // 쿠키 유효 시간 설정 (24시간)
         cookie.setPath("/");
         response.addCookie(cookie);
-
-
-        // 리다이렉트 또는 다른 방법으로 클라이언트에 응답
-//        return ResponseEntity.ok().headers(httpHeaders).body("backoffice/home");
     }
 
     @PostMapping("/logout")
@@ -119,12 +114,11 @@ public class BackofficeController {
         return "backoffice/request_auth";
     }
 
-
     @GetMapping("/restores")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    public String restores(Model model) {
-        model.addAttribute("restores",restoreService.getAllRestores(0,100));
-        return "backoffice/restores";
+    public String restores(Model model, @PageableDefault(size=50) Pageable pageable) {
+        model.addAttribute("restores",restoreService.getAllProductsWithPagination(pageable));
+        return "backoffice/restore";
     }
 
     @GetMapping("/products")

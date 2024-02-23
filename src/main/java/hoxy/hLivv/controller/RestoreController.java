@@ -3,6 +3,7 @@ package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.dto.restore.RestoreDto;
+import hoxy.hLivv.dto.restore.RestoreRegisterDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Restore;
 import hoxy.hLivv.service.RestoreService;
@@ -24,9 +25,9 @@ public class RestoreController {
     //리스토어 등록
     @PostMapping("/restore")
     public ResponseEntity<RestoreDto> restoreRegister(
-            @Valid @RequestBody RestoreDto restoreDto
+            @Valid @RequestBody RestoreRegisterDto restoreRegisterDto
     ) {
-        return ResponseEntity.ok(restoreService.restoreRegister(restoreDto));
+        return ResponseEntity.ok(restoreService.restoreRegister(restoreRegisterDto));
     }
 
     // 내가 신청한 리스토어들 불러오기

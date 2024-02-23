@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>H.Livv Admin</title>
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/backoffice/img/favicon-32x32.png}">
+    <!-- Bootstrap core JavaScript-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Bootstrap Bundle JS (Popper.js 포함) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link th:href="@{/backoffice/css/backoffice.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/backoffice/css/modal.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/backoffice/js/login.js}"></script>
+    <script th:src="@{/backoffice/js/modal.js}"></script>
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div th:replace="~{backoffice/fragments/fragment :: sidebar}"></div>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <div th:replace="~{backoffice/fragments/fragment :: header}"></div>
+
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">상품 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>신청 고객 ID</th>
+                                        <th>신청 상품 ID</th>
+                                        <th>진행 상태</th>
+                                        <th>신청일</th>
+                                        <th>회수요청일</th>
+                                        <th>요청 등급</th>
+                                        <th>검수 등급</th>
+                                        <th>검수 가격</th>
+                                        <th>폐기 옵션</th>
+                                        <th>사용자 리스토어 설명</th>
+                                        <th>검수 결과 메세지</th>
+                                        <!--                                        <th>리스토어 관리</th>-->
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="restore : ${restores}">
+                                        <td th:data-memberId="${restore.memberId}" class="modal-item restore-member-modal" data-toggle="modal" data-target="#userDetailModal" th:text="${restore.memberId}"></td>
+                                        <td th:data-productId="${restore.productId}" class="modal-item restore-product-modal" data-toggle="modal" data-target="#productDetailModal" th:text="${restore.productId}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.restoreStatus}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.regDate}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.pickUpDate}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.requestGrade}"></td>
+
+                                        <!-- inspectedGrade가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.inspectedGrade != null}" th:text="${restore.inspectedGrade}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.inspectedGrade == null}">검수중</td>
+                                        <!-- payback가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback != null}" th:text="${restore.payback}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback == null}">검수중</td>
+                                        <!-- whenRejected가 true면 폐기, false면 반송 표기 -->
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.whenRejected == true}">폐기</td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.whenRejected == false}">반송</td>
+                                        <!-- rejectMsg가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
+
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.restoreDesc}"></td>
+
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.rejectMsg != null}" th:text="${restore.rejectMsg}"></td>
+                                        <td th:data-id="${restore.restoreId}"
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.rejectMsg == null}">검수중</td>
+                                        <!--                                        <td th:text="${restore.inspectedGrade}"></td>-->
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="col-sm-12 col-md-7" style="text-align: center">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                                        <ul class="pagination">
+                                            <li th:class="|paginate_button page-item ${restores.first ? 'disabled' : ''}|">
+                                                <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link" th:href="@{/backoffice/restores(page=${restores.number - 1})}">Previous</a>
+                                            </li>
+                                            <li th:each="pageNum : ${#numbers.sequence(1, restores.totalPages)}" th:class="|paginate_button page-item ${pageNum  == restores.number + 1 ? 'active' : ''}|">
+                                                <a href="#" aria-controls="dataTable" th:data-dt-idx="${pageNum}" tabindex="0" class="page-link" th:text="${pageNum}" th:href="@{/backoffice/restores(page=${pageNum - 1})}"></a>
+                                            </li>
+                                            <li th:class="|paginate_button page-item ${restores.last ? 'disabled' : ''}|">
+                                                <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link" th:href="@{/backoffice/restores(page=${restores.number + 1})}">Next</a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <div th:replace="~{backoffice/fragments/fragment :: footer}"></div>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div th:replace="~{backoffice/fragments/modal :: logoutModal}"></div>
+    <div th:replace="~{backoffice/fragments/modal :: userDetailModal}"></div>
+    <div th:replace="~{backoffice/fragments/modal :: productDetailModal}"></div>
+    <div th:replace="~{backoffice/fragments/tables :: restoreDetailModal}"></div>
+
+    <link th:href="@{/backoffice/css/backoffice.css}" rel="stylesheet" type="text/css">
+    <!-- Page level plugins -->
+<!--    <script src="vendor/datatables/jquery.dataTables.min.js"></script>-->
+<!--    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>-->
+
+<!--    &lt;!&ndash; Page level custom scripts &ndash;&gt;-->
+<!--    <script src="js/demo/datatables-demo.js"></script>-->
+
+</body>
+
+</html>

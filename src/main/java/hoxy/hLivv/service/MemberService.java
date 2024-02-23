@@ -157,6 +157,12 @@ public class MemberService {
                 .orElseThrow(() -> new NotFoundMemberException("Member not found")));
     }
 
+    @Transactional(readOnly = true)
+    public MemberDto getMemberById(Long id) {
+        return MemberDto.from(memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundMemberException("Member not found")));
+    }
+
     public Page<MemberDto> getAllMembersWithPagination(Pageable pageable) {
         return memberRepository.findAll(pageable).map(MemberDto::from);
     }

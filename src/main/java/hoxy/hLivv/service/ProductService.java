@@ -10,6 +10,8 @@ import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.Review;
 import hoxy.hLivv.entity.ReviewImage;
+import hoxy.hLivv.exception.NotFoundMemberException;
+import hoxy.hLivv.exception.NotFoundProductException;
 import hoxy.hLivv.repository.MemberRepository;
 import hoxy.hLivv.repository.ProductRepository;
 import hoxy.hLivv.repository.ReviewRepository;
@@ -66,7 +68,18 @@ public class ProductService {
     public ProductDto updateProduct(Long productId, ProductDto productDto) {
         return null;
     }
+    @Transactional
+    public Product updateProduct(ProductDto productDto) {
+        Product product = productRepository.findById(productDto.getId())
+                .orElseThrow(() -> new NotFoundProductException("Product not found"));
 
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        product.setDiscountPercent(productDto.getDiscountPercent());
+        product.setStockQuantity(productDto.getStockQuantity());
+
+        return productRepository.save(product);
+    }
     // D
     @Transactional
     public void removeProduct() {
