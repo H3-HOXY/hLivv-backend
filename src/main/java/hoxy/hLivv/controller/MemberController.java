@@ -79,14 +79,14 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
-    @PostMapping("member/order")
+    @GetMapping("member/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<OrderResDto>> getOrders(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "orderDate"));
         return ResponseEntity.ok(memberService.getOrdersByMember(pageable));
     }
 
-    @GetMapping("member/cart/order")
+    @PostMapping("member/cart/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<List<CartDto>> getSelectedItems(@RequestBody List<Long> productIds) {
         return ResponseEntity.ok(memberService.getSelectedItems(productIds));

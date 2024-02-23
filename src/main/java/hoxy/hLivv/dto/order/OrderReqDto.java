@@ -28,7 +28,7 @@ public class OrderReqDto {
                 .address(address)
                 .requestMsg(this.requestMsg)
                 .orderPoint(this.orderPoint)
-                .orderStatus(OrderStatus.주문접수)
+                .orderStatus(OrderStatus.결제대기)
                 .orderCoupon(coupon)
                 .requestDate(this.requestDate)
                 .products(new ArrayList<OrderProduct>())
@@ -44,11 +44,11 @@ public class OrderReqDto {
                 .address(address)
                 .requestMsg(this.requestMsg)
                 .orderPoint(this.orderPoint)
-                .orderStatus(OrderStatus.주문접수)
+                .orderStatus(OrderStatus.결제대기)
                 .orderCoupon(coupon)
                 .requestDate(this.requestDate)
                 .products(new ArrayList<OrderProduct>())
-                .impUid(String.format("%-50s", UUID.randomUUID()).replace(' ', '*'))
+                //.impUid(String.format("%-50s", UUID.randomUUID()).replace(' ', '*'))
                 .build();
 
         return order;

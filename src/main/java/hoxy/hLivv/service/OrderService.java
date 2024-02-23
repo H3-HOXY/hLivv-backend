@@ -1,6 +1,5 @@
 package hoxy.hLivv.service;
 
-import com.google.gson.Gson;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
@@ -10,11 +9,7 @@ import hoxy.hLivv.dto.order.OrderProductReqDto;
 import hoxy.hLivv.dto.order.OrderReqDto;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.*;
-import hoxy.hLivv.entity.enums.DeliveryStatus;
-import hoxy.hLivv.exception.InvalidPaymentException;
-import hoxy.hLivv.exception.NotFoundCouponException;
-import hoxy.hLivv.exception.NotFoundMemberException;
-import hoxy.hLivv.exception.NotFoundProductException;
+import hoxy.hLivv.exception.*;
 import hoxy.hLivv.repository.*;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,14 +102,20 @@ public class OrderService {
         IamportResponse<Payment> response = getPaymentInfo(impUid);
         Long amount = response.getResponse().getAmount().longValue();
 
-        String customDataString = response.getResponse().getCustomData();
-        Gson gson = new Gson();
-        OrderReqDto orderReqDto = gson.fromJson(customDataString, OrderReqDto.class);
-        OrderResDto orderResDto=saveOrder(impUid,orderReqDto);
+        //String customDataString = response.getResponse().getCustomData();
+        //Gson gson = new Gson();
+        //OrderReqDto orderReqDto = gson.fromJson(customDataString, OrderReqDto.class);
+        //OrderResDto orderResDto=saveOrder(impUid,orderReqDto);
+        //imUid 말고 다른 걸로 조회해야 -> 다른 메서드 필요
+        Order order=getOrder(impUid);
+        OrderResDto orderResDto =OrderResDto.from(order);
 
         if(!amount.equals(orderResDto.getOrderCash()) ) {
             cancelPayment(impUid);
+            order.updatePaymentCancelStatus();
             throw new InvalidPaymentException("Payment validation failed");
+        } else{
+            order.updatePaymentCompleteStatus();
         }
         return orderResDto;
     }
@@ -156,6 +156,10 @@ public class OrderService {
         }
         return couponRepository.findById(couponId)
                 .orElseThrow(() -> new NotFoundCouponException("Coupon not found"));
+    }
+    private Order getOrder(String impUid) {
+        return orderRepository.findByImpUid(impUid)
+                .orElseThrow(() -> new NotFoundOrderException("Order not found"));
     }
 
 

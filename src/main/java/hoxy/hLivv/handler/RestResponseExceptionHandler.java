@@ -29,6 +29,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
             NotFoundCouponException.class,
             NotFoundProductException.class,
             NotFoundCartItemException.class,
+            NotFoundOrderException.class,
             AccessDeniedException.class})
     @ResponseBody
     protected ErrorDto forbidden(RuntimeException ex, WebRequest request) {

@@ -1,6 +1,5 @@
 package hoxy.hLivv.entity;
 
-import hoxy.hLivv.entity.enums.DeliveryStatus;
 import hoxy.hLivv.entity.enums.OrderStatus;
 import hoxy.hLivv.entity.enums.ProductType;
 import jakarta.persistence.*;
@@ -11,7 +10,6 @@ import org.springframework.data.util.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static hoxy.hLivv.entity.Delivery.prepareDelivery;
@@ -71,7 +69,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProduct> products;
 
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(length = 50, unique = true)
     private String impUid;
 
 
@@ -153,5 +151,10 @@ public class Order {
         this.orderStatus= OrderStatus.구매확정;
     }
 
-
+    public void updatePaymentCompleteStatus(){
+        this.orderStatus= OrderStatus.주문접수;
+    }
+    public void updatePaymentCancelStatus(){
+        this.orderStatus= OrderStatus.결제실패;
+    }
 }
