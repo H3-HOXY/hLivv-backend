@@ -31,6 +31,20 @@ $(document).ready(function() {
         $unitContent.find('.btn_save, .btn_cancel').hide();
         $unitContent.find('.btn_modify').show();
     });
+
+    $('.dropdown-item').click(function() {
+        // 클릭된 항목의 텍스트를 가져옴
+        var statusText = $(this).text();
+        // 클릭된 항목으로부터 가장 가까운 .unit_content 요소 내의 <p> 태그를 찾아 텍스트를 업데이트
+        $(this).closest('.unit_content').find('p.navbar-brand').text(statusText);
+    });
+    $('.inspected-grade-item').click(function() {
+        // 클릭된 항목의 텍스트를 가져옴
+        if (confirm("검수 등급이 변경되었습니다. 리-스토어의 진행상태를 검수완료로 바꾸시겠습니까?")) {
+            $('#restoreStatus').text("검수완료");
+            alert("수정 반영 버튼을 클릭하면 검수완료로 적용됩니다.");
+        }
+    });
 });
 
 $(document).ready(function() {
@@ -183,6 +197,7 @@ $(document).ready(function() {
         $('#productDetailModal').modal('show');
     });
 
+    var productName = null
     $('.restore-product-modal').on('click', function() {
         // 클릭된 행에서 데이터 속성 값 추출
         //
@@ -193,7 +208,9 @@ $(document).ready(function() {
             url: '/api/product/' + productId,
             success: function(response) {
                 id = productId
+                productName = response.name
                 var sellingPrice = response.price - response.price*(response.discountPercent/100)
+
                 $('#productDetailModal #productName').text(response.name);
                 $('#productDetailModal #productPrice').text(response.price);
                 $('#productDetailModal #discountPercent').text(response.discountPercent);
@@ -241,7 +258,6 @@ $(document).ready(function() {
         var stockQuantity = $('#productDetailModal #stockQuantity').text();
         var productBrand = $('#productDetailModal #productBrand').text();
         var productType = $('#productDetailModal .radio_buttons input[type="radio"]:checked').val();
-        // AJAX 요청을 통해 서버에 로그아웃을 알림 (옵션)
         $.ajax({
             type: 'POST',
             url: '/backoffice/api/updateProduct',
@@ -257,4 +273,116 @@ $(document).ready(function() {
             }
         });
     });
+    var originStatus = null
+    var restoreId = null
+    $('.restore-modal').on('click', function () {
+        // 클릭된 행에서 데이터 속성 값 추출
+        restoreId = $(this).attr('data-restoreId') || '0';
+        var productId = $(this).attr('data-productId') || '0';
+
+        $.ajax({
+            type: 'get',
+            url: '/backoffice/api/getRestore',
+            data: {
+                id: restoreId,
+            },
+            success: function (response) {
+                var $carouselInner = $('.restore-carousel-inner');
+                var $carouselIndicators = $('.restore-carousel-indicators');
+                $carouselInner.empty();
+                $carouselIndicators.empty();
+                response.restoreImageUrls.forEach(function (imageUrls, index) {
+                    var $img = $('<div class="carousel-item"><img src="' + imageUrls + '" class="d-block w-100"></div>');
+                    var $indicator = $('<li data-target="#imageCarousel" data-slide-to="' + index + '"></li>');
+
+                    if (index === 0) {
+                        $img.addClass('active');
+                        $indicator.addClass('active');
+                    }
+
+                    $carouselInner.append($img);
+                    $carouselIndicators.append($indicator);
+                });
+
+                var inspectedGrade = response.inspectedGrade || '검수전'
+                var payback = response.payback || '0'
+                originStatus = response.restoreStatus
+                $('#restoreDetailModal #memberId').text(response.memberId);
+                $('#restoreDetailModal #productId').text(response.productId);
+                $('#restoreDetailModal #restoreStatus').text(response.restoreStatus);
+                $('#restoreDetailModal #regDate').text(response.regDate);
+                $('#restoreDetailModal #pickupDate').text(response.pickUpDate);
+                $('#restoreDetailModal #requestGrade').text(response.requestGrade);
+                $('#restoreDetailModal #inspectedGrade').text(inspectedGrade);
+                $('#restoreDetailModal #restorePayback').text(payback);
+                $('#restoreDetailModal #desc').text(response.restoreDesc);
+                $('#restoreDetailModal #rejectedMsg').text(response.rejectMsg);
+                $('#restoreDetailModal .radio_buttons input[type="radio"]').prop('checked', false);
+                // 추출한 grade 값에 해당하는 라디오 버튼을 체크
+                $('#restoreDetailModal .radio_buttons input[type="radio"][value="' + response.whenRejected + '"]').prop('checked', true);
+
+            },
+            error: function () {
+                alert('get RestoreImageUrls failed');
+            }
+        });
+
+        $.ajax({
+            type: 'get',
+            url: '/api/product/' + productId,
+            success: function(response) {
+                $('#restoreDetailModal #productName').text(response.name);
+            },
+            error: function() {
+                alert('get product failed');
+            }
+        });
+        // 모달 표시
+        $('#restoreDetailModal').modal('show');
+    });
+
+    $('#updateRestore').on('click', function(e) {
+        e.preventDefault(); // 기본 앵커 동작 방지
+
+        // var
+
+
+        var inspectedGrade = $('#restoreDetailModal #inspectedGrade').text()[0];
+        if (inspectedGrade === "검") {
+            inspectedGrade = null
+        }
+        var requestGrade = $('#restoreDetailModal #requestGrade').text()[0];
+        var restoreStatus = $('#restoreDetailModal #restoreStatus').text();
+        var payback = $('#restoreDetailModal #restorePayback').text();
+        var rejectedMsg = $('#restoreDetailModal #rejectedMsg').text();
+        var whenRejected = $('#restoreDetailModal .radio_buttons input[type="radio"]:checked').val();
+        // AJAX 요청을 통해 서버에 로그아웃을 알림 (옵션)
+        $.ajax({
+            type: 'POST',
+            url: '/backoffice/api/updateRestore',
+            contentType: "application/json",
+            data: JSON.stringify({ restoreId: restoreId, restoreStatus: restoreStatus, inspectedGrade: inspectedGrade, requestGrade: requestGrade, payback: payback, rejectedMsg: rejectedMsg, whenRejected: whenRejected }), // 데이터를 JSON 문자열로 변환
+            // 성공적으로 로그아웃 처리 시 쿠키 삭제 및 페이지 이동
+            success: function(response) {
+                if (originStatus != "검수완료" && restoreStatus == "검수완료" ) {
+                    if (confirm("검수 완료 상태입니다. 고객에게 이메일을 보내시겠습니까?")) {
+                        //todo 이메일 보내는 창으로 이동
+                        // 리스토어 완료로 변경?
+                    } else{
+                        alert('수정이 완료되었습니다.');
+                    }
+                } else {
+                    alert('수정이 완료되었습니다.');
+                }
+
+
+                location.reload();
+            },
+            error: function() {
+                alert('Restore 업데이트에 실패했습니다.');
+            }
+        });
+    });
+
+
 });

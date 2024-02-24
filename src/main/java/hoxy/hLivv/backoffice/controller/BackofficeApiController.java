@@ -3,6 +3,8 @@ package hoxy.hLivv.backoffice.controller;
 import hoxy.hLivv.dto.MemberDto;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductImageDto;
+import hoxy.hLivv.dto.restore.RestoreDto;
+import hoxy.hLivv.dto.restore.RestoreImageDto;
 import hoxy.hLivv.jwt.TokenProvider;
 import hoxy.hLivv.service.MemberService;
 import hoxy.hLivv.service.ProductService;
@@ -55,5 +57,25 @@ public class BackofficeApiController {
     public ResponseEntity<MemberDto> getMemberById(@PathVariable Long id) {
         return ResponseEntity.ok(memberService.getMemberById(id));
     }
+
+    @GetMapping("/getRestore")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<RestoreDto> getRestoreById(@RequestParam Long id) {
+        return ResponseEntity.ok(restoreService.getRestore(id));
+    }
+
+    @GetMapping("/getRestoreImageUrls")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<List<String>> getRestoreImages(@RequestParam Long id) {
+        return ResponseEntity.ok(restoreService.getRestore(id).getRestoreImageUrls());
+    }
+
+
+    @PostMapping("/updateRestore")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<RestoreDto> updateRestore(@RequestBody RestoreDto restoreDto) {
+        return ResponseEntity.ok(restoreService.updateRestore(restoreDto));
+    }
+
 
 }
