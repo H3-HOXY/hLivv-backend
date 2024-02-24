@@ -46,7 +46,7 @@ public class CouponService {
     //C
     @Transactional
     public CouponDto saveCoupon(CouponDto couponDto) {
-        Coupon coupon = couponRepository.save(couponDto.toEntity());
+        Coupon coupon = couponRepository.save(couponDto.toCoupon());
         return CouponDto.from(coupon);
     }
 

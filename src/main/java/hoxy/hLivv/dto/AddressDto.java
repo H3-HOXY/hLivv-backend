@@ -1,5 +1,6 @@
 package hoxy.hLivv.dto;
 
+import hoxy.hLivv.entity.Address;
 import lombok.*;
 
 @Getter
@@ -14,6 +15,18 @@ public class AddressDto {
     private String telephoneNumber;
     private String mobilePhoneNumber;
     private String requestMsg;
-    private String defaultYn;
+    private boolean defaultYn;
+
+    public static AddressDto from(Address address){
+        return AddressDto.builder()
+                .streetAddress(address.getStreetAddress())
+                .detailedAddress(address.getDetailedAddress())
+                .zipCode(address.getZipCode())
+                .telephoneNumber(address.getTelephoneNumber())
+                .mobilePhoneNumber(address.getMobilePhoneNumber())
+                .requestMsg(address.getRequestMsg())
+                .defaultYn(address.isDefaultYn())
+                .build();
+    }
 
 }

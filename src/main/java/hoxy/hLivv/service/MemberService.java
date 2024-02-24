@@ -1,26 +1,29 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
+import hoxy.hLivv.entity.*;
+import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.entity.enums.MemberGrade;
 import hoxy.hLivv.exception.DuplicateMemberException;
 import hoxy.hLivv.exception.NotFoundMemberException;
-import hoxy.hLivv.repository.AuthorityRepository;
-import hoxy.hLivv.repository.CartRepository;
-import hoxy.hLivv.repository.MemberCouponRepository;
-import hoxy.hLivv.repository.MemberRepository;
+import hoxy.hLivv.repository.*;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberCouponRepository memberCouponRepository;
     private final CartRepository cartRepository;
+    private final OrderRepository orderRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -198,23 +202,6 @@ public class MemberService {
         );
     }
 
-    @Transactional(readOnly = true)
-    public Page<MemberCouponDto> getUnusedCoupons(Pageable pageable) {
-        Member member= SecurityUtil.getCurrentUsername()
-                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
-                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-        return memberCouponRepository.findByMemberAndIsUsedFalse(member, pageable)
-                .map(MemberCouponDto::from);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<CartDto> getCartsByMember(Pageable pageable) {
-        Member member= SecurityUtil.getCurrentUsername()
-                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
-                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
-        return cartRepository.findByMember(member, pageable)
-                .map(CartDto::from);
-    }
 
     @Transactional
     public Member updateMember(MemberDto memberDto) {
@@ -231,7 +218,47 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
+    public Page<MemberCouponDto> getUnusedCoupons(Pageable pageable) {
+        Member member= getMember();
+        return memberCouponRepository.findByMemberAndIsUsedFalseAndExpireDateAfter(member, LocalDate.now(), pageable)
+                .map(MemberCouponDto::from);
+    }
 
+    @Transactional(readOnly = true)
+    public Page<CartDto> getCartsByMember(Pageable pageable) {
+        Member member= getMember();
+        return cartRepository.findByMember(member, pageable)
+                .map(CartDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderResDto> getOrdersByMember(Pageable pageable) {
+        Member member= getMember();
+        return orderRepository.findByMember(member, pageable)
+                .map(OrderResDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CartDto> getSelectedItems(List<Long> productIds) {
+        Member member = getMember();
+        List<CartId> cartIds = productIds.stream()
+                .map(productId -> new CartId(member.getMemberId(), productId))
+                .collect(Collectors.toList());
+
+        List<Cart> carts = cartRepository.findByCartIdIn(cartIds);
+
+        return carts.stream()
+                .map(CartDto::from)
+                .collect(Collectors.toList());
+    }
+
+
+    private Member getMember() {
+        return SecurityUtil.getCurrentUsername()
+                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
+                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+    }
 
 //    @Transactional(readOnly = true)
 //    public List<MemberDto> getAllMembers() {
@@ -282,4 +309,5 @@ public class MemberService {
 //
 //        return response;
 //    }
+
 }

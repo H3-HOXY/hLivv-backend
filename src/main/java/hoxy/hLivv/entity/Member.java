@@ -2,6 +2,7 @@ package hoxy.hLivv.entity;
 
 import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.entity.enums.MemberGrade;
+import hoxy.hLivv.exception.InvalidPointException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -92,5 +93,20 @@ public class Member {
 
     public void removeCart(Cart cart) {
         this.carts.remove(cart);
+    }
+
+    public Long usePoints(Long pointsToUse) {
+        if (this.points!=0 && this.points < 100) {
+            throw new InvalidPointException("Minimum 100 points are required to use points.");
+        }
+        if (pointsToUse > this.points) {
+            pointsToUse = this.points;
+        }
+        this.points -= pointsToUse;
+        return pointsToUse;
+    }
+
+    public void increasePoints(Long amount) {
+        this.points += amount;
     }
 }

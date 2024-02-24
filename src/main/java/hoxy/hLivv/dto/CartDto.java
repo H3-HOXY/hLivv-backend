@@ -15,7 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartDto {
+    private Long productId;
     private String productName;
+    private Long unitPrice;
     private Long totalPrice;
     private Integer cartQty;
     private Integer stockQuantity;
@@ -40,7 +42,9 @@ public class CartDto {
             stock = product.getStockQuantity();
         }
         return CartDto.builder()
+                .productId(product.getId())
                 .productName(product.getName())
+                .unitPrice(price)
                 .totalPrice(price * cart.getCartQty())
                 .cartQty(cart.getCartQty())
                 .stockQuantity(stock)

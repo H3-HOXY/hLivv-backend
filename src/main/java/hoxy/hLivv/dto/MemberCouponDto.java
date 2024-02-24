@@ -5,7 +5,7 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @Getter
@@ -15,9 +15,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class MemberCouponDto {
     @Temporal(TemporalType.DATE)
-    private Date expireDate;
+    private LocalDate expireDate;
     private String couponDesc;
-    private Double discountRate;
+    private Integer discountRate;
     private boolean isUsed;
 
     public static MemberCouponDto from(MemberCoupon memberCoupon) {

@@ -1,15 +1,16 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -56,14 +57,31 @@ public class MemberController {
 
 
     @GetMapping("/member/coupons")
-    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@PageableDefault(size = 10, sort = "expireDate", direction = Sort.Direction.ASC) Pageable pageable) {
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Page<MemberCouponDto>> getUnusedCoupons(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "expireDate"));
         Page<MemberCouponDto> coupons = memberService.getUnusedCoupons(pageable);
         return ResponseEntity.ok(coupons);
     }
 
     @GetMapping("member/cart")
-    public ResponseEntity<Page<CartDto>> getCarts(@PageableDefault(size = 10, sort = {"lastModifiedDate", "createdDate"}, direction = Sort.Direction.DESC) Pageable pageable) {
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Page<CartDto>> getCarts(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "lastModifiedDate", "createdDate"));
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
+    }
+
+    @GetMapping("member/order")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Page<OrderResDto>> getOrders(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "orderDate"));
+        return ResponseEntity.ok(memberService.getOrdersByMember(pageable));
+    }
+
+    @PostMapping("member/cart/order")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<List<CartDto>> getSelectedItems(@RequestBody List<Long> productIds) {
+        return ResponseEntity.ok(memberService.getSelectedItems(productIds));
     }
 
     @PutMapping("/updateMember")
