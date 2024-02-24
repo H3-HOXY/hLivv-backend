@@ -2,6 +2,7 @@ package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.restore.RestoreDto;
+import hoxy.hLivv.dto.restore.RestoreRegisterDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.Restore;
@@ -18,6 +19,7 @@ import hoxy.hLivv.repository.RestoreRepository;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,33 +40,31 @@ public class RestoreService {
     private final ProductRepository productRepository;
     private final RestoreRepository restoreRepository;
     private final RestoreImageRepository restoreImageRepository;
-    @Transactional
-    public RestoreDto restoreRegister(RestoreDto restoreDto) {
 
-        Product product = productRepository.findById(restoreDto.getProductId())
+    @Transactional
+    public RestoreDto restoreRegister(RestoreRegisterDto restoreRegisterDto) {
+
+        Product product = productRepository.findById(restoreRegisterDto.getProductId())
                 .orElseThrow(() -> new NotFoundProductException("Product not found"));
 
         if (!product.isRestore()) {
             throw new NotFoundProductException("Re-store unavailable product");
         }
-
-
-
         Restore restore = Restore.builder()
                 .member(SecurityUtil.getCurrentUsername()
                         .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                         .orElseThrow(() -> new NotFoundMemberException("Member not found")))
                 .product(product)
                 .regDate(new Date())
-                .pickUpDate(restoreDto.getPickUpDate())
-                .requestGrade(restoreDto.getRequestGrade())
-                .restoreDesc(restoreDto.getRestoreDesc())
-                .requestMsg(restoreDto.getRequestMsg())
-                .whenRejected(restoreDto.getWhenRejected())
+                .pickUpDate(restoreRegisterDto.getPickUpDate())
+                .requestGrade(restoreRegisterDto.getRequestGrade())
+                .restoreDesc(restoreRegisterDto.getRestoreDesc())
+                .requestMsg(restoreRegisterDto.getRequestMsg())
+                .whenRejected(restoreRegisterDto.getWhenRejected())
                 .restoreStatus(RestoreStatus.접수완료)
                 .build();
 
-        restoreImageSetting(restoreDto, restore);
+        restoreImageSetting(restoreRegisterDto, restore);
 
         return RestoreDto.from(restoreRepository.save(restore));
     }
@@ -75,15 +75,13 @@ public class RestoreService {
         Member member =  SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+        return restoreRepository.findByMember(member).stream().map(RestoreDto::from).toList();
+    }
 
-        List<Restore> restoreList = restoreRepository.findByMember(member);
-        List<RestoreDto> restoreDtoList = new ArrayList<>();
-
-        for (Restore restore : restoreList) {
-            restoreDtoList.add(RestoreDto.from(restore));
-        }
-
-        return restoreDtoList;
+    @Transactional
+    public Page<RestoreDto> getAllProductsWithPagination(Pageable pageable) {
+        return restoreRepository.findAll(pageable).map(RestoreDto::from);
+//        return restoreRepository.findAll(pageable).stream().map(RestoreDto::from).toList();
     }
 
     @Transactional
@@ -99,6 +97,11 @@ public class RestoreService {
         Member member =  SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+
+        if (member.getAuthorities().stream().map(item -> item.getAuthority().getAuthorityName()).toList().contains("ROLE_ADMIN")) {
+            return RestoreDto.from(restore);
+        }
+
         if (restore.getMember() != member){
             throw new AccessDeniedMemberException("Re-store Access Denied");
         }
@@ -106,29 +109,35 @@ public class RestoreService {
     }
 
     @Transactional
-    public RestoreDto updateRestore(Long restoreId, RestoreDto restoreDto) {
-        Restore restore = restoreRepository.findById(restoreId).orElseThrow(() -> new NotFoundRestoreException("Re-store not found"));
+    public RestoreDto updateRestore(RestoreDto restoreDto) {
+        Restore restore = restoreRepository.findById(restoreDto.getRestoreId()).orElseThrow(() -> new NotFoundRestoreException("Re-store not found"));
 
         restore.setInspectedGrade(restoreDto.getInspectedGrade());
-        restore.setRestoreDesc(restoreDto.getRestoreDesc());
-        restore.setRequestMsg(restoreDto.getRequestMsg());
-        restore.setRejectMsg(restoreDto.getRejectMsg());
+        if (restoreDto.getRestoreDesc() != null) {
+            restore.setRestoreDesc(restoreDto.getRestoreDesc());
+        }
+        if (restoreDto.getRequestMsg() != null) {
+            restore.setRestoreDesc(restoreDto.getRequestMsg());
+        }
+        if (restoreDto.getRejectMsg() != null) {
+            restore.setRestoreDesc(restoreDto.getRejectMsg());
+        }
         restore.setPayback(restoreDto.getPayback());
         restore.setWhenRejected(restoreDto.getWhenRejected());
         restore.setRestoreStatus(restoreDto.getRestoreStatus());
 
         // restoreImages 업데이트
         List<String> newImageUrls = restoreDto.getRestoreImageUrls();
-        List<RestoreImage> existingImages = restore.getRestoreImages();
+        if (newImageUrls != null) {
+            List<RestoreImage> existingImages = restore.getRestoreImages();
 
-        // 기존 이미지 URL 목록
-        List<String> originImageUrls = existingImages.stream()
-                .map(RestoreImage::getRiUrl)
-                .toList();
+            // 기존 이미지 URL 목록
+            List<String> originImageUrls = existingImages.stream()
+                    .map(RestoreImage::getRiUrl)
+                    .toList();
 
-        if (!originImageUrls.equals(newImageUrls)) {
-            existingImages.clear();
-            if (newImageUrls != null) {
+            if (!originImageUrls.equals(newImageUrls)) {
+                existingImages.clear();
                 for (String imageUrl : newImageUrls) {
                     RestoreImage newImage = RestoreImage.builder()
                             .restore(restore)
@@ -138,13 +147,23 @@ public class RestoreService {
                 }
             }
         }
-
         return RestoreDto.from(restoreRepository.save(restore));
     }
 
     private static void restoreImageSetting(RestoreDto restoreDto, Restore restore) {
         List<RestoreImage> restoreImages = new ArrayList<>();
         for (String restoreImageUrl : restoreDto.getRestoreImageUrls()) {
+            RestoreImage restoreImage = RestoreImage.builder()
+                    .restore(restore)
+                    .riUrl(restoreImageUrl)
+                    .build();
+            restoreImages.add(restoreImage);
+        }
+        restore.setRestoreImages(restoreImages);
+    }
+    private static void restoreImageSetting(RestoreRegisterDto restoreRegisterDto, Restore restore) {
+        List<RestoreImage> restoreImages = new ArrayList<>();
+        for (String restoreImageUrl : restoreRegisterDto.getRestoreImageUrls()) {
             RestoreImage restoreImage = RestoreImage.builder()
                     .restore(restore)
                     .riUrl(restoreImageUrl)

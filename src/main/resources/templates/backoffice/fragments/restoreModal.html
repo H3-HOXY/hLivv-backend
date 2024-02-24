@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragment</title>
+
+    <link th:href="@{/backoffice/css/backoffice.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/backoffice/css/modal.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/backoffice/js/login.js}"></script>
+    <script th:src="@{/backoffice/js/modal.js}"></script>
+</head>
+<body>
+
+
+<div th:fragment="restoreDetailModal" class="modal fade" id="restoreDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restoreDetailModalLabel">리스토어 상세/관리</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div data-v-8b96a82e="" data-v-708ef468="" class="profile_group">
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <div class="text-center">
+                            <!--                            <img id="restoreImage" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="" alt="...">-->
+                            <div id="restoreImageCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- 인디케이터 -->
+                                <ol class="carousel-indicators restore-carousel-indicators">
+                                </ol>
+
+                                <!-- 이미지 래퍼 -->
+                                <div class="carousel-inner restore-carousel-inner">
+                                </div>
+
+                                <!-- 컨트롤 -->
+                                <a class="carousel-control-prev" href="#restoreImageCarousel" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#restoreImageCarousel" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">신청 고객 ID</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <p id="memberId" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""></p>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">신청 상품 ID</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <p id="productId" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e="">  </p>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">신청 상품명</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <p id="productName" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e="">  </p>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">진행 상태</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content dropdown_unit">
+                            <nav class="navbar navbar-expand navbar-light bg-light mb-4" style="width: 100%">
+                                <p id="restoreStatus" class="navbar-brand">진행 상태</p>
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            변경
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="#">접수완료</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">배송받는중</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">검수중</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">검수완료</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">반송중</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">리스토어완료</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">접수취소</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">폐기완료</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">폐기대기</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">반송완료</a>
+                                            <div class="dropdown-divider"></div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">신청일</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <p id="regDate" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> </p>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">상품 회수 요청일</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <p id="pickupDate" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> </p>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">요청 등급</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content dropdown_unit">
+                            <nav class="navbar navbar-expand navbar-light bg-light mb-4" style="width: 100%">
+                                <p id="requestGrade" class="navbar-brand">요청 등급</p>
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                            변경
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item" href="#">S | 구성품이 모두 있으며 흠집 없음</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">A | 약간의 흠집이 있지만 사용에 문제가 없으며, 구성품이 모두 있음</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">B | 눈에 띄는 흠집이 있으나 사용에 문제가 없음, 구성품이 모두 있음</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">C | 큰 흠집이 있거나 사용에 문제가 있거나 구성품이 모두 없는 경우</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">검수 등급</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content dropdown_unit">
+                            <nav class="navbar navbar-expand navbar-light bg-light mb-4" style="width: 100%">
+                                <p id="inspectedGrade" class="navbar-brand">검수 완료 후 변경해주세요.</p>
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            변경
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right animated--grow-in" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item inspected-grade-item" href="#">S | 구성품이 모두 있으며 흠집 없음</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item inspected-grade-item" href="#">A | 약간의 흠집이 있지만 사용에 문제가 없으며, 구성품이 모두 있음</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item inspected-grade-item" href="#">B | 눈에 띄는 흠집이 있으나 사용에 문제가 없음, 구성품이 모두 있음</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item inspected-grade-item" href="#">C | 큰 흠집이 있거나 사용에 문제가 있거나 구성품이 모두 없는 경우</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">최종 검수 가격</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <input data-v-5ee806c3="" type="text" autocomplete="off" maxlength="25" class="input_txt text_fill"/>
+                            <p id="restorePayback" data-v-24a03828="" data-v-6d416020="" class="desc desc_modify" data-v-0c9f3f9e=""> </p>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">폐기 옵션</h5>
+                        <div data-v-0c9f3f9e="" class="unit_content">
+                            <div id="whenRejected" class="radio_buttons">
+                                <input type="radio" id="dispose" name="grade" value="true" disabled>
+                                <label for="dispose">폐기</label>
+                                <input type="radio" id="return" name="grade" value="false" disabled>
+                                <label for="return">반송</label>
+                            </div>
+                            <button data-v-14ec1f2e="" data-v-6d416020="" type="button" class="btn btn_modify outlinegrey small" data-v-0c9f3f9e=""> 변경 </button>
+                            <button type="button" class="btn btn_save outlinegrey small" style="display: none">저장</button>
+                            <button type="button" class="btn btn_cancel outlinegrey small" style="display: none">취소</button>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">사용자 리스토어 설명</h5>
+                        <div id="" data-v-0c9f3f9e="" class="unit_content">
+                            <textarea id="desc" name="postContent" class="content-text" rows="10" cols="80" placeholder="" disabled></textarea>
+                        </div>
+                    </div>
+                    <div data-v-0c9f3f9e="" data-v-6d416020="" data-v-708ef468="" class="unit">
+                        <h5 data-v-0c9f3f9e="" class="title">검수 결과 메세지</h5>
+                        <div id="textarea_unit" data-v-0c9f3f9e="" class="unit_content">
+                            <textarea id="rejectedMsg" name="postContent" class="content-text" rows="10" cols="80" placeholder="내용을 입력하세요."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a id="updateRestore" class="btn btn-primary">수정 반영</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>
