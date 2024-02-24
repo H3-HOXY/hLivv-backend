@@ -29,6 +29,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
             NotFoundCouponException.class,
             NotFoundProductException.class,
             NotFoundCartItemException.class,
+            NotFoundOrderException.class,
             AccessDeniedException.class})
     @ResponseBody
     protected ErrorDto forbidden(RuntimeException ex, WebRequest request) {
@@ -41,5 +42,17 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     protected ErrorDto noContent(RuntimeException ex, WebRequest request) {
         return new ErrorDto(NO_CONTENT.value(), ex.getMessage());
     }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(value = {StockOverFlowException.class,
+            InvalidPaymentException.class,
+            InvalidPointException.class,
+            AlreadyUsedCouponException.class,
+            ExpiredCouponException.class})
+    @ResponseBody
+    protected ErrorDto badRequest(RuntimeException ex, WebRequest request) {
+        return new ErrorDto(BAD_REQUEST.value(), ex.getMessage());
+    }
+
 
 }

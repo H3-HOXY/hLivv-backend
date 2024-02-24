@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class CouponDto {
     private Integer couponDuration;
     private String couponDesc;
-    private Double discountRate;
+    private Integer discountRate;
 
     public static CouponDto from(Coupon coupon) {
         return CouponDto.builder()
@@ -24,10 +24,10 @@ public class CouponDto {
                 .build();
     }
 
-    public Coupon toEntity() {
+    public Coupon toCoupon() {
         return Coupon.builder()
-                .duration(this.getCouponDuration())
-                .desc(this.getCouponDesc())
+                .couponDuration(this.getCouponDuration())
+                .couponDesc(this.getCouponDesc())
                 .discountRate(this.getDiscountRate())
                 .build();
 

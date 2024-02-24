@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "cart")
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,13 +40,6 @@ public class Cart {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    @Builder
-    public Cart(Member member, Product product, Integer qty) {
-        this.cartId = new CartId(member.getMemberId(), product.getId());
-        this.member = member;
-        this.product = product;
-        this.cartQty = qty;
-    }
 
     public void updateQuantity(Integer qty) {
         this.cartQty = qty;

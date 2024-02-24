@@ -4,6 +4,7 @@ import hoxy.hLivv.entity.OrderProduct;
 import hoxy.hLivv.entity.enums.OrderStatus;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,6 @@ public class OrderDto {
     private Double orderPoint; // 포인트 결제액
     private OrderStatus orderStatus; // 주문 상태
     private Long orderCoupon; // 쿠폰 결제액
-    private Date requestDate; // 배송희망일
-    private List<OrderProduct> products;
+    private LocalDate requestDate; // 배송희망일
+    private List<OrderProduct> products; //주문상품목록
 }
