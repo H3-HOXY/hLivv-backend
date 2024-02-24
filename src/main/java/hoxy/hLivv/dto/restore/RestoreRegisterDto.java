@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RestoreRegisterDto {
+    @NotNull
     private Long productId;
     private Date pickUpDate;
     @NotNull

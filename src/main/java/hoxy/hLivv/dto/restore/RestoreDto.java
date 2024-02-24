@@ -22,7 +22,6 @@ public class RestoreDto {
     private Long productId;
     private Date regDate;
     private Date pickUpDate;
-    @NotNull
     private RestoreProductStatus requestGrade;
     private RestoreProductStatus inspectedGrade;
     private String restoreDesc;

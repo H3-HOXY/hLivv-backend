@@ -38,6 +38,12 @@
     justify-content: center;
     width: 100%;
 }
+#textarea_unit {
+     align-items: flex-end;
+     display: flex;
+     justify-content: flex-start;
+     width: 100%;
+ }
 
 .desc_modify[data-v-6d416020] {
     padding-right: 58px;

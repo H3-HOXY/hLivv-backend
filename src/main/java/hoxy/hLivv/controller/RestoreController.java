@@ -46,8 +46,8 @@ public class RestoreController {
 
     @PutMapping("/restore/{restoreId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<RestoreDto> getOneRestore(@PathVariable Long restoreId,@Valid @RequestBody RestoreDto restoreDto) {
-        return ResponseEntity.ok(restoreService.updateRestore(restoreId, restoreDto));
+    public ResponseEntity<RestoreDto> updateRestore(@Valid @RequestBody RestoreDto restoreDto) {
+        return ResponseEntity.ok(restoreService.updateRestore(restoreDto));
     }
 
 

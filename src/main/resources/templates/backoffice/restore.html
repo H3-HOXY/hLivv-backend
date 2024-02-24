@@ -10,11 +10,12 @@
     <title>H.Livv Admin</title>
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/backoffice/img/favicon-32x32.png}">
     <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Bootstrap Bundle JS (Popper.js 포함) -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery/jquery.min.js"></script>
+
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -28,7 +29,6 @@
     <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script th:src="@{/backoffice/js/login.js}"></script>
     <script th:src="@{/backoffice/js/modal.js}"></script>
     <!-- Custom styles for this template-->
@@ -82,38 +82,38 @@
                                     <tr th:each="restore : ${restores}">
                                         <td th:data-memberId="${restore.memberId}" class="modal-item restore-member-modal" data-toggle="modal" data-target="#userDetailModal" th:text="${restore.memberId}"></td>
                                         <td th:data-productId="${restore.productId}" class="modal-item restore-product-modal" data-toggle="modal" data-target="#productDetailModal" th:text="${restore.productId}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.restoreStatus}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.regDate}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.pickUpDate}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.requestGrade}"></td>
 
                                         <!-- inspectedGrade가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.inspectedGrade != null}" th:text="${restore.inspectedGrade}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.inspectedGrade == null}">검수중</td>
                                         <!-- payback가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback != null}" th:text="${restore.payback}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback == null}">검수중</td>
                                         <!-- whenRejected가 true면 폐기, false면 반송 표기 -->
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.whenRejected == true}">폐기</td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.whenRejected == false}">반송</td>
                                         <!-- rejectMsg가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
 
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:text="${restore.restoreDesc}"></td>
 
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.rejectMsg != null}" th:text="${restore.rejectMsg}"></td>
-                                        <td th:data-id="${restore.restoreId}"
+                                        <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.rejectMsg == null}">검수중</td>
                                         <!--                                        <td th:text="${restore.inspectedGrade}"></td>-->
                                     </tr>
@@ -166,7 +166,7 @@
     <div th:replace="~{backoffice/fragments/modal :: logoutModal}"></div>
     <div th:replace="~{backoffice/fragments/modal :: userDetailModal}"></div>
     <div th:replace="~{backoffice/fragments/modal :: productDetailModal}"></div>
-    <div th:replace="~{backoffice/fragments/tables :: restoreDetailModal}"></div>
+    <div th:replace="~{backoffice/fragments/restoreModal :: restoreDetailModal}"></div>
 
     <link th:href="@{/backoffice/css/backoffice.css}" rel="stylesheet" type="text/css">
     <!-- Page level plugins -->

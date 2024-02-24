@@ -44,3 +44,16 @@
     height: 500px; /* 고정된 높이 설정, 필요에 따라 조절 */
     background-color: #ffffff; /* 이미지 주변의 여백 색상 설정, 필요에 따라 조절 */
 }
+
+.dropdown_unit {
+    justify-content: flex-start;
+}
+
+.content-text{
+    border: 1px solid #ebebeb;
+    font-size: 15px;
+    line-height: 22px;
+    width: 100%;
+    resize: none;
+
+}
