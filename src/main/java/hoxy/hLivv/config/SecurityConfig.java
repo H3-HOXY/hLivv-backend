@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             )
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers("/api/hello", "/api/login", "/api/signup"
+                .requestMatchers("/api/hello", "/api/login", "/api/signup", "/api/messageTransfer"
                         ,"/backoffice/login","/backoffice/logout","/backoffice/register","/backoffice/signup","/backoffice/css/**","/backoffice/img/**","/backoffice/js/**","/backoffice/scss/**","/backoffice/vendor/**"
                         ,"/swagger-ui/**","/api-docs/**","/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
