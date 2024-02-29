@@ -3,8 +3,10 @@ package hoxy.hLivv.controller;
 import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.service.CategoryService;
+import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/category")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(categoryService.addCategory(categoryDto));
     }

@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@PropertySource("classpath:message-transfer.properties")
 public class MessageTransferService {
     @Value("${message.url}")
     private String url;

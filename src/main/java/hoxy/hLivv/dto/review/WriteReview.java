@@ -2,6 +2,7 @@ package hoxy.hLivv.dto.review;
 
 import hoxy.hLivv.entity.Review;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
