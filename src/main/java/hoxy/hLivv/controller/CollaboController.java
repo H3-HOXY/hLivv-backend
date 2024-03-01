@@ -2,6 +2,7 @@ package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.product.CollaboDto;
 import hoxy.hLivv.service.CollaboService;
+import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +22,14 @@ public class CollaboController {
     }
 
     @GetMapping("/collabo/{productId}")
+    @PermitAll
     public ResponseEntity<CollaboDto> getCollaboProduct(@PathVariable Long productId) {
         var product = collaboService.getCollaboProductWith(productId);
         return ResponseEntity.ok(product);
     }
 
     @GetMapping("/collabo")
+    @PermitAll
     public ResponseEntity<List<CollaboDto>> getCollaboProducts() {
         return ResponseEntity.ok(collaboService.getAllCollaboProduct());
     }
