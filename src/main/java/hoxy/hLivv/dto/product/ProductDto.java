@@ -3,6 +3,7 @@ package hoxy.hLivv.dto.product;
 import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.ProductImage;
+import hoxy.hLivv.entity.ProductOption;
 import hoxy.hLivv.entity.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,7 @@ public class ProductDto {
     protected String productBrand;
     protected CategoryDto category;
     List<ProductImageDto> productImages = new ArrayList<>();
+    List<ProductOptionDto> productOptions = new ArrayList<>();
 
     public Product toEntity() {
         var product = Product.builder()
@@ -55,11 +57,12 @@ public class ProductDto {
                              .productBrand(productBrand)
                              .build();
 
-        product.setProductImages(
-                productImages.stream()
-                             .map(item -> new ProductImage(product, item.getImageUrl()))
-                             .toList()
-        );
+        product.setProductImages(productImages.stream()
+                                              .map(item -> new ProductImage(product, item.getImageUrl()))
+                                              .toList());
+        product.setProductOptions(productOptions.stream()
+                                                .map(item -> new ProductOption(null, product, item.getOriginalPrice(), item.getDiscountPrice(), item.getOptionName()))
+                                                .toList());
         return product;
     }
 
@@ -73,9 +76,13 @@ public class ProductDto {
                          .category(CategoryDto.from(product.getCategory()))
                          .stockQuantity(product.getStockQuantity())
                          .productImages(product.getProductImages()
-                                               .stream().
-                                               map(ProductImage::toDto)
+                                               .stream()
+                                               .map(ProductImage::toDto)
                                                .toList())
+                         .productOptions(product.getProductOptions()
+                                                .stream()
+                                                .map(ProductOptionDto::from)
+                                                .toList())
                          .discountPercent(product.getDiscountPercent())
                          .isArSupported(product.isArSupported())
                          .isQrSupported(product.isQrSupported())

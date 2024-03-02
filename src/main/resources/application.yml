@@ -1,13 +1,13 @@
 spring:
-  #  datasource:
-  #    url: jdbc:oracle:thin:@localhost:1521/xepdb1
-  #    username: hoxy
-  #    password: hoxy
+#  datasource:
+#      url: jdbc:oracle:thin:@sophons.iptime.org:1521:xe
+#      username: sangwon
+#      password: sangwon
   profiles:
     active: pay
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
     properties:
       hibernate:

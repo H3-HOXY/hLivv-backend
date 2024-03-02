@@ -28,7 +28,7 @@ public class ProductController {
 
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "성공", content = {@Content(schema = @Schema(implementation = ProductDto.class))})})
     @PostMapping("/product")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
         var savedProduct = productService.saveProduct(productDto);
         return ResponseEntity.ok(savedProduct);

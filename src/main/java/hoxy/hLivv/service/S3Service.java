@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,7 +22,7 @@ import java.util.UUID;
 public class S3Service {
     private final S3Template s3Template;
 
-    private final String bucketName = "hlivv-s3-bucket";
+    private final String imageBucketName = "hlivv-image-bucket";
 
     @Value("${cloud.aws.region.static}")
     private String region;
@@ -50,9 +49,9 @@ public class S3Service {
             var uuid = UUID.randomUUID()
                            .toString();
 
-            var result = s3Template.upload(bucketName, imagePath + "/" + uuid + fileName, imageFile.getInputStream(), ObjectMetadata.builder()
-                                                                                                                                    .contentType(imageFile.getContentType())
-                                                                                                                                    .build());
+            var result = s3Template.upload(imageBucketName, imagePath + "/" + uuid + fileName, imageFile.getInputStream(), ObjectMetadata.builder()
+                                                                                                                                         .contentType(imageFile.getContentType())
+                                                                                                                                         .build());
 
             if (!result.exists()) {
                 throw new S3FileUploadException("File upload failed");
@@ -76,7 +75,7 @@ public class S3Service {
                                      .append("/")
                                      .append(splitted[splitted.length - 1])
                                      .toString();
-        s3Template.deleteObject(bucketName, key);
+        s3Template.deleteObject(imageBucketName, key);
 
     }
 
@@ -95,6 +94,7 @@ public class S3Service {
         public String toString() {
             return path;
         }
+
     }
 
     /**

@@ -36,13 +36,22 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
+    private final CategoryService categoryService;
 
     private final S3Service s3Service;
 
     // C
     @Transactional
     public ProductDto saveProduct(ProductDto productDto) {
-        return ProductDto.from(productRepository.save(productDto.toEntity()));
+        String categoryId = productDto.getCategory()
+                                      .getId();
+        try {
+            if (categoryId == null) throw new RuntimeException("카테고리를 찾을 수 없습니다.");
+            categoryService.getCategory(categoryId);
+            return ProductDto.from(productRepository.save(productDto.toEntity()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

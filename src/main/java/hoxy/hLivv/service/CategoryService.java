@@ -40,4 +40,9 @@ public class CategoryService {
                                 .map(ProductDto::from)
                                 .toList();
     }
+
+    public Category getCategory(String categoryId) throws Exception {
+        return categoryRepository.findById(categoryId)
+                                 .orElseThrow(Exception::new);
+    }
 }
