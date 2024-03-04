@@ -1,0 +1,87 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5
+      - name: Build with Gradle Wrapper
+        run: |
+          chmod u+x gradlew
+          ./gradlew clean 
+          ./gradlew build -x test
+      - name: Find jar file
+        id: findjar
+        run: |
+          JAR_FILE=$(find build/libs -name "*.jar" | head -n 1)
+          echo "::set-output name=jarfile::${JAR_FILE}"
+          echo "Found jar file: $JAR_FILE"
+      - name: Upload jar file as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: built-jar
+          path: ${{ steps.findjar.outputs.jarfile }}
+
+  docker-build-and-push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download built jar file
+        uses: actions/download-artifact@v2
+        with:
+          name: built-jar
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push Docker image to ECR
+        run: |
+          JAR_FILE=$(ls *.jar)
+          docker build --build-arg JAR_FILE=${JAR_FILE} -t hlivv_backend .
+          docker tag hlivv_backend:latest ${{ secrets.AWS_ECR_REPOSITORY_URL }}:latest
+          docker push ${{ secrets.AWS_ECR_REPOSITORY_URL }}:latest
+  remote-execution:
+    needs: docker-build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Execute script on EC2 instance
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_ADDR }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            ssh backend 'bash /home/ec2-user/run.sh'&
