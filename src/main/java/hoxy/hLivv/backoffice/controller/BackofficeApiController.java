@@ -8,6 +8,9 @@ import hoxy.hLivv.jwt.TokenProvider;
 import hoxy.hLivv.service.MemberService;
 import hoxy.hLivv.service.ProductService;
 import hoxy.hLivv.service.RestoreService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import java.util.List;
 @RequestMapping("/backoffice/api")
 @Slf4j
 @RequiredArgsConstructor
+@Tag(name = "백오피스 API", description = "백오피스 구현에 필요한 API 목록")
 public class BackofficeApiController {
 
     private final TokenProvider tokenProvider;
@@ -30,37 +34,45 @@ public class BackofficeApiController {
     private final RestoreService restoreService;
     private final ProductService productService;
 
+
+    @Operation(summary = "회원 정보 업데이트", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/updateMember")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<MemberDto> updateMember(@RequestBody MemberDto memberDto) {
         return ResponseEntity.ok(MemberDto.from(memberService.updateMember(memberDto)));
     }
 
-
+    @Operation(summary = "상품 정보 업데이트", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/updateProduct")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto) {
         return ResponseEntity.ok(ProductDto.from(productService.updateProduct(productDto)));
     }
 
+    @Operation(summary = "상품 이미지 URL 가져오기", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/getProductImageUrls")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<List<ProductImageDto>> getProductImages(@RequestParam Long id) {
         return ResponseEntity.ok(productService.getProductWith(id).getProductImages());
     }
 
+
+    @Operation(summary = "memberId로 멤버 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/member/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<MemberDto> getMemberById(@PathVariable Long id) {
         return ResponseEntity.ok(memberService.getMemberById(id));
     }
 
+
+    @Operation(summary = "restoreId로 리스토어 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/getRestore")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<RestoreDto> getRestoreById(@RequestParam Long id) {
         return ResponseEntity.ok(restoreService.getRestore(id));
     }
 
+    @Operation(summary = "restoreId로 리스토어 이미지 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/getRestoreImageUrls")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<List<String>> getRestoreImages(@RequestParam Long id) {
@@ -68,12 +80,14 @@ public class BackofficeApiController {
     }
 
 
+    @Operation(summary = "리스토어 정보 수정", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/updateRestore")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<RestoreDto> updateRestore(@RequestBody RestoreDto restoreDto) {
         return ResponseEntity.ok(restoreService.updateRestore(restoreDto));
     }
 
+    @Operation(summary = "검수완료 된 모든 리스토어 완료 처리, 멤버에게 포인트 지급", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/restore/rewarded")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<String> restoreRewarded() {
@@ -81,6 +95,8 @@ public class BackofficeApiController {
         return ResponseEntity.ok("리스토어 완료, 포인트 지급 완료.");
     }
 
+
+    @Operation(summary = "restoreId로 리스토어 완료 처리, 멤버에게 포인트 지급", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/restore/rewarded/{restoreId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<String> restoreRewarded(@PathVariable Long restoreId) {
