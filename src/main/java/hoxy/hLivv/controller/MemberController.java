@@ -71,6 +71,12 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
+    @GetMapping("member/cart/all")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<List<CartDto>> getAllCarts() {
+        return ResponseEntity.ok(memberService.getAllCartsByMember());
+    }
+
     @GetMapping("member/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<OrderResDto>> getOrders(@RequestParam("page") int pageNo, @RequestParam("pageSize") int pageSize) {

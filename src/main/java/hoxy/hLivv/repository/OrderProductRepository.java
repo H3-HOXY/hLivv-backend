@@ -12,4 +12,6 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Long
 
     @Query("SELECT op FROM OrderProduct op WHERE op.delivery.deliveryStatus = :status")
     List<OrderProduct> findAllByDeliveryStatus(@Param("status") DeliveryStatus status);
+
+    List<OrderProduct> findOrderProductByOrderOrderId(Long orderId);
 }

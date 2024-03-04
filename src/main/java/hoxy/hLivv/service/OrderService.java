@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final CouponRepository couponRepository;
@@ -167,8 +168,6 @@ public class OrderService {
         order.updatePaymentCancelStatus();
         return orderResDto;
     }
-
-
 
     private Member getMember() {
         return SecurityUtil.getCurrentUsername()

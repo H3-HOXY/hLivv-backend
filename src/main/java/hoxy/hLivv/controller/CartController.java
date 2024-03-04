@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
@@ -35,6 +37,15 @@ public class CartController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Void> deleteFromCart(@PathVariable Long productId) {
         cartService.deleteFromCart(productId);
+        return ResponseEntity.noContent().build();
+    }
+
+
+     //장바구니 상품 목록 삭제
+    @DeleteMapping("/cart")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<Void> deleteListFromCart(@RequestBody List<Long> productIds) {
+        cartService.deleteListFromCart(productIds);
         return ResponseEntity.noContent().build();
     }
 }

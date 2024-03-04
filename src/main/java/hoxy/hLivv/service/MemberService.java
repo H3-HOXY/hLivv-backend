@@ -233,6 +233,16 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
+    public List<CartDto> getAllCartsByMember() {
+        Member member = getMember();
+        return cartRepository.findByMemberAll(member)
+                .stream()
+                .map(CartDto::from)
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional(readOnly = true)
     public Page<OrderResDto> getOrdersByMember(Pageable pageable) {
         Member member= getMember();
         return orderRepository.findByMember(member, pageable)

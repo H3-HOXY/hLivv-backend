@@ -17,6 +17,8 @@ import java.io.IOException;
 public class OrderController {
     private final OrderService orderService;
 
+
+    // 결제 검증
     @PutMapping("/order/payment/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> validatePayment(@PathVariable String orderId,@PathVariable String impUid) {
         try {
@@ -27,12 +29,14 @@ public class OrderController {
         }
     }
 
+    // 주문 생성
     @PostMapping("/order")
     public ResponseEntity<OrderResDto> createOrder(@RequestBody OrderReqDto orderReqDto) {
         OrderResDto orderResDto = orderService.saveOrder(orderReqDto);
         return ResponseEntity.ok(orderResDto);
     }
 
+    //결제 id로 결제 취소
     @PutMapping("/order/payment/cancel/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> requestCancelPayment(@PathVariable String orderId,@PathVariable String impUid){
         try {
@@ -43,10 +47,12 @@ public class OrderController {
         }
     }
 
+    //주문 id로 결제 취소
     @PutMapping("/order/payment/cancel/{orderId}")
     public ResponseEntity<OrderResDto> requestCancelPaymentByOrder(@PathVariable String orderId){
         OrderResDto orderResDto=orderService.requestCancelPaymentByOrder(orderId);
         return ResponseEntity.ok(orderResDto);
     }
+
 
 }
