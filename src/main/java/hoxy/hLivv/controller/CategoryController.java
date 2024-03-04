@@ -3,6 +3,9 @@ package hoxy.hLivv.controller;
 import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,20 +17,24 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api")
 @AllArgsConstructor
+@Tag(name = "카테고리 API", description = "카테고리 관련 API 목록")
 public class CategoryController {
     private final CategoryService categoryService;
 
+    @Operation(summary = "카테고리 항목 추가", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/category")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(categoryService.addCategory(categoryDto));
     }
 
+    @Operation(summary = "모든 카테고리 조회")
     @GetMapping("/category")
     public ResponseEntity<List<CategoryDto>> getCategories() {
         return ResponseEntity.ok(categoryService.getCategories());
     }
 
+    @Operation(summary = "categoryId로 카테고리 조회")
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ProductDto>> getProductsWithCategory(@PathVariable("categoryId") String categoryId
             , @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo
