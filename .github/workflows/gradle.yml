@@ -84,4 +84,4 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ssh backend 'bash /home/ec2-user/run.sh'&
+            ssh backend 'bash /home/ec2-user/run.sh&'
