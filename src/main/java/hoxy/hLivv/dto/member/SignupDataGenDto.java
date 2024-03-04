@@ -1,10 +1,9 @@
-package hoxy.hLivv.dto;
+package hoxy.hLivv.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hoxy.hLivv.entity.Member;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Date;

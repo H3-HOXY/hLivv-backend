@@ -3,6 +3,7 @@ package hoxy.hLivv.service;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.restore.RestoreDto;
 import hoxy.hLivv.dto.restore.RestoreRegisterDto;
+import hoxy.hLivv.dto.restore.RestoreStatusDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.Restore;
@@ -17,6 +18,9 @@ import hoxy.hLivv.repository.ProductRepository;
 import hoxy.hLivv.repository.RestoreImageRepository;
 import hoxy.hLivv.repository.RestoreRepository;
 import hoxy.hLivv.util.SecurityUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -40,6 +44,8 @@ public class RestoreService {
     private final ProductRepository productRepository;
     private final RestoreRepository restoreRepository;
     private final RestoreImageRepository restoreImageRepository;
+    @PersistenceContext
+    private final EntityManager em;
 
     @Transactional
     public RestoreDto restoreRegister(RestoreRegisterDto restoreRegisterDto) {
@@ -59,7 +65,7 @@ public class RestoreService {
                 .pickUpDate(restoreRegisterDto.getPickUpDate())
                 .requestGrade(restoreRegisterDto.getRequestGrade())
                 .restoreDesc(restoreRegisterDto.getRestoreDesc())
-                .requestMsg(restoreRegisterDto.getRequestMsg())
+                .rewarded(false)
                 .whenRejected(restoreRegisterDto.getWhenRejected())
                 .restoreStatus(RestoreStatus.접수완료)
                 .build();
@@ -75,6 +81,12 @@ public class RestoreService {
         Member member =  SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+        return restoreRepository.findByMember(member).stream().map(RestoreDto::from).toList();
+    }
+
+    @Transactional
+    public List<RestoreDto> getRestores(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NotFoundMemberException("Member not found"));
         return restoreRepository.findByMember(member).stream().map(RestoreDto::from).toList();
     }
 
@@ -108,19 +120,39 @@ public class RestoreService {
         return RestoreDto.from(restore);
     }
 
+
     @Transactional
     public RestoreDto updateRestore(RestoreDto restoreDto) {
         Restore restore = restoreRepository.findById(restoreDto.getRestoreId()).orElseThrow(() -> new NotFoundRestoreException("Re-store not found"));
 
+        updateRestoreFromDto(restoreDto, restore);
+        return RestoreDto.from(restoreRepository.save(restore));
+    }
+
+    @Transactional
+    public RestoreDto updateRestore(Long restoreId,RestoreDto restoreDto) {
+        Restore restore = restoreRepository.findById(restoreId).orElseThrow(() -> new NotFoundRestoreException("Re-store not found"));
+        updateRestoreFromDto(restoreDto, restore);
+        return RestoreDto.from(restoreRepository.save(restore));
+    }
+
+    @Transactional
+    public RestoreDto updateRestoreRewarded(Long restoreId,Boolean rewarded) {
+        Restore restore = restoreRepository.findById(restoreId).orElseThrow(() -> new NotFoundRestoreException("Re-store not found"));
+        restore.setRewarded(rewarded);
+        return RestoreDto.from(restoreRepository.save(restore));
+    }
+
+    private static void updateRestoreFromDto(RestoreDto restoreDto, Restore restore) {
         restore.setInspectedGrade(restoreDto.getInspectedGrade());
         if (restoreDto.getRestoreDesc() != null) {
             restore.setRestoreDesc(restoreDto.getRestoreDesc());
         }
-        if (restoreDto.getRequestMsg() != null) {
-            restore.setRestoreDesc(restoreDto.getRequestMsg());
+        if (restoreDto.getRewarded() != null) {
+            restore.setRewarded(restoreDto.getRewarded());
         }
         if (restoreDto.getRejectMsg() != null) {
-            restore.setRestoreDesc(restoreDto.getRejectMsg());
+            restore.setRejectMsg(restoreDto.getRejectMsg());
         }
         restore.setPayback(restoreDto.getPayback());
         restore.setWhenRejected(restoreDto.getWhenRejected());
@@ -147,7 +179,6 @@ public class RestoreService {
                 }
             }
         }
-        return RestoreDto.from(restoreRepository.save(restore));
     }
 
     private static void restoreImageSetting(RestoreDto restoreDto, Restore restore) {
@@ -171,5 +202,27 @@ public class RestoreService {
             restoreImages.add(restoreImage);
         }
         restore.setRestoreImages(restoreImages);
+    }
+
+    @Transactional
+    public void callUpdateRestoreCompleteAndPointsProcedure() {
+        StoredProcedureQuery query = em.createNamedStoredProcedureQuery("UpdateRestoreCompleteAndPoints");
+        query.execute();
+    }
+    @Transactional
+    public void callUpdateRestoreCompleteAndPointsProcedure(Long restoreId) {
+        StoredProcedureQuery query = em.createNamedStoredProcedureQuery("UpdateRestoreCompleteAndPointsByRestoreId");
+        query.setParameter("p_restore_id", restoreId);
+        query.execute();
+    }
+
+    @Transactional
+    public Integer getRestoreByRestoreStatus(RestoreStatus restoreStatus) {
+        return restoreRepository.findByRestoreStatus(restoreStatus).size();
+    }
+
+    @Transactional
+    public List<RestoreStatusDto> getRestoreStatus() {
+        return restoreRepository.findRestoreGroupByRestoreStatus();
     }
 }

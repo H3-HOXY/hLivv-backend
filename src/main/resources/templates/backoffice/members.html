@@ -75,12 +75,12 @@
                                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                             <span th:text="${member.name}"></span>
                                         </td>
-                                        <td th:text="${member.loginId}">Name</td>
-                                        <td th:text="${member.email}">Description</td>
-                                        <td th:text="${member.phone}">Description</td>
-                                        <td th:text="${member.points}">Description</td>
-                                        <td th:text="${member.signupDate}">Description</td>
-                                        <td th:text="${member.grade}">Description</td>
+                                        <td th:text="${member.loginId}"></td>
+                                        <td th:text="${member.email}"></td>
+                                        <td th:text="${member.phone}"></td>
+                                        <td th:text="${T(java.lang.String).format('%,d', member.points)} + '원'"></td>
+                                        <td th:text="${member.signupDate}"></td>
+                                        <td th:text="${member.grade}"></td>
 <!--                                        <td th:text="${member.interiorType}">Description</td>-->
                                     </tr>
                                     </tbody>
@@ -88,15 +88,15 @@
                                 <div class="col-sm-12 col-md-7" style="text-align: center">
                                     <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
                                         <ul class="pagination">
-                                            <li th:class="|paginate_button page-item ${members.first ? 'disabled' : ''}|">
-                                                <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link" th:href="@{/backoffice/members(page=${members.number - 1})}">Previous</a>
-                                            </li>
-                                            <li th:each="pageNum : ${#numbers.sequence(1, members.totalPages)}" th:class="|paginate_button page-item ${pageNum  == members.number + 1 ? 'active' : ''}|">
-                                                <a href="#" aria-controls="dataTable" th:data-dt-idx="${pageNum}" tabindex="0" class="page-link" th:text="${pageNum}" th:href="@{/backoffice/members(page=${pageNum - 1})}"></a>
-                                            </li>
-                                            <li th:class="|paginate_button page-item ${members.last ? 'disabled' : ''}|">
-                                                <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link" th:href="@{/backoffice/members(page=${members.number + 1})}">Next</a>
-                                            </li>
+<!--                                            <li th:class="|paginate_button page-item ${members.first ? 'disabled' : ''}|">-->
+<!--                                                <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link" th:href="@{/backoffice/members(page=${members.number - 1})}">Previous</a>-->
+<!--                                            </li>-->
+<!--                                            <li th:each="pageNum : ${#numbers.sequence(1, members.totalPages)}" th:class="|paginate_button page-item ${pageNum  == members.number + 1 ? 'active' : ''}|">-->
+<!--                                                <a href="#" aria-controls="dataTable" th:data-dt-idx="${pageNum}" tabindex="0" class="page-link" th:text="${pageNum}" th:href="@{/backoffice/members(page=${pageNum - 1})}"></a>-->
+<!--                                            </li>-->
+<!--                                            <li th:class="|paginate_button page-item ${members.last ? 'disabled' : ''}|">-->
+<!--                                                <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link" th:href="@{/backoffice/members(page=${members.number + 1})}">Next</a>-->
+<!--                                            </li>-->
                                         </ul>
 
                                     </div>
@@ -153,6 +153,78 @@
 
 <!--    &lt;!&ndash; Page level custom scripts &ndash;&gt;-->
 <!--    <script src="js/demo/datatables-demo.js"></script>-->
+    <script th:inline="javascript">
+        /* Thymeleaf에서 사용하는 변수를 JavaScript 변수로 변환 */
+        var pageSize = 10;
+        var currentPage = [[${members.number + 1}]];
+        function showPages(startPage, endPage) {
+            /* 페이지 숫자를 동적으로 생성하여 페이징 버튼 업데이트 */
+            for (var i = startPage; i <= endPage; i++) {
+                // 페이지 버튼을 생성하고 클릭 시 해당 페이지로 이동하는 이벤트 핸들러를 추가
+                var pageLink = $('<a>', {
+                    href: '#',
+                    'data-dt-idx': i,
+                    tabindex: 0,
+                    class: 'page-link',
+                    text: i,
+                    click: function () {
+                        window.location.href = '/backoffice/members?page=' + (parseInt($(this).data('dt-idx')) - 1);
+                    }
+                });
+
+                // 현재 페이지일 경우 'active' 클래스 추가
+                if (i === currentPage) {
+                    pageLink.addClass('active');
+                }
+
+                // 페이지 버튼을 페이징 영역에 추가
+                $('#dataTable_paginate ul.pagination').append($('<li>', {
+                    class: 'paginate_button page-item',
+                }).append(pageLink));
+            }
+        }
+
+        $(document).ready(function () {
+            /* 페이지 범위 계산 */
+            var startPage = Math.floor((currentPage - 1) / pageSize) * pageSize + 1;
+            var endPage = Math.min(startPage + pageSize - 1, [[${members.totalPages}]]);
+
+            /* 이전 페이지 버튼 생성 */
+            $('#dataTable_paginate ul.pagination').append($('<li>', {
+                class: 'paginate_button page-item ' + (currentPage === 1 ? 'disabled' : ''),
+            }).append($('<a>', {
+                href: '#',
+                'data-dt-idx': 0,
+                tabindex: 0,
+                class: 'page-link',
+                text: 'Previous',
+                click: function () {
+                    if (currentPage > 1) {
+                        window.location.href = '/backoffice/members?page=' + (currentPage - 2);
+                    }
+                }
+            })));
+
+            /* 페이지 숫자 표시 */
+            showPages(startPage, endPage);
+
+            /* 다음 페이지 버튼 생성 */
+            $('#dataTable_paginate ul.pagination').append($('<li>', {
+                class: 'paginate_button page-item ' + (currentPage === [[${members.totalPages}]] ? 'disabled' : ''),
+            }).append($('<a>', {
+                href: '#',
+                'data-dt-idx': 2,
+                tabindex: 0,
+                class: 'page-link',
+                text: 'Next',
+                click: function () {
+                    if (currentPage < [[${members.totalPages}]]) {
+                        window.location.href = '/backoffice/members?page=' + currentPage;
+                    }
+                }
+            })));
+        });
+    </script>
 
 </body>
 

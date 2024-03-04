@@ -1,6 +1,6 @@
 package hoxy.hLivv.controller;
 
-import hoxy.hLivv.dto.LoginDto;
+import hoxy.hLivv.dto.member.LoginDto;
 import hoxy.hLivv.dto.TokenDto;
 import hoxy.hLivv.jwt.JwtFilter;
 import hoxy.hLivv.jwt.TokenProvider;

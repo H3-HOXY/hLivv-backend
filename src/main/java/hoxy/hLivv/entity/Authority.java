@@ -29,7 +29,7 @@ public class Authority {
     private String authorityName;
 
     @OneToMany(mappedBy = "authority", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MemberAuthority> memberAuthorities = new HashSet<>();
+    private Set<MemberAuthority> memberAuthorities;
 
 }
 

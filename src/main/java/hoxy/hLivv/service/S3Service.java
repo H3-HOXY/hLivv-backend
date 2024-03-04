@@ -28,7 +28,7 @@ public class S3Service {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    private final String[] allowedFileExtensions = new String[]{"jpg", "png", "gif"};
+    private final String[] allowedFileExtensions = new String[]{"jpg", "png", "gif", "avif"};
 
     /**
      * 이미지 파일을 S3에 업로드합니다.
@@ -83,7 +83,8 @@ public class S3Service {
     public enum ImagePath {
         REVIEW("review"),
         RESTORE("restore"),
-        PROFILE("profile");
+        PROFILE("profile"),
+        PRODUCT("PRODUCT");
 
         private final String path;
 

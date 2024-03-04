@@ -1,4 +1,4 @@
-package hoxy.hLivv.dto;
+package hoxy.hLivv.dto.member;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

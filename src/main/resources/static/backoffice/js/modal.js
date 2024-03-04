@@ -40,11 +40,19 @@ $(document).ready(function() {
     });
     $('.inspected-grade-item').click(function() {
         // 클릭된 항목의 텍스트를 가져옴
-        if (confirm("검수 등급이 변경되었습니다. 리-스토어의 진행상태를 검수완료로 바꾸시겠습니까?")) {
-            $('#restoreStatus').text("검수완료");
-            alert("수정 반영 버튼을 클릭하면 검수완료로 적용됩니다.");
-        }
+        // $('#restorePayback').text()
+        //
+        // if (confirm("검수 등급이 변경되었습니다. Re-Store의 진행상태를 검수완료 상태로 변경하시겠습니까?")) {
+        //     $('#restoreStatus').text("검수완료");
+        //
+        //     alert("수정 반영 버튼을 클릭하면 검수완료로 적용됩니다.");
+        // }
     });
+
+    $('.transferRestoreMessage').click(function () {
+        var resId = $(this).attr('data-restoreId')
+        window.location.href="/backoffice/transfer?restoreId="+resId;
+    })
 });
 
 $(document).ready(function() {
@@ -60,11 +68,12 @@ $(document).ready(function() {
         var interiorType = $(this).attr('data-interiortype') || 'N/A';
         var grade = $(this).data('data-grade') || '';
         // 모달의 각 필드에 값을 설정
+        console.log(points.toLocaleString())
         $('#userDetailModal #loginId').text(loginId);
         $('#userDetailModal #name').text(name);
         $('#userDetailModal #email').text(email);
         $('#userDetailModal #hp').text(phone);
-        $('#userDetailModal #point').text(points);
+        $('#userDetailModal #point').text(parseInt(points, 10).toLocaleString());
         $('#userDetailModal #signupDate').text(signupDate);
 
         // 등급 라디오 버튼 설정
@@ -87,7 +96,7 @@ $(document).ready(function() {
                 $('#userDetailModal #name').text(response.name);
                 $('#userDetailModal #email').text(response.email);
                 $('#userDetailModal #hp').text(response.phone);
-                $('#userDetailModal #point').text(response.points);
+                $('#userDetailModal #point').text(parseInt(response.points, 10).toLocaleString());
                 $('#userDetailModal #signupDate').text(response.signupDate);
 
                 $('#userDetailModal .radio_buttons input[type="radio"]').prop('checked', false);
@@ -111,7 +120,7 @@ $(document).ready(function() {
         var name = $('#userDetailModal #name').text();
         var email = $('#userDetailModal #email').text();
         var phone = $('#userDetailModal #hp').text();
-        var points = $('#userDetailModal #point').text();
+        var points = $('#userDetailModal #point').text().replace(/,/g, '');
         // 라디오 버튼 값 가져오기
         var grade = $('#userDetailModal .radio_buttons input[type="radio"]:checked').val();
 
@@ -275,6 +284,7 @@ $(document).ready(function() {
     });
     var originStatus = null
     var restoreId = null
+    var productPrice = null
     $('.restore-modal').on('click', function () {
         // 클릭된 행에서 데이터 속성 값 추출
         restoreId = $(this).attr('data-restoreId') || '0';
@@ -314,7 +324,7 @@ $(document).ready(function() {
                 $('#restoreDetailModal #pickupDate').text(response.pickUpDate);
                 $('#restoreDetailModal #requestGrade').text(response.requestGrade);
                 $('#restoreDetailModal #inspectedGrade').text(inspectedGrade);
-                $('#restoreDetailModal #restorePayback').text(payback);
+                $('#restoreDetailModal #restorePayback').text(parseInt(payback, 10).toLocaleString()); // 여기!!
                 $('#restoreDetailModal #desc').text(response.restoreDesc);
                 $('#restoreDetailModal #rejectedMsg').text(response.rejectMsg);
                 $('#restoreDetailModal .radio_buttons input[type="radio"]').prop('checked', false);
@@ -332,6 +342,7 @@ $(document).ready(function() {
             url: '/api/product/' + productId,
             success: function(response) {
                 $('#restoreDetailModal #productName').text(response.name);
+                productPrice = response.price;
             },
             error: function() {
                 alert('get product failed');
@@ -342,10 +353,7 @@ $(document).ready(function() {
     });
 
     $('#updateRestore').on('click', function(e) {
-        e.preventDefault(); // 기본 앵커 동작 방지
-
-        // var
-
+        e.preventDefault();
 
         var inspectedGrade = $('#restoreDetailModal #inspectedGrade').text()[0];
         if (inspectedGrade === "검") {
@@ -353,35 +361,39 @@ $(document).ready(function() {
         }
         var requestGrade = $('#restoreDetailModal #requestGrade').text()[0];
         var restoreStatus = $('#restoreDetailModal #restoreStatus').text();
-        var payback = $('#restoreDetailModal #restorePayback').text();
-        var rejectedMsg = $('#restoreDetailModal #rejectedMsg').text();
+
+        var payback;
+        if (requestGrade === 'S') {
+            payback = Math.floor(productPrice / 2);
+        } else if (requestGrade === 'A'){
+            payback = Math.floor((productPrice / 10) * 4);
+        } else if (requestGrade === 'B'){
+            payback = Math.floor((productPrice / 10) * 3);
+        } else {
+            payback = 0;
+        }
+        var rejectedMsg = $('#restoreDetailModal #rejectedMsg').val();
         var whenRejected = $('#restoreDetailModal .radio_buttons input[type="radio"]:checked').val();
-        // AJAX 요청을 통해 서버에 로그아웃을 알림 (옵션)
         $.ajax({
             type: 'POST',
             url: '/backoffice/api/updateRestore',
             contentType: "application/json",
-            data: JSON.stringify({ restoreId: restoreId, restoreStatus: restoreStatus, inspectedGrade: inspectedGrade, requestGrade: requestGrade, payback: payback, rejectedMsg: rejectedMsg, whenRejected: whenRejected }), // 데이터를 JSON 문자열로 변환
+            data: JSON.stringify({ restoreId: restoreId, restoreStatus: restoreStatus, inspectedGrade: inspectedGrade, requestGrade: requestGrade, payback: payback, rejectMsg: rejectedMsg, whenRejected: whenRejected }), // 데이터를 JSON 문자열로 변환
             // 성공적으로 로그아웃 처리 시 쿠키 삭제 및 페이지 이동
             success: function(response) {
-                if (originStatus != "검수완료" && restoreStatus == "검수완료" ) {
-                    if (confirm("검수 완료 상태입니다. 고객에게 이메일을 보내시겠습니까?")) {
-                        //todo 이메일 보내는 창으로 이동
-                        // 리스토어 완료로 변경?
-                    } else{
-                        alert('수정이 완료되었습니다.');
-                    }
-                } else {
-                    alert('수정이 완료되었습니다.');
-                }
-
-
                 location.reload();
+                alert('수정이 완료되었습니다.');
             },
             error: function() {
                 alert('Restore 업데이트에 실패했습니다.');
             }
         });
+    });
+
+
+    $('#transferMessage').on('click', function(e) {
+        e.preventDefault();
+        window.location.href="/backoffice/transfer?restoreId=" + restoreId;
     });
 
 

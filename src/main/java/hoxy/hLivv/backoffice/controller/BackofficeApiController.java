@@ -1,21 +1,18 @@
 package hoxy.hLivv.backoffice.controller;
 
-import hoxy.hLivv.dto.MemberDto;
+import hoxy.hLivv.dto.member.MemberDto;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductImageDto;
 import hoxy.hLivv.dto.restore.RestoreDto;
-import hoxy.hLivv.dto.restore.RestoreImageDto;
 import hoxy.hLivv.jwt.TokenProvider;
 import hoxy.hLivv.service.MemberService;
 import hoxy.hLivv.service.ProductService;
 import hoxy.hLivv.service.RestoreService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -77,5 +74,17 @@ public class BackofficeApiController {
         return ResponseEntity.ok(restoreService.updateRestore(restoreDto));
     }
 
+    @PostMapping("/restore/rewarded")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<String> restoreRewarded() {
+        restoreService.callUpdateRestoreCompleteAndPointsProcedure();
+        return ResponseEntity.ok("리스토어 완료, 포인트 지급 완료.");
+    }
 
+    @PostMapping("/restore/rewarded/{restoreId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<String> restoreRewarded(@PathVariable Long restoreId) {
+        restoreService.callUpdateRestoreCompleteAndPointsProcedure(restoreId);
+        return ResponseEntity.ok("리스토어 완료, 포인트 지급 완료.");
+    }
 }

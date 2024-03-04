@@ -1,8 +1,5 @@
+
 spring:
-  #  datasource:
-  #    url: jdbc:oracle:thin:@localhost:1521/xepdb1
-  #    username: hoxy
-  #    password: hoxy
   profiles:
     active: pay
   jpa:
@@ -27,12 +24,10 @@ logging:
       hibernate:
         SQL: debug
 
+
 jwt:
   header: Authorization
-  #HS512를 쓰기 때문에 512bit(64byte) 이상의 secret key 필요
-  #echo 'hyundai-itne-fullstack-edu-3rd-project-team-hoxy-total-interior-platform-hLivv'|base64  -> 78byte
   token-validity-in-seconds: 86400
-
 springdoc:
   swagger-ui:
     # swagger-ui 접근 경로. default 값은 /swagger-ui.html이다.
