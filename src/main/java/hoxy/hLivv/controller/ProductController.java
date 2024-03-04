@@ -1,6 +1,7 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.product.ProductDto;
+import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.dto.review.ReviewDto;
 import hoxy.hLivv.dto.review.WriteReview;
 import hoxy.hLivv.service.ProductService;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -48,13 +51,16 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public ResponseEntity<List<ProductDto>> getProduct(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo, @RequestParam(required = false, defaultValue = "20", value = "pageSize") int pageSize) {
-        return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize));
+    public ResponseEntity<List<ProductDto>> getProduct(@RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+                                                       @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+                                                       @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
+        return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize, sortCriteria));
     }
 
     @PostMapping(value = "/product/{productId}/review")
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
-    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long productId,
+    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long
+                                                                             productId,
                                                                      WriteReview.Request writeReviewRequest,
                                                                      @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
         return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest, imageFiles));

@@ -2,6 +2,7 @@ package hoxy.hLivv.service;
 
 
 import hoxy.hLivv.dto.product.ProductDto;
+import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.dto.review.ReviewDto;
 import hoxy.hLivv.dto.review.ReviewImageDto;
 import hoxy.hLivv.dto.review.WriteReview;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,9 +62,10 @@ public class ProductService {
         return ProductDto.from(productRepository.getReferenceById(id));
     }
 
-    public List<ProductDto> getAllProduct(int pageNo, int pageSize) {
-        pageSize = Math.min(pageSize, 100);
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+    public List<ProductDto> getAllProduct(int pageNo, int pageSize, ProductSortCriteria sortCriteria) {
+        Sort sort = sortCriteria.toOrder();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         return productRepository.findAll(pageable)
                                 .stream()
                                 .map(ProductDto::from)

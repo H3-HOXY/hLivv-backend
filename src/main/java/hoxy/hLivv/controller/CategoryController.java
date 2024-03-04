@@ -2,8 +2,10 @@ package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.dto.product.ProductDto;
+import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.service.CategoryService;
-import jakarta.annotation.security.PermitAll;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,10 +30,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategories());
     }
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<ProductDto>> getProductsWithCategory(@PathVariable("categoryId") String categoryId
-            , @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo
-            , @RequestParam(required = false, defaultValue = "20", value = "pageSize") int pageSize) throws Exception {
-        return ResponseEntity.ok(categoryService.getProductsByCategory(categoryId, pageNo, pageSize));
+    @GetMapping("/category/{categoryId}/products")
+    public ResponseEntity<List<ProductDto>> getProductsWithCategory(@PathVariable("categoryId") String categoryId,
+                                                                    @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+                                                                    @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+                                                                    @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) throws Exception {
+        return ResponseEntity.ok(categoryService.getProductsByCategory(categoryId, pageNo, pageSize, sortCriteria));
     }
 }

@@ -2,9 +2,13 @@ package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.product.CollaboDto;
 import hoxy.hLivv.dto.product.ProductImageDto;
+import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.repository.CollaboRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +59,10 @@ public class CollaboService {
         return CollaboDto.from(collaboRepository.getReferenceById(id));
     }
 
-    public List<CollaboDto> getAllCollaboProduct() {
-        return collaboRepository.findAll()
+    public List<CollaboDto> getAllCollaboProduct(int pageNo, int pageSize, ProductSortCriteria sortCriteria) {
+        Sort sort = sortCriteria.toOrder();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        return collaboRepository.findAll(pageable)
                                 .stream()
                                 .map(CollaboDto::from)
                                 .toList();

@@ -2,9 +2,12 @@ package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.product.CollaboDto;
 import hoxy.hLivv.dto.product.ProductDto;
+import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.service.CollaboService;
 import hoxy.hLivv.service.ProductService;
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +48,10 @@ public class CollaboController {
 
     @GetMapping("/collabo")
     @PermitAll
-    public ResponseEntity<List<CollaboDto>> getCollaboProducts() {
-        return ResponseEntity.ok(collaboService.getAllCollaboProduct());
+    public ResponseEntity<List<CollaboDto>> getCollaboProducts(@RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+                                                               @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+                                                               @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
+        return ResponseEntity.ok(collaboService.getAllCollaboProduct(pageNo, pageSize, sortCriteria));
     }
 
     @PutMapping("/collabo")

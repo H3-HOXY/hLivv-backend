@@ -2,12 +2,14 @@ package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.dto.product.ProductDto;
+import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.entity.Category;
 import hoxy.hLivv.repository.CategoryRepository;
 import hoxy.hLivv.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,11 +32,14 @@ public class CategoryService {
                                  .toList();
     }
 
-    public List<ProductDto> getProductsByCategory(String categoryId, int pageNo, int pageSize) throws Exception {
-        pageSize = Math.min(pageSize, 100);
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public List<ProductDto> getProductsByCategory(String categoryId, int pageNo, int pageSize, ProductSortCriteria sortCriteria) throws Exception {
+
+        Sort sort = sortCriteria.toOrder();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Category category = categoryRepository.findById(categoryId)
                                               .orElseThrow(Exception::new);
+
         return productRepository.getProductsByCategory(category, pageable)
                                 .stream()
                                 .map(ProductDto::from)
