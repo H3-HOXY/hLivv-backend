@@ -57,6 +57,7 @@ public class ProductController {
     @Operation(summary = "전체 상품 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/product")
     public ResponseEntity<List<ProductDto>> getProduct(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo, @RequestParam(required = false, defaultValue = "20", value = "pageSize") int pageSize) {
+
         return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize));
     }
 
