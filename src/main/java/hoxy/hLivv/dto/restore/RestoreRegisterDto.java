@@ -22,7 +22,6 @@ public class RestoreRegisterDto {
     @NotNull
     private RestoreProductStatus requestGrade;
     private String restoreDesc;
-    private String requestMsg;
     @NotNull
     private Boolean whenRejected;
     private List<String> restoreImageUrls;

@@ -48,6 +48,10 @@ dependencies {
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 
 
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.666'
+
+//    implementation 'com.twelvemonkeys.imageio:imageio-avif:3.7.1'
 }
 // https://aws.amazon.com/ko/blogs/korea/getting-started-with-spring-boot-on-aws/
 // https://github.com/stratospheric-dev/stratospheric/blob/main/getting-started-with-spring-boot-on-aws/build.gradle

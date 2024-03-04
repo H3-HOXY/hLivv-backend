@@ -1,10 +1,10 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.member.*;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.MemberService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,7 +33,12 @@ public class MemberController {
     @PostMapping("/signup-data-gen")
     public ResponseEntity<String> signupDataGen(
             @Valid @RequestBody List<SignupDataGenDto> signupDataGenDtos
+//            BindingResult bindingResult
     ) {
+//        if (bindingResult.hasErrors()) {
+//            // 유효성 검사 실패 처리
+//            return ResponseEntity.badRequest().body("advdv");
+//        }
         memberService.signupDataGen(signupDataGenDtos);
         return ResponseEntity.ok("성공");
     }
@@ -51,9 +55,6 @@ public class MemberController {
     public ResponseEntity<MemberDto> getUserInfo(@PathVariable String loginId) {
         return ResponseEntity.ok(memberService.getMemberWithAuthorities(loginId));
     }
-
-
-
 
 
     @GetMapping("/member/coupons")
@@ -89,4 +90,15 @@ public class MemberController {
         Member updatedMember = memberService.updateMember(memberDto);
         return ResponseEntity.ok(MemberDto.from(updatedMember));
     }
+
+    @GetMapping("/member/grade")
+    public ResponseEntity<List<MemberGradeDto>> getMemberGradeCnt() {
+        return ResponseEntity.ok(memberService.getMemberGrade());
+    }
+
+    @GetMapping("/member/month/signup")
+    public ResponseEntity<List<MonthlyMemberRegisterDto>> getMemberCntMonthly() {
+        return ResponseEntity.ok(memberService.getMonthlyMemberRegi());
+    }
+
 }

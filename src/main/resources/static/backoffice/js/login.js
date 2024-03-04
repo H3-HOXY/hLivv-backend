@@ -15,7 +15,7 @@ $(document).ready(function() {
             success: function(response) {
                 // 로그인 성공 시 처리, 예: 홈페이지로 리다이렉트
                 // window.location.href = "home.html";
-                window.location.href = "http://localhost:8080/backoffice/home";
+                window.location.href = "/backoffice/home";
                 // alert("일단 성공함")
             },
             error: function(xhr, status, error) {
@@ -48,7 +48,7 @@ $(document).ready(function() {
                 // 로그인 성공 시 처리, 예: 홈페이지로 리다이렉트
                 // window.location.href = "home.html";
                 alert("관리자 등록 요청이 완료되었습니다.")
-                window.location.href = "http://localhost:8080/backoffice/login";
+                window.location.href = "/backoffice/login";
 
             },
             error: function(xhr, status, error) {

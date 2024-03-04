@@ -1,4 +1,4 @@
-package hoxy.hLivv.dto;
+package hoxy.hLivv.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hoxy.hLivv.entity.Member;
@@ -9,8 +9,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.Date;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

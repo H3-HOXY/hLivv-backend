@@ -1,15 +1,10 @@
-package hoxy.hLivv.dto;
+package hoxy.hLivv.dto.member;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hoxy.hLivv.entity.Member;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -30,7 +25,7 @@ public class SignupDto {
     private String loginPw;
 
     @NotNull
-    @Size(min = 3, max = 20)
+    @Size(min = 1, max = 20)
     private String name;
 
     private String phone;
