@@ -3,9 +3,12 @@ package hoxy.hLivv.dto.order;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.enums.MemberGrade;
 
-import lombok.*;
-
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
