@@ -2,6 +2,7 @@ package hoxy.hLivv.entity.enums;
 
 import hoxy.hLivv.entity.Collabo;
 import hoxy.hLivv.entity.Product;
+import org.hibernate.Hibernate;
 
 public enum ProductType {
     PRODUCT("PRODUCT"), COLLABO("COLLABO");
@@ -13,7 +14,7 @@ public enum ProductType {
     }
 
     public static ProductType getProductType(Product product) {
-        if (product instanceof Collabo) return COLLABO;
+        if (Hibernate.getClass(product) == Collabo.class) return COLLABO;
         else return PRODUCT;
     }
 
