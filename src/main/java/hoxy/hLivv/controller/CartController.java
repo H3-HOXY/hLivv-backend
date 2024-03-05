@@ -15,13 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
-@Tag(name = "장바구니 API", description = "장바구니 관리와 관련된 API 목록")
+//@Tag(name = "장바구니 API", description = "장바구니 관리와 관련된 API 목록")
 public class CartController {
     private final CartService cartService;
 
 
     // 장바구니 상품 추가
-    @Operation(summary = "장바구니에 상품 추가", security = @SecurityRequirement(name = "bearerAuth"))
+    //@Operation(summary = "장바구니에 상품 추가", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/cart/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<CartDto> addProductToCart(@PathVariable Long productId, @RequestParam Integer qty) {
@@ -30,7 +30,7 @@ public class CartController {
     }
 
     // 장바구니 상품 수량 갱신
-    @Operation(summary = "장바구니 상품 수량 변경", security = @SecurityRequirement(name = "bearerAuth"))
+    //@Operation(summary = "장바구니 상품 수량 변경", security = @SecurityRequirement(name = "bearerAuth"))
     @PutMapping("/cart/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<CartDto> updateCart(@PathVariable Long productId, @RequestParam Integer qty) {
@@ -39,7 +39,7 @@ public class CartController {
     }
 
     // 장바구니 상품 삭제
-    @Operation(summary = "장바구니 상품 삭제", security = @SecurityRequirement(name = "bearerAuth"))
+    //@Operation(summary = "장바구니 상품 삭제", security = @SecurityRequirement(name = "bearerAuth"))
     @DeleteMapping("/cart/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Void> deleteFromCart(@PathVariable Long productId) {

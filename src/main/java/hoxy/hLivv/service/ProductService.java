@@ -42,7 +42,6 @@ public class ProductService {
 
     private final S3Service s3Service;
 
-    private final S3Service s3Service;
 
     // C
     @Transactional
