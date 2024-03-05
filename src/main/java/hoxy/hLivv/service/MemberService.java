@@ -1,13 +1,13 @@
 package hoxy.hLivv.service;
 
-import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.CartDto;
+import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.member.*;
 import hoxy.hLivv.dto.order.OrderResDto;
-import hoxy.hLivv.dto.restore.RestoreStatusDto;
 import hoxy.hLivv.entity.Authority;
+import hoxy.hLivv.entity.Cart;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
-import hoxy.hLivv.entity.*;
 import hoxy.hLivv.entity.compositekey.CartId;
 import hoxy.hLivv.entity.enums.MemberGrade;
 import hoxy.hLivv.exception.DuplicateMemberException;
@@ -17,15 +17,13 @@ import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,34 +41,36 @@ public class MemberService {
     @Transactional
     public MemberDto signup(SignupDto signupDto) {
         if (memberRepository.findOneWithAuthoritiesByLoginId(signupDto.getLoginId())
-                .orElse(null) != null) {
+                            .orElse(null) != null) {
             throw new DuplicateMemberException("이미 가입되어 있는 멤버입니다.");
         }
 
         Authority auth = authorityRepository.findByAuthorityName("ROLE_USER")
-                .orElseGet(() -> authorityRepository.save(Authority.builder()
-                        .authorityName("ROLE_USER")
-                        .memberAuthorities(new HashSet<>())
-                        .build()));
+                                            .orElseGet(() -> authorityRepository.save(Authority.builder()
+                                                                                               .authorityName(
+                                                                                                       "ROLE_USER")
+                                                                                               .memberAuthorities(
+                                                                                                       new HashSet<>())
+                                                                                               .build()));
 
         Member member = Member.builder()
-                .loginId(signupDto.getLoginId())
-                .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
-                .phone(signupDto.getPhone())
-                .email(signupDto.getEmail())
-                .signupDate(new Date())
-                .points(0L)
-                .grade(MemberGrade.FLOWER)
+                              .loginId(signupDto.getLoginId())
+                              .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
+                              .phone(signupDto.getPhone())
+                              .email(signupDto.getEmail())
+                              .signupDate(new Date())
+                              .points(0L)
+                              .grade(MemberGrade.FLOWER)
 
-                .name(signupDto.getName())
-                .build();
+                              .name(signupDto.getName())
+                              .build();
 
         MemberAuthority memberAuthority = MemberAuthority.builder()
-                .authority(auth)
-                .member(member)
-                .build();
+                                                         .authority(auth)
+                                                         .member(member)
+                                                         .build();
         auth.getMemberAuthorities()
-                .add(memberAuthority);
+            .add(memberAuthority);
         member.setAuthorities(Collections.singleton(memberAuthority));
 
         return MemberDto.from(memberRepository.save(member));
@@ -80,35 +80,37 @@ public class MemberService {
     public void signupDataGen(List<SignupDataGenDto> signupDtos) {
         for (SignupDataGenDto signupDto : signupDtos) {
             if (memberRepository.findOneWithAuthoritiesByLoginId(signupDto.getLoginId())
-                    .orElse(null) != null) {
+                                .orElse(null) != null) {
                 continue;
 //                throw new DuplicateMemberException("이미 가입되어 있는 멤버입니다.");
             }
 
             Authority auth = authorityRepository.findByAuthorityName("ROLE_USER")
-                    .orElseGet(() -> authorityRepository.save(Authority.builder()
-                            .authorityName("ROLE_USER")
-                            .memberAuthorities(new HashSet<>())
-                            .build()));
+                                                .orElseGet(() -> authorityRepository.save(Authority.builder()
+                                                                                                   .authorityName(
+                                                                                                           "ROLE_USER")
+                                                                                                   .memberAuthorities(
+                                                                                                           new HashSet<>())
+                                                                                                   .build()));
 
             Member member = Member.builder()
-                    .loginId(signupDto.getLoginId())
-                    .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
-                    .phone(signupDto.getPhone())
-                    .email(signupDto.getEmail())
-                    .signupDate(signupDto.getSignupDate())
-                    .points(0L)
-                    .grade(MemberGrade.FLOWER)
+                                  .loginId(signupDto.getLoginId())
+                                  .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
+                                  .phone(signupDto.getPhone())
+                                  .email(signupDto.getEmail())
+                                  .signupDate(signupDto.getSignupDate())
+                                  .points(0L)
+                                  .grade(MemberGrade.FLOWER)
 
-                    .name(signupDto.getName())
-                    .build();
+                                  .name(signupDto.getName())
+                                  .build();
 
             MemberAuthority memberAuthority = MemberAuthority.builder()
-                    .authority(auth)
-                    .member(member)
-                    .build();
+                                                             .authority(auth)
+                                                             .member(member)
+                                                             .build();
             auth.getMemberAuthorities()
-                    .add(memberAuthority);
+                .add(memberAuthority);
             member.setAuthorities(Collections.singleton(memberAuthority));
             memberRepository.save(member);
         }
@@ -118,33 +120,35 @@ public class MemberService {
     @Transactional
     public MemberDto signupAdmin(SignupDto signupDto) {
         if (memberRepository.findOneWithAuthoritiesByLoginId(signupDto.getLoginId())
-                .orElse(null) != null) {
+                            .orElse(null) != null) {
             throw new DuplicateMemberException("이미 가입되어 있는 멤버입니다.");
         }
 
         Authority auth = authorityRepository.findByAuthorityName("ROLE_ADMIN")
-                .orElseGet(() -> authorityRepository.save(Authority.builder()
-                        .authorityName("ROLE_ADMIN")
-                        .memberAuthorities(new HashSet<>())
-                        .build()));
+                                            .orElseGet(() -> authorityRepository.save(Authority.builder()
+                                                                                               .authorityName(
+                                                                                                       "ROLE_ADMIN")
+                                                                                               .memberAuthorities(
+                                                                                                       new HashSet<>())
+                                                                                               .build()));
 
         Member member = Member.builder()
-                .loginId(signupDto.getLoginId())
-                .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
-                .phone(signupDto.getPhone())
-                .email(signupDto.getEmail())
-                .signupDate(new Date())
-                .points(0L)
-                .grade(MemberGrade.FLOWER)
-                .name(signupDto.getName())
-                .build();
+                              .loginId(signupDto.getLoginId())
+                              .loginPw(passwordEncoder.encode(signupDto.getLoginPw()))
+                              .phone(signupDto.getPhone())
+                              .email(signupDto.getEmail())
+                              .signupDate(new Date())
+                              .points(0L)
+                              .grade(MemberGrade.FLOWER)
+                              .name(signupDto.getName())
+                              .build();
 
         MemberAuthority memberAuthority = MemberAuthority.builder()
-                .authority(auth)
-                .member(member)
-                .build();
+                                                         .authority(auth)
+                                                         .member(member)
+                                                         .build();
         auth.getMemberAuthorities()
-                .add(memberAuthority);
+            .add(memberAuthority);
         member.setAuthorities(Collections.singleton(memberAuthority));
 
         return MemberDto.from(memberRepository.save(member));
@@ -154,7 +158,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberDto getMemberWithAuthorities(String loginId) {
         return MemberDto.from(memberRepository.findOneWithAuthoritiesByLoginId(loginId)
-                .orElseThrow(() -> new NotFoundMemberException("Member not found")));
+                                              .orElseThrow(() -> new NotFoundMemberException("Member not found")));
     }
 
     @Transactional(readOnly = true)
@@ -163,11 +167,12 @@ public class MemberService {
             return null;
         }
         return MemberDto.from(memberRepository.findById(id)
-                .orElseThrow(() -> new NotFoundMemberException("Member not found")));
+                                              .orElseThrow(() -> new NotFoundMemberException("Member not found")));
     }
 
     public Page<MemberDto> getAllMembersWithPagination(Pageable pageable) {
-        return memberRepository.findAll(pageable).map(MemberDto::from);
+        return memberRepository.findAll(pageable)
+                               .map(MemberDto::from);
     }
 
     public Map<String, Object> getAllMembers(int start, int length, int draw) {
@@ -177,9 +182,9 @@ public class MemberService {
 
         Page<Member> membersPage = memberRepository.findAll(pageable);
         List<MemberDto> data = membersPage.getContent()
-                .stream()
-                .map(MemberDto::from)
-                .collect(Collectors.toList());
+                                          .stream()
+                                          .map(MemberDto::from)
+                                          .collect(Collectors.toList());
 
         Map<String, Object> response = new HashMap<>();
         response.put("draw", draw); // 클라이언트에서 전달받은 draw 값 반환 (보안을 위해)
@@ -189,7 +194,6 @@ public class MemberService {
 
         return response;
     }
-
 
 
     @Transactional(readOnly = true)
@@ -205,7 +209,7 @@ public class MemberService {
     @Transactional
     public Member updateMember(MemberDto memberDto) {
         Member member = memberRepository.findByLoginId(memberDto.getLoginId())
-                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+                                        .orElseThrow(() -> new NotFoundMemberException("Member not found"));
 
         member.setName(memberDto.getName());
         member.setPhone(memberDto.getPhone());
@@ -219,44 +223,52 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public Page<MemberCouponDto> getUnusedCoupons(Pageable pageable) {
-        Member member= getMember();
+        Member member = getMember();
         return memberCouponRepository.findByMemberAndIsUsedFalseAndExpireDateAfter(member, LocalDate.now(), pageable)
-                .map(MemberCouponDto::from);
+                                     .map(MemberCouponDto::from);
     }
 
     @Transactional(readOnly = true)
     public Page<CartDto> getCartsByMember(Pageable pageable) {
-        Member member= getMember();
+        Member member = getMember();
         return cartRepository.findByMember(member, pageable)
-                .map(CartDto::from);
+                             .map(CartDto::from);
     }
 
     @Transactional(readOnly = true)
     public Page<OrderResDto> getOrdersByMember(Pageable pageable) {
-        Member member= getMember();
+        Member member = getMember();
         return orderRepository.findByMember(member, pageable)
-                .map(OrderResDto::from);
+                              .map(OrderResDto::from);
+    }
+
+    @Transactional
+    public Season updateSeason(Season season) {
+        Member member = getMember();
+        member.setInteriorType(season.toString());
+        memberRepository.save(member);
+        return season;
     }
 
     @Transactional(readOnly = true)
     public List<CartDto> getSelectedItems(List<Long> productIds) {
         Member member = getMember();
         List<CartId> cartIds = productIds.stream()
-                .map(productId -> new CartId(member.getMemberId(), productId))
-                .collect(Collectors.toList());
+                                         .map(productId -> new CartId(member.getMemberId(), productId))
+                                         .collect(Collectors.toList());
 
         List<Cart> carts = cartRepository.findByCartIdIn(cartIds);
 
         return carts.stream()
-                .map(CartDto::from)
-                .collect(Collectors.toList());
+                    .map(CartDto::from)
+                    .collect(Collectors.toList());
     }
 
 
     private Member getMember() {
         return SecurityUtil.getCurrentUsername()
-                .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
-                .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+                           .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
+                           .orElseThrow(() -> new NotFoundMemberException("Member not found"));
     }
 
     @Transactional

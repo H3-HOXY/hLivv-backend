@@ -5,13 +5,12 @@ import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.service.CollaboService;
 import hoxy.hLivv.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,9 +55,10 @@ public class CollaboController {
 
     @GetMapping("/collabo")
     @PermitAll
-    public ResponseEntity<List<CollaboDto>> getCollaboProducts(@RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
-                                                               @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
-                                                               @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
+    public ResponseEntity<List<CollaboDto>> getCollaboProducts(
+            @Parameter(description = "몇번째 페이지", example = "1") @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+            @Parameter(description = "한번에 조회할 항목의 개수", example = "20") @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+            @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
         return ResponseEntity.ok(collaboService.getAllCollaboProduct(pageNo, pageSize, sortCriteria));
     }
 
