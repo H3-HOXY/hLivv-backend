@@ -1,5 +1,6 @@
 package hoxy.hLivv.dto.product;
 
+import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.entity.Collabo;
 import hoxy.hLivv.entity.Product;
 import hoxy.hLivv.entity.ProductCollabo;
@@ -35,6 +36,7 @@ public class CollaboDto extends ProductDto {
                              .startDate(startDate)
                              .endDate(endDate)
                              .stockQuantity(stockQuantity)
+                             .category(category.toEntity())
                              .discountPercent(discountPercent)
                              .isArSupported(isArSupported)
                              .isQrSupported(isQrSupported)
@@ -60,6 +62,7 @@ public class CollaboDto extends ProductDto {
                          .id(collabo.getId())
                          .name(collabo.getName())
                          .productDesc(collabo.getProductDesc())
+                         .category(CategoryDto.from(collabo.getCategory()))
                          .productType(ProductType.getProductType(collabo))
                          .price(collabo.getPrice())
                          .stockQuantity(collabo.getStockQuantity())

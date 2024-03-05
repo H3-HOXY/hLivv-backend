@@ -4,7 +4,7 @@ spring:
     active: pay
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
 
     properties:
       hibernate:
@@ -27,6 +27,8 @@ logging:
 
 jwt:
   header: Authorization
+  #HS512를 쓰기 때문에 512bit(64byte) 이상의 secret key 필요
+  #echo 'hyundai-itne-fullstack-edu-3rd-project-team-hoxy-total-interior-platform-hLivv'|base64  -> 78byte
   token-validity-in-seconds: 86400
 springdoc:
   swagger-ui:

@@ -36,7 +36,7 @@ public class Product {
     @Column(name = "product_price")
     protected int price;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "product_category")
     protected Category category;
 
@@ -64,6 +64,9 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<ProductImage> productImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<ProductOption> productOptions = new ArrayList<>();
 
 //    public void decreaseStock(int qty) {
 //        if (this.stockQuantity < qty) {

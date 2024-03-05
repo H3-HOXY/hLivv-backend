@@ -1,7 +1,8 @@
 package hoxy.hLivv.controller;
 
 import hoxy.hLivv.dto.*;
-import hoxy.hLivv.dto.member.*;
+import hoxy.hLivv.dto.member.MemberDto;
+import hoxy.hLivv.dto.member.MemberResponseDto;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.service.MemberService;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,6 +56,17 @@ public class MemberController {
     public ResponseEntity<MemberDto> getUserInfo(@PathVariable String loginId) {
         return ResponseEntity.ok(memberService.getMemberWithAuthorities(loginId));
     }
+
+    @GetMapping("/member/mypage")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<MemberResponseDto> getMyUserInfo(@AuthenticationPrincipal User user) {
+        MemberDto member = memberService.getMemberWithAuthorities(user.getUsername());
+        MemberResponseDto memberResponseDto = MemberResponseDto.from(member);
+        return ResponseEntity.ok(memberResponseDto);
+    }
+
+
+
 
     @Operation(summary = "로그인 된 멤버 미사용 쿠폰 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/member/coupons")
