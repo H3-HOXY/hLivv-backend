@@ -1,5 +1,5 @@
 package hoxy.hLivv.dto.member;
-import hoxy.hLivv.entity.Member;
+
 import hoxy.hLivv.entity.enums.MemberGrade;
 import lombok.Data;
 
