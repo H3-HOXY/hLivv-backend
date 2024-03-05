@@ -51,7 +51,7 @@ public class CartService {
         cart.updateQuantity(qty);
         if (cart.isEmpty()) {
             member.removeCart(cart);
-            throw new CartItemRemovedException("장바구니에서 해당 상품이 삭제되었습니다.");
+//            throw new CartItemRemovedException("장바구니에서 해당 상품이 삭제되었습니다.");
         }
         return CartDto.from(cart);
     }

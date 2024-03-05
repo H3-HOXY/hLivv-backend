@@ -1,7 +1,9 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.*;
+import hoxy.hLivv.dto.member.*;
 import hoxy.hLivv.dto.order.OrderResDto;
+import hoxy.hLivv.dto.restore.RestoreStatusDto;
 import hoxy.hLivv.entity.Authority;
 import hoxy.hLivv.entity.Member;
 import hoxy.hLivv.entity.MemberAuthority;
@@ -37,12 +39,6 @@ public class MemberService {
     private final OrderRepository orderRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
-
-//    public MemberService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-//        this.userRepository = userRepository;
-//        this.memberRepository =
-//        this.passwordEncoder = passwordEncoder;
-//    }
 
     @Transactional
     public MemberDto signup(SignupDto signupDto) {
@@ -163,6 +159,9 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberDto getMemberById(Long id) {
+        if (id == null) {
+            return null;
+        }
         return MemberDto.from(memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found")));
     }
@@ -268,6 +267,16 @@ public class MemberService {
         return SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
+    }
+
+    @Transactional
+    public List<MemberGradeDto> getMemberGrade() {
+        return memberRepository.findMemberGradeGroupBy();
+    }
+
+    @Transactional
+    public List<MonthlyMemberRegisterDto> getMonthlyMemberRegi() {
+        return memberRepository.findMonthlyMemberRegi();
     }
 
 //    @Transactional(readOnly = true)

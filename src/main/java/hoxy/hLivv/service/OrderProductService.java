@@ -17,16 +17,4 @@ import java.util.List;
 public class OrderProductService {
     private final OrderProductRepository orderProductRepository;
 
-    @Transactional
-    @Scheduled(cron = "0 0 0 * * ?")  // 매일 자정에 실행
-    public void updateOrderStatusAndIncreasePoints() {
-        List<OrderProduct> orderProducts = orderProductRepository.findAllByDeliveryStatus(DeliveryStatus.배송완료);
-        for (OrderProduct orderProduct : orderProducts) {
-            if (orderProduct.getDelivery().getDeliveryEnd().plusDays(10).isBefore(ChronoLocalDate.from(LocalDateTime.now()))) {
-                orderProduct.confirmPurchase();
-                long point = (long) (orderProduct.getOrder().getOrderCash() * 0.001); // 현금 결제액의 0.1%
-                orderProduct.getOrder().getMember().increasePoints(point);
-            }
-        }
-    }
 }

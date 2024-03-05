@@ -32,8 +32,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-devtools'
-    compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
@@ -44,7 +44,29 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'com.amazonaws:aws-java-sdk-ses:1.12.666'
+
+
 }
+// https://aws.amazon.com/ko/blogs/korea/getting-started-with-spring-boot-on-aws/
+// https://github.com/stratospheric-dev/stratospheric/blob/main/getting-started-with-spring-boot-on-aws/build.gradle
+ext {
+    set('awsSpringVersion', '3.0.1')
+    set('testcontainersVersion', '1.18.0')
+    set('awsLambdaJavaEventsVersion', '3.11.2')
+    set('awsJavaSdkCoreVersion', '1.12.481')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.awspring.cloud:spring-cloud-aws-dependencies:${awsSpringVersion}"
+    }
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()

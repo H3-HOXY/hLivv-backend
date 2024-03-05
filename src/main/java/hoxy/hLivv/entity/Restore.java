@@ -49,8 +49,8 @@ public class Restore {
     @Column(name = "restore_desc")
     private String restoreDesc;
 
-    @Column(name = "resuqest_msg")
-    private String requestMsg;
+    @Column(name = "rewarded")
+    private Boolean rewarded;
 
     @Column(name = "reject_msg")
     private String rejectMsg;

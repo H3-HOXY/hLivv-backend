@@ -53,7 +53,7 @@
                 <div class="container-fluid">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">상품 목록</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Re-Store 신청현황</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -71,6 +71,7 @@
                                         <th>폐기 옵션</th>
                                         <th>사용자 리스토어 설명</th>
                                         <th>검수 결과 메세지</th>
+                                        <th>Re-Store 문자/이메일 발송</th>
                                         <!--                                        <th>리스토어 관리</th>-->
                                     </tr>
                                     </thead>
@@ -111,22 +112,23 @@
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.rejectMsg != null}" th:text="${restore.rejectMsg}"></td>
                                         <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.rejectMsg == null}">검수중</td>
-                                        <!--                                        <td th:text="${restore.inspectedGrade}"></td>-->
+
+                                        <td class="modal-item transferRestoreMessage" th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}">발송하기</td>
                                     </tr>
                                     </tbody>
                                 </table>
                                 <div class="col-sm-12 col-md-7" style="text-align: center">
                                     <div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
                                         <ul class="pagination">
-                                            <li th:class="|paginate_button page-item ${restores.first ? 'disabled' : ''}|">
-                                                <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link" th:href="@{/backoffice/restores(page=${restores.number - 1})}">Previous</a>
-                                            </li>
-                                            <li th:each="pageNum : ${#numbers.sequence(1, restores.totalPages)}" th:class="|paginate_button page-item ${pageNum  == restores.number + 1 ? 'active' : ''}|">
-                                                <a href="#" aria-controls="dataTable" th:data-dt-idx="${pageNum}" tabindex="0" class="page-link" th:text="${pageNum}" th:href="@{/backoffice/restores(page=${pageNum - 1})}"></a>
-                                            </li>
-                                            <li th:class="|paginate_button page-item ${restores.last ? 'disabled' : ''}|">
-                                                <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link" th:href="@{/backoffice/restores(page=${restores.number + 1})}">Next</a>
-                                            </li>
+<!--                                            <li th:class="|paginate_button page-item ${restores.first ? 'disabled' : ''}|">-->
+<!--                                                <a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link" th:href="@{/backoffice/restores(page=${restores.number - 1})}">Previous</a>-->
+<!--                                            </li>-->
+<!--                                            <li th:each="pageNum : ${#numbers.sequence(1, restores.totalPages)}" th:class="|paginate_button page-item ${pageNum  == restores.number + 1 ? 'active' : ''}|">-->
+<!--                                                <a href="#" aria-controls="dataTable" th:data-dt-idx="${pageNum}" tabindex="0" class="page-link" th:text="${pageNum}" th:href="@{/backoffice/restores(page=${pageNum - 1})}"></a>-->
+<!--                                            </li>-->
+<!--                                            <li th:class="|paginate_button page-item ${restores.last ? 'disabled' : ''}|">-->
+<!--                                                <a href="#" aria-controls="dataTable" data-dt-idx="2" tabindex="0" class="page-link" th:href="@{/backoffice/restores(page=${restores.number + 1})}">Next</a>-->
+<!--                                            </li>-->
                                         </ul>
 
                                     </div>
@@ -171,6 +173,78 @@
 
 <!--    &lt;!&ndash; Page level custom scripts &ndash;&gt;-->
 <!--    <script src="js/demo/datatables-demo.js"></script>-->
+    <script th:inline="javascript">
+        /* Thymeleaf에서 사용하는 변수를 JavaScript 변수로 변환 */
+        var pageSize = 10;
+        var currentPage = [[${restores.number + 1}]];
+        function showPages(startPage, endPage) {
+            /* 페이지 숫자를 동적으로 생성하여 페이징 버튼 업데이트 */
+            for (var i = startPage; i <= endPage; i++) {
+                // 페이지 버튼을 생성하고 클릭 시 해당 페이지로 이동하는 이벤트 핸들러를 추가
+                var pageLink = $('<a>', {
+                    href: '#',
+                    'data-dt-idx': i,
+                    tabindex: 0,
+                    class: 'page-link',
+                    text: i,
+                    click: function () {
+                        window.location.href = '/backoffice/restores?page=' + (parseInt($(this).data('dt-idx')) - 1);
+                    }
+                });
+
+                // 현재 페이지일 경우 'active' 클래스 추가
+                if (i === currentPage) {
+                    pageLink.addClass('active');
+                }
+
+                // 페이지 버튼을 페이징 영역에 추가
+                $('#dataTable_paginate ul.pagination').append($('<li>', {
+                    class: 'paginate_button page-item',
+                }).append(pageLink));
+            }
+        }
+
+        $(document).ready(function () {
+            /* 페이지 범위 계산 */
+            var startPage = Math.floor((currentPage - 1) / pageSize) * pageSize + 1;
+            var endPage = Math.min(startPage + pageSize - 1, [[${restores.totalPages}]]);
+
+            /* 이전 페이지 버튼 생성 */
+            $('#dataTable_paginate ul.pagination').append($('<li>', {
+                class: 'paginate_button page-item ' + (currentPage === 1 ? 'disabled' : ''),
+            }).append($('<a>', {
+                href: '#',
+                'data-dt-idx': 0,
+                tabindex: 0,
+                class: 'page-link',
+                text: 'Previous',
+                click: function () {
+                    if (currentPage > 1) {
+                        window.location.href = '/backoffice/restores?page=' + (currentPage - 2);
+                    }
+                }
+            })));
+
+            /* 페이지 숫자 표시 */
+            showPages(startPage, endPage);
+
+            /* 다음 페이지 버튼 생성 */
+            $('#dataTable_paginate ul.pagination').append($('<li>', {
+                class: 'paginate_button page-item ' + (currentPage === [[${restores.totalPages}]] ? 'disabled' : ''),
+            }).append($('<a>', {
+                href: '#',
+                'data-dt-idx': 2,
+                tabindex: 0,
+                class: 'page-link',
+                text: 'Next',
+                click: function () {
+                    if (currentPage < [[${restores.totalPages}]]) {
+                        window.location.href = '/backoffice/restores?page=' + currentPage;
+                    }
+                }
+            })));
+        });
+    </script>
 
 </body>
 

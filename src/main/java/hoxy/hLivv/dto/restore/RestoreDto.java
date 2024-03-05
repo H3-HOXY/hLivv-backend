@@ -25,12 +25,10 @@ public class RestoreDto {
     private RestoreProductStatus requestGrade;
     private RestoreProductStatus inspectedGrade;
     private String restoreDesc;
-    private String requestMsg;
+    private Boolean rewarded;
     private String rejectMsg;
     private Long payback;
-    @NotNull
     private Boolean whenRejected;
-
     private RestoreStatus restoreStatus;
     private List<String> restoreImageUrls;
 
@@ -46,7 +44,7 @@ public class RestoreDto {
                 .requestGrade(restore.getRequestGrade())
                 .inspectedGrade(restore.getInspectedGrade())
                 .restoreDesc(restore.getRestoreDesc())
-                .requestMsg(restore.getRequestMsg())
+                .rewarded(restore.getRewarded())
                 .rejectMsg(restore.getRejectMsg())
                 .payback(restore.getPayback())
                 .whenRejected(restore.getWhenRejected())

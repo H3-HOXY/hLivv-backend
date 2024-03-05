@@ -57,3 +57,8 @@
     resize: none;
 
 }
+
+.page-item .active{
+    background-color: #2f4d30;
+    color: #fff;
+}
