@@ -20,19 +20,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor
-@Tag(name = "콜라보 API", description = "콜라보 관리와 관련된 API 목록")
+//@Tag(name = "콜라보 API", description = "콜라보 관리와 관련된 API 목록")
 public class CollaboController {
     private final CollaboService collaboService;
     private final ProductService productService;
 
-    @Operation(summary = "콜라보 상품 등록")
+    //@Operation(summary = "콜라보 상품 등록")
     @PostMapping("/collabo")
     public ResponseEntity<CollaboDto> createCollaboProduct(@RequestBody CollaboDto collaboDto) {
         var savedProduct = collaboService.saveCollaboProduct(collaboDto);
         return ResponseEntity.ok(savedProduct);
     }
 
-    @Operation(summary = "productId로 콜라보 상품 조회")
+    //@Operation(summary = "productId로 콜라보 상품 조회")
     @GetMapping("/collabo/{productId}")
     @PermitAll
     public ResponseEntity<CollaboDto> getCollaboProduct(@PathVariable Long productId) {
@@ -40,7 +40,7 @@ public class CollaboController {
         return ResponseEntity.ok(product);
     }
 
-    @Operation(summary = "모든 콜라보 상품 조회")
+    //@Operation(summary = "모든 콜라보 상품 조회")
     @GetMapping("/collabo/{productId}/items")
     @PermitAll
     public ResponseEntity<List<ProductDto>> getCollaboProductItems(@PathVariable Long productId) {
@@ -63,7 +63,7 @@ public class CollaboController {
     }
 
 
-    @Operation(summary = "콜라보 상품 수정")
+    //@Operation(summary = "콜라보 상품 수정")
     @PutMapping("/collabo")
     public ResponseEntity<CollaboDto> updateCollaboProduct(@RequestBody CollaboDto collaboDto) {
         var savedProduct = collaboService.saveCollaboProduct(collaboDto);

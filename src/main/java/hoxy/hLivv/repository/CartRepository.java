@@ -14,5 +14,9 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, CartId> {
     @Query("SELECT c FROM Cart c WHERE c.member = :member ORDER BY COALESCE(c.lastModifiedDate, c.createdDate) DESC")
     Page<Cart> findByMember(@Param("member") Member member, Pageable pageable);
+
+    @Query("SELECT c FROM Cart c WHERE c.member = :member ORDER BY COALESCE(c.lastModifiedDate, c.createdDate) DESC")
+     List<Cart> findByMemberAll(@Param("member") Member member);
+
     List<Cart> findByCartIdIn(List<CartId> cartIds);
 }

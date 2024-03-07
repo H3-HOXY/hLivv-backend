@@ -19,8 +19,12 @@ public class CartDto {
     private String productName;
     private Long unitPrice;
     private Long totalPrice;
+    private Long discountUnitPrice;
     private Integer cartQty;
     private Integer stockQuantity;
+    private boolean isQrSupported;
+    private boolean isArSupported;
+    private boolean isEco;
 
 
     public static CartDto from(Cart cart) {
@@ -46,8 +50,12 @@ public class CartDto {
                 .productName(product.getName())
                 .unitPrice(price)
                 .totalPrice(price * cart.getCartQty())
+                .discountUnitPrice((long) (price * (1-product.getDiscountPercent()*0.01)))
                 .cartQty(cart.getCartQty())
                 .stockQuantity(stock)
+                .isArSupported(product.isArSupported())
+                .isQrSupported(product.isQrSupported())
+                .isEco(product.isEco())
                 .build();
     }
 }
