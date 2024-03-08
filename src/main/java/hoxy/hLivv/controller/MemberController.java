@@ -68,8 +68,6 @@ public class MemberController {
     }
 
 
-
-
     @Operation(summary = "로그인 된 멤버 미사용 쿠폰 조회")
     @GetMapping("/member/coupons")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -102,7 +100,7 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<OrderResDto>> getOrders(@RequestParam("page") int pageNo,
                                                        @RequestParam("pageSize") int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "orderDate"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "orderDate"));
         return ResponseEntity.ok(memberService.getOrdersByMember(pageable));
     }
 

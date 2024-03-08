@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
 
+    @Query("SELECT op FROM OrderProduct op WHERE op.delivery.deliveryStatus = :status")
+    List<OrderProduct> findAllByDeliveryStatus(@Param("status") DeliveryStatus status);
+
     List<OrderProduct> findOrderProductByOrderOrderId(Long orderId);
     @Query("SELECT op FROM OrderProduct op JOIN op.order o WHERE o.member.memberId = :memberId AND op.delivery.deliveryStatus = :status")
     Page<OrderProduct> findWithMemberAndDeliveryStatus(@Param("memberId") Long memberId, @Param("status") DeliveryStatus status, Pageable pageable);
