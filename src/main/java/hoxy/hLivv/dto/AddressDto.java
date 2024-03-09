@@ -20,16 +20,17 @@ public class AddressDto {
     private String order_id;
     private boolean defaultYn;
 
-    public static AddressDto from(Address address){
+    public static AddressDto from(Address address) {
         return AddressDto.builder()
-                .streetAddress(address.getStreetAddress())
-                .detailedAddress(address.getDetailedAddress())
-                .zipCode(address.getZipCode())
-                .telephoneNumber(address.getTelephoneNumber())
-                .mobilePhoneNumber(address.getMobilePhoneNumber())
-                .requestMsg(address.getRequestMsg())
-                .defaultYn(address.isDefaultYn())
-                .build();
+                         .addressId(address.getAddressId())
+                         .streetAddress(address.getStreetAddress())
+                         .detailedAddress(address.getDetailedAddress())
+                         .zipCode(address.getZipCode())
+                         .telephoneNumber(address.getTelephoneNumber())
+                         .mobilePhoneNumber(address.getMobilePhoneNumber())
+                         .requestMsg(address.getRequestMsg())
+                         .defaultYn(address.isDefaultYn())
+                         .build();
     }
 
 }

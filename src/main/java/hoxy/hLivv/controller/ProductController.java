@@ -11,17 +11,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -59,20 +60,23 @@ public class ProductController {
 
     @Operation(summary = "전체 상품 조회")
     @GetMapping("/product")
-    public ResponseEntity<List<ProductDto>> getProduct(@RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
-                                                       @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
-                                                       @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
+    public ResponseEntity<List<ProductDto>> getProduct(
+            @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+            @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+            @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
         return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize, sortCriteria));
     }
 
     @Operation(summary = "상품에 리뷰 작성")
-    @PostMapping(value = "/product/{productId}/review")
+    @PostMapping(value = "/product/{productId}/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
     public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long
                                                                              productId,
                                                                      WriteReview.Request writeReviewRequest,
-                                                                     @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
-        return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest, imageFiles));
+                                                                     @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
+        return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest,
+                                                                     Arrays.stream(imageFiles)
+                                                                           .toList()));
     }
 
 
