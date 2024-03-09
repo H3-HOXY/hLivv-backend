@@ -2,6 +2,7 @@ package hoxy.hLivv.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -16,7 +17,11 @@ import org.springframework.context.annotation.Profile;
                 title = "현대IT&E 3차 프로젝트 API 명세서",
                 description = "현대IT&E 3차 프로젝트에 사용되는 API 명세서",
                 version = "v1"
-        )
+        ),
+        servers = {
+                @Server(url = "/", description = "Default Server URL")
+        }
+
 )
 @Configuration
 public class SwaggerConfig {
