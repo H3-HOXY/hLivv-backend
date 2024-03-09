@@ -48,7 +48,9 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
             InvalidPaymentException.class,
             InvalidPointException.class,
             AlreadyUsedCouponException.class,
-            ExpiredCouponException.class})
+            ExpiredCouponException.class,
+            DeliveryUpdateException.class,
+            MismatchedMemberException.class})
     @ResponseBody
     protected ErrorDto badRequest(RuntimeException ex, WebRequest request) {
         return new ErrorDto(BAD_REQUEST.value(), ex.getMessage());

@@ -1,17 +1,15 @@
 package hoxy.hLivv.service;
 
 import hoxy.hLivv.dto.CartDto;
+import hoxy.hLivv.dto.DeliveryResDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.dto.member.*;
 import hoxy.hLivv.dto.order.OrderResDto;
-import hoxy.hLivv.entity.Authority;
-import hoxy.hLivv.entity.Cart;
-import hoxy.hLivv.entity.Member;
-import hoxy.hLivv.entity.MemberAuthority;
+import hoxy.hLivv.entity.*;
 import hoxy.hLivv.entity.compositekey.CartId;
+import hoxy.hLivv.entity.enums.DeliveryStatus;
 import hoxy.hLivv.entity.enums.MemberGrade;
-import hoxy.hLivv.exception.DuplicateMemberException;
-import hoxy.hLivv.exception.NotFoundMemberException;
+import hoxy.hLivv.exception.*;
 import hoxy.hLivv.repository.*;
 import hoxy.hLivv.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +35,8 @@ public class MemberService {
     private final OrderRepository orderRepository;
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OrderProductRepository orderProductRepository;
+    private final DeliveryRepository deliveryRepository;
 
     @Transactional
     public MemberDto signup(SignupDto signupDto) {
@@ -290,6 +290,61 @@ public class MemberService {
     public List<MonthlyMemberRegisterDto> getMonthlyMemberRegi() {
         return memberRepository.findMonthlyMemberRegi();
     }
+
+    @Transactional(readOnly = true)
+    public Page<DeliveryResDto> findCompletedDeliveriesByMemberId(Pageable pageable) {
+        Member member = getMember();
+        return orderProductRepository.findWithMemberAndDeliveryStatus(member.getMemberId(),DeliveryStatus.배송완료, pageable)
+                .map(DeliveryResDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<DeliveryResDto> findInProgressDeliveriesByMemberId(Pageable pageable) {
+        Member member = getMember();
+        return orderProductRepository.findWithMemberAndDeliveryStatus(member.getMemberId(),DeliveryStatus.배송중, pageable)
+                .map(DeliveryResDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResDto findOrderById(Long orderId) {
+        Member member=getMember();
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundOrderException("해당 주문이 존재하지 않습니다. 주문 ID: " + orderId));
+
+        if (!order.getMember().getMemberId().equals(member.getMemberId())) {
+            throw new MismatchedMemberException("주문 ID와 회원 ID가 일치하지 않습니다.");
+        }
+
+        return OrderResDto.from(order);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DeliveryResDto> findDeliveryById(Long deliveryId) {
+        Member member = getMember();
+        List<OrderProduct> orderProducts = orderProductRepository.findByDelivery_DeliveryId(deliveryId);
+
+        for (OrderProduct orderProduct : orderProducts) {
+            Order order = orderProduct.getOrder();
+            if (!order.getMember().getMemberId().equals(member.getMemberId())) {
+                throw new MismatchedMemberException("배송 ID와 회원 ID가 일치하지 않습니다.");
+            }
+        }
+
+        return orderProducts.stream()
+                .map(DeliveryResDto::from)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<DeliveryResDto> findDeliveriesByMemberId(Pageable pageable) {
+        Member member = getMember();
+        return orderProductRepository.findWithMember(member.getMemberId(),pageable)
+                .map(DeliveryResDto::from);
+    }
+
+
+
+
 
 //    @Transactional(readOnly = true)
 //    public List<MemberDto> getAllMembers() {

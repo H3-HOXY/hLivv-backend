@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-//@Tag(name = "인증 API", description = "인증 관리와 관련된 API 목록")
+@Tag(name = "인증 API", description = "인증 관리와 관련된 API 목록")
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -31,13 +31,13 @@ public class AuthController {
     }
 
 
-    ////@Operation(summary = "현재 로그인 된 유저 ID 조회")
+    //@Operation(summary = "현재 로그인 된 유저 ID 조회")
     @GetMapping("/login/member")
     public ResponseEntity<String> helloCurr() {
         return ResponseEntity.ok(SecurityUtil.getCurrentUsername().orElse("not logined"));
     }
 
-    //@Operation(summary = "LoginDto로 Login 처리")
+    @Operation(summary = "LoginDto로 Login 처리")
     @PostMapping("/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 

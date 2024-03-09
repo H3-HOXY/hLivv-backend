@@ -1,28 +1,24 @@
 package hoxy.hLivv.dto;
 
-import hoxy.hLivv.dto.order.OrderProductResDto;
-import hoxy.hLivv.dto.order.OrderRequesterDto;
-import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.OrderProduct;
-import lombok.*;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderProductDto {
+public class DeliveryResDto {
     private Long orderId;
     private Long orderProductId;
     private String productName;
     private Integer productQty;
     private DeliveryDto deliveryDto;
 
-    public static OrderProductDto from(OrderProduct orderProduct){
-        return OrderProductDto.builder()
+    public static DeliveryResDto from(OrderProduct orderProduct){
+        return DeliveryResDto.builder()
                 .orderId(orderProduct.getOrder().getOrderId())
                 .orderProductId(orderProduct.getOrderProductId())
                 .productName(orderProduct.getProduct().getName())
