@@ -4,13 +4,10 @@ import hoxy.hLivv.dto.CategoryDto;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +22,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @Operation(summary = "카테고리 항목 추가", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "카테고리 항목 추가")
     @PostMapping("/category")
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
     public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto) {

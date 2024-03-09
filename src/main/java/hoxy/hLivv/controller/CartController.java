@@ -3,7 +3,6 @@ package hoxy.hLivv.controller;
 import hoxy.hLivv.dto.CartDto;
 import hoxy.hLivv.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ public class CartController {
 
 
     // 장바구니 상품 추가
-    @Operation(summary = "장바구니에 상품 추가", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "장바구니에 상품 추가")
     @PostMapping("/cart/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<CartDto> addProductToCart(@PathVariable Long productId, @RequestParam Integer qty) {
@@ -28,7 +27,7 @@ public class CartController {
     }
 
     // 장바구니 상품 수량 갱신
-    @Operation(summary = "장바구니 상품 수량 변경", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "장바구니 상품 수량 변경")
     @PutMapping("/cart/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<CartDto> updateCart(@PathVariable Long productId, @RequestParam Integer qty) {
@@ -37,7 +36,7 @@ public class CartController {
     }
 
     // 장바구니 상품 삭제
-    @Operation(summary = "장바구니 상품 삭제", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "장바구니 상품 삭제")
     @DeleteMapping("/cart/{productId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Void> deleteFromCart(@PathVariable Long productId) {

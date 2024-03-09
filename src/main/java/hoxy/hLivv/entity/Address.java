@@ -1,9 +1,11 @@
 package hoxy.hLivv.entity;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @NoArgsConstructor
@@ -22,17 +24,13 @@ public class Address {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
-
-    @Column(name = "street_address")
+    @Column(name = "street_address", nullable = false)
     private String streetAddress;
 
     @Column(name = "detailed_address")
     private String detailedAddress;
 
-    @Column(name = "zip_code")
+    @Column(name = "zip_code", nullable = false)
     private String zipCode;
 
     @Column(name = "telephone_number")
@@ -46,7 +44,6 @@ public class Address {
 
     @Column(name = "default_yn")
     private boolean defaultYn;
-
 }
 
 //

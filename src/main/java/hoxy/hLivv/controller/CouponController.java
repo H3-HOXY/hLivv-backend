@@ -4,7 +4,6 @@ import hoxy.hLivv.dto.CouponDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.service.CouponService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,7 @@ import java.util.List;
 public class CouponController {
     private final CouponService couponService;
 
-    @Operation(summary = "couponId로 쿠폰 발급", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "couponId로 쿠폰 발급")
     @PostMapping("/coupons/{couponId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<MemberCouponDto> issueCoupon(@PathVariable Long couponId) {
@@ -28,31 +27,31 @@ public class CouponController {
         return ResponseEntity.ok(memberCouponDto);
     }
 
-    @Operation(summary = "쿠폰 저장", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "쿠폰 저장")
     @PostMapping("/coupons")
     public ResponseEntity<CouponDto> saveCoupon(@RequestBody CouponDto couponDto) {
         return ResponseEntity.ok(couponService.saveCoupon(couponDto));
     }
 
-    @Operation(summary = "couponId로 쿠폰 조회", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "couponId로 쿠폰 조회")
     @GetMapping("/coupons/{couponId}")
     public ResponseEntity<CouponDto> getCouponBy(@PathVariable Long couponId) {
         return ResponseEntity.ok(couponService.getCouponBy(couponId));
     }
 
-    @Operation(summary = "모든 쿠폰 조회", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "모든 쿠폰 조회")
     @GetMapping("/coupons")
     public ResponseEntity<List<CouponDto>> getAllCoupon() {
         return ResponseEntity.ok(couponService.getAllCoupon());
     }
 
-    @Operation(summary = "couponId로 쿠폰 수정", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "couponId로 쿠폰 수정")
     @PutMapping("/coupons/{couponId}")
     public ResponseEntity<CouponDto> updateCoupon(@PathVariable Long couponId, @RequestBody CouponDto couponDto) {
         return ResponseEntity.ok(couponService.updateCoupon(couponId, couponDto));
     }
 
-    @Operation(summary = "couponId로 쿠폰 삭제", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "couponId로 쿠폰 삭제")
     @DeleteMapping("/coupons/{couponId}")
     public ResponseEntity<Void> deleteCoupon(@PathVariable Long couponId) {
         couponService.deleteCoupon(couponId);
