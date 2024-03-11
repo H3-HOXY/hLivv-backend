@@ -40,12 +40,13 @@ public class OrderService {
         // 1. DTO로부터 정보 추출
         Member member = getMember();
         Coupon coupon = getCoupon(orderReqDto.getCouponId());
+        Address address = getAddress(orderReqDto.getAddressId());
 
         // 2. 상품과 수량 조회 및 재고 감소
         List<Product> products = decreaseProductsStock(orderReqDto.getProductList());
 
         // 3. 주문 생성
-        Order order = createOrder(orderReqDto, member, coupon, products);
+        Order order = createOrder(orderReqDto, member, address, coupon, products);
 
         // 4. 주문 저장
         orderRepository.save(order);
@@ -71,6 +72,9 @@ public class OrderService {
     @Transactional
     public Order createOrder(OrderReqDto orderReqDto, Member member, Coupon coupon, List<Product> products) {
         Order order = orderReqDto.testPrepareOrder(member, coupon);
+    public Order createOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon,
+                             List<Product> products) {
+        Order order = orderReqDto.testPrepareOrder(member, address, coupon);
 
         for (int i = 0; i < orderReqDto.getProductList()
                                        .size(); i++) {
@@ -101,13 +105,14 @@ public class OrderService {
     public OrderResDto testSaveOrder(String impUid, OrderReqDto orderReqDto) {
         // 1. DTO로부터 정보 추출
         Member member = getMember();
+        Address address = getAddress(orderReqDto.getAddressId());
         Coupon coupon = getCoupon(orderReqDto.getCouponId());
 
         // 2. 상품과 수량 조회 및 재고 감소
         List<Product> products = decreaseProductsStock(orderReqDto.getProductList());
 
         // 3. 주문 생성
-        Order order = testCreateOrder(orderReqDto, member, coupon, products, impUid);
+        Order order = testCreateOrder(orderReqDto, member, address, coupon, products, impUid);
 
         // 4. 주문 저장
         orderRepository.save(order);
@@ -237,9 +242,9 @@ public class OrderService {
     }
 
     @Transactional
-    public Order testCreateOrder(OrderReqDto orderReqDto, Member member, Coupon coupon, List<Product> products,
-                                 String imUid) {
-        Order order = orderReqDto.prepareOrder(member, coupon, imUid);
+    public Order testCreateOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon,
+                                 List<Product> products, String imUid) {
+        Order order = orderReqDto.prepareOrder(member, address, coupon, imUid);
 
         for (int i = 0; i < orderReqDto.getProductList()
                                        .size(); i++) {
