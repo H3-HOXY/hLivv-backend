@@ -1,9 +1,6 @@
 package hoxy.hLivv.dto.order;
 
-import hoxy.hLivv.entity.Coupon;
-import hoxy.hLivv.entity.Member;
-import hoxy.hLivv.entity.Order;
-import hoxy.hLivv.entity.OrderProduct;
+import hoxy.hLivv.entity.*;
 import hoxy.hLivv.entity.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,33 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderReqDto {
-    /**
-     * 주문 배송지 관련 정보
-     */
-    private String streetAddress;
-    private String detailedAddress;
-    private String zipCode;
-    private String telephoneNumber;
-    private String mobilePhoneNumber;
+    private Long addressId;
     private String requestMsg;
-    private String order_id;
-
-    /**
-     * 결제 금액 관련 정보
-     */
     private Long orderPoint;
     private LocalDate requestDate;
     private List<OrderProductReqDto> productList;
     private Long couponId;
 
-    public Order prepareOrder(Member member, Coupon coupon, String impUid) {
+    public Order prepareOrder(Member member, Address address, Coupon coupon, String impUid) {
         Order order = Order.builder()
                            .member(member)
-                           .streetAddress(this.getStreetAddress())
-                           .detailedAddress(this.getDetailedAddress())
-                           .zipCode(this.getZipCode())
-                           .telephoneNumber(this.getTelephoneNumber())
-                           .mobilePhoneNumber(this.getMobilePhoneNumber())
+                           .address(address)
                            .requestMsg(this.requestMsg)
                            .orderPoint(this.orderPoint)
                            .orderStatus(OrderStatus.결제대기)
@@ -59,14 +40,10 @@ public class OrderReqDto {
         return order;
     }
 
-    public Order testPrepareOrder(Member member, Coupon coupon) {
+    public Order testPrepareOrder(Member member, Address address, Coupon coupon) {
         Order order = Order.builder()
                            .member(member)
-                           .streetAddress(this.getStreetAddress())
-                           .detailedAddress(this.getDetailedAddress())
-                           .zipCode(this.getZipCode())
-                           .telephoneNumber(this.getTelephoneNumber())
-                           .mobilePhoneNumber(this.getMobilePhoneNumber())
+                           .address(address)
                            .requestMsg(this.requestMsg)
                            .orderPoint(this.orderPoint)
                            .orderStatus(OrderStatus.결제대기)

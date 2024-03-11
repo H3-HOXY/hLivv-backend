@@ -40,22 +40,12 @@ public class OrderResDto {
                                                           .map(OrderProductResDto::from)
                                                           .collect(Collectors.toList());
         Coupon coupon = order.getOrderCoupon();
-
-        var addressDto = AddressDto.builder()
-                                   .streetAddress(order.getStreetAddress())
-                                   .detailedAddress(order.getDetailedAddress())
-                                   .zipCode(order.getZipCode())
-                                   .telephoneNumber(order.getTelephoneNumber())
-                                   .mobilePhoneNumber(order.getMobilePhoneNumber())
-                                   .requestMsg(order.getRequestMsg())
-                                   .build();
-
         String couponDesc = coupon != null ? coupon.getCouponDesc() : "No coupon applied";
         return OrderResDto.builder()
                           .orderId(order.getOrderId())
                           .orderRequesterDto(
                                   OrderRequesterDto.from(order.getMember(), (long) (order.getOrderCash() * 0.001)))
-                          .addressDto(addressDto)
+                          .addressDto(AddressDto.from(order.getAddress()))
                           .orderDate(order.getOrderDate())
                           .requestMsg(order.getRequestMsg())
                           .subTotal(order.getSubTotal())
