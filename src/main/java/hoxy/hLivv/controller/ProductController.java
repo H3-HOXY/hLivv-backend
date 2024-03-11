@@ -3,6 +3,7 @@ package hoxy.hLivv.controller;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.dto.review.ReviewDto;
+import hoxy.hLivv.dto.review.ReviewImageDto;
 import hoxy.hLivv.dto.review.WriteReview;
 import hoxy.hLivv.service.ProductService;
 import hoxy.hLivv.service.S3Service;
@@ -70,11 +71,19 @@ public class ProductController {
     @Operation(summary = "상품에 리뷰 작성")
     @PostMapping(value = "/product/{productId}/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
-    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long
-                                                                             productId,
-                                                                     WriteReview.Request writeReviewRequest,
-                                                                     @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
-        return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest,
+    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long productId,
+                                                                     @RequestParam(name = "reviewText") String reviewText,
+                                                                     @RequestParam(name = "star") Integer star,
+                                                                     @RequestParam(name = "reviewImages", required = false) List<ReviewImageDto> reviewImages,
+                                                                     @RequestPart(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
+        var request = new WriteReview.Request();
+        request.setReviewText(reviewText);
+        request.setStar(star);
+        if (reviewImages == null) {
+            reviewImages = List.of();
+        }
+        request.setReviewImages(reviewImages);
+        return ResponseEntity.ok(productService.writeReviewToProduct(productId, request,
                                                                      Arrays.stream(imageFiles)
                                                                            .toList()));
     }
