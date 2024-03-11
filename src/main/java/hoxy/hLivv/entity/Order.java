@@ -35,33 +35,16 @@ public class Order {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    /**
-     * 주문 배송지 관련 정보
-     */
-    @Column(name = "street_address")
-    private String streetAddress;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @Column(name = "detailed_address")
-    private String detailedAddress;
-
-    @Column(name = "zip_code")
-    private String zipCode;
-
-    @Column(name = "telephone_number")
-    private String telephoneNumber;
-
-    @Column(name = "mobile_phone_number")
-    private String mobilePhoneNumber;
-
-    @Column(name = "request_msg")
-    private String requestMsg;
-
-    /**
-     * 결제 금액 관련 정보
-     */
     @Column(name = "order_date")
     @CreatedDate
     private LocalDateTime orderDate;
+
+    @Column(name = "request_msg")
+    private String requestMsg;
 
     @Column(name = "sub_total")
     private Long subTotal;
@@ -74,7 +57,6 @@ public class Order {
 
     @Column(name = "order_point")
     private Long orderPoint;
-
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
@@ -92,7 +74,6 @@ public class Order {
 
     @Column(length = 50, unique = true)
     private String impUid;
-
 
     public void applyCoupon(MemberCoupon memberCoupon) {
         memberCoupon.use();
