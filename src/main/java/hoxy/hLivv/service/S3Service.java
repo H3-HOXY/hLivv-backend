@@ -23,7 +23,7 @@ import java.util.UUID;
 public class S3Service {
     private final S3Template s3Template;
 
-    private final String bucketName = "hlivv-s3-bucket";
+    private final String imageBucketName = "hlivv-image-bucket";
 
     @Value("${cloud.aws.region.static}")
     private String region;
@@ -50,7 +50,7 @@ public class S3Service {
             var uuid = UUID.randomUUID()
                            .toString();
 
-            var result = s3Template.upload(bucketName, imagePath + "/" + uuid + fileName, imageFile.getInputStream(), ObjectMetadata.builder()
+            var result = s3Template.upload(imageBucketName, imagePath + "/" + uuid + fileName, imageFile.getInputStream(), ObjectMetadata.builder()
                                                                                                                                     .contentType(imageFile.getContentType())
                                                                                                                                     .build());
 
@@ -76,7 +76,7 @@ public class S3Service {
                                      .append("/")
                                      .append(splitted[splitted.length - 1])
                                      .toString();
-        s3Template.deleteObject(bucketName, key);
+        s3Template.deleteObject(imageBucketName, key);
 
     }
 
@@ -84,7 +84,7 @@ public class S3Service {
         REVIEW("review"),
         RESTORE("restore"),
         PROFILE("profile"),
-        PRODUCT("PRODUCT");
+        PRODUCT("product");
 
         private final String path;
 
@@ -96,6 +96,7 @@ public class S3Service {
         public String toString() {
             return path;
         }
+
     }
 
     /**

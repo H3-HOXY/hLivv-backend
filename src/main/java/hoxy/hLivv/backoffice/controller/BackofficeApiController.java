@@ -9,7 +9,6 @@ import hoxy.hLivv.service.MemberService;
 import hoxy.hLivv.service.ProductService;
 import hoxy.hLivv.service.RestoreService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,21 +34,21 @@ public class BackofficeApiController {
     private final ProductService productService;
 
 
-    @Operation(summary = "회원 정보 업데이트", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "회원 정보 업데이트")
     @PostMapping("/updateMember")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<MemberDto> updateMember(@RequestBody MemberDto memberDto) {
         return ResponseEntity.ok(MemberDto.from(memberService.updateMember(memberDto)));
     }
 
-    @Operation(summary = "상품 정보 업데이트", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "상품 정보 업데이트")
     @PostMapping("/updateProduct")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto) {
         return ResponseEntity.ok(ProductDto.from(productService.updateProduct(productDto)));
     }
 
-    @Operation(summary = "상품 이미지 URL 가져오기", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "상품 이미지 URL 가져오기")
     @GetMapping("/getProductImageUrls")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<List<ProductImageDto>> getProductImages(@RequestParam Long id) {
@@ -57,7 +56,7 @@ public class BackofficeApiController {
     }
 
 
-    @Operation(summary = "memberId로 멤버 조회", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "memberId로 멤버 조회")
     @GetMapping("/member/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<MemberDto> getMemberById(@PathVariable Long id) {
@@ -65,14 +64,14 @@ public class BackofficeApiController {
     }
 
 
-    @Operation(summary = "restoreId로 리스토어 조회", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "restoreId로 리스토어 조회")
     @GetMapping("/getRestore")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<RestoreDto> getRestoreById(@RequestParam Long id) {
         return ResponseEntity.ok(restoreService.getRestore(id));
     }
 
-    @Operation(summary = "restoreId로 리스토어 이미지 조회", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "restoreId로 리스토어 이미지 조회")
     @GetMapping("/getRestoreImageUrls")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<List<String>> getRestoreImages(@RequestParam Long id) {
@@ -80,14 +79,14 @@ public class BackofficeApiController {
     }
 
 
-    @Operation(summary = "리스토어 정보 수정", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "리스토어 정보 수정")
     @PostMapping("/updateRestore")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<RestoreDto> updateRestore(@RequestBody RestoreDto restoreDto) {
         return ResponseEntity.ok(restoreService.updateRestore(restoreDto));
     }
 
-    @Operation(summary = "검수완료 된 모든 리스토어 완료 처리, 멤버에게 포인트 지급", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "검수완료 된 모든 리스토어 완료 처리, 멤버에게 포인트 지급")
     @PostMapping("/restore/rewarded")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<String> restoreRewarded() {
@@ -96,7 +95,7 @@ public class BackofficeApiController {
     }
 
 
-    @Operation(summary = "restoreId로 리스토어 완료 처리, 멤버에게 포인트 지급", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "restoreId로 리스토어 완료 처리, 멤버에게 포인트 지급")
     @PostMapping("/restore/rewarded/{restoreId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<String> restoreRewarded(@PathVariable Long restoreId) {

@@ -1,6 +1,7 @@
 package hoxy.hLivv.entity;
 
 import hoxy.hLivv.entity.enums.DeliveryStatus;
+import hoxy.hLivv.exception.DeliveryUpdateException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,8 +37,24 @@ public class Delivery {
                 .build();
     }
 
+
+
     public void updateDeliveryCompletedStatus(){
-        this.deliveryStatus=DeliveryStatus.배송완료;
+        if (this.deliveryStatus==DeliveryStatus.배송중){
+            this.deliveryStatus=DeliveryStatus.배송완료;
+        } else{
+            throw new DeliveryUpdateException("배송 상태가 '배송 중'이 아니므로 '배송 완료' 상태로 변경할 수 없습니다.");
+        }
     }
+
+    public void updateDeliveryProgressStatus(){
+        if (this.deliveryStatus==DeliveryStatus.배송접수){
+            this.deliveryStatus=DeliveryStatus.배송중;
+        } else{
+            throw new DeliveryUpdateException("배송 상태가 '배송 접수'가 아니므로 '배송 중' 상태로 변경할 수 없습니다.");
+        }
+    }
+
+
 
 }

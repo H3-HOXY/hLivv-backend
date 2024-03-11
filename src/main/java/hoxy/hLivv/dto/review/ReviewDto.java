@@ -22,7 +22,7 @@ public class ReviewDto {
 
     public ReviewDto(Review review) {
         this.writer = review.getMember()
-                            .getLoginId();
+                            .getName();
         this.reviewDate = review.getReviewDate();
         this.updatedDate = review.getUpdatedDate();
         this.reviewImages = review.getReviewImages()
