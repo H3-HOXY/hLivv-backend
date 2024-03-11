@@ -3,6 +3,7 @@ package hoxy.hLivv.service;
 import hoxy.hLivv.dto.CartDto;
 import hoxy.hLivv.dto.DeliveryResDto;
 import hoxy.hLivv.dto.MemberCouponDto;
+import hoxy.hLivv.dto.address.AddressReqDto;
 import hoxy.hLivv.dto.member.*;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.*;
@@ -36,7 +37,8 @@ public class MemberService {
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
     private final OrderProductRepository orderProductRepository;
-    private final DeliveryRepository deliveryRepository;
+    private final AddressService addressService;
+    private final AddressRepository addressRepository;
 
     @Transactional
     public MemberDto signup(SignupDto signupDto) {
@@ -76,6 +78,8 @@ public class MemberService {
         return MemberDto.from(memberRepository.save(member));
     }
 
+
+
     @Transactional
     public void signupDataGen(List<SignupDataGenDto> signupDtos) {
         for (SignupDataGenDto signupDto : signupDtos) {
@@ -112,7 +116,19 @@ public class MemberService {
             auth.getMemberAuthorities()
                 .add(memberAuthority);
             member.setAuthorities(Collections.singleton(memberAuthority));
-            memberRepository.save(member);
+//            memberRepository.save(member);
+            AddressReqDto addressReqDto = AddressReqDto.builder()
+                    .defaultYn(true)
+                    .streetAddress(signupDto.getStreetAddress())
+                    .detailedAddress("")
+                    .mobilePhoneNumber(member.getPhone())
+                    .telephoneNumber(member.getPhone())
+                    .requestMsg("")
+                    .zipCode(signupDto.getZipCode())
+                    .build();
+            Long addressId = addressRepository.save(addressReqDto.prepareAddress(memberRepository.save(member))).getAddressId();
+
+
         }
 
     }

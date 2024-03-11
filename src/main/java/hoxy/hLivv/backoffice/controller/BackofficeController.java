@@ -210,6 +210,10 @@ public class BackofficeController {
             if (inspectedGrade != null) {
                 insGrade = inspectedGrade.name() + "등급";
             }
+            String payback = "0";
+            if (restoreDto.getPayback() != null) {
+                payback = formatter.format(restoreDto.getPayback());
+            }
 
             String inspectMessage = String.format("""
                     [H.Livv]
@@ -228,7 +232,7 @@ public class BackofficeController {
                     , productDto.getName()
                     , restoreDto.getRequestGrade()
                     , insGrade
-                    , formatter.format(restoreDto.getPayback()) + "원"
+                    , payback + "원"
                     , msg
             );
 

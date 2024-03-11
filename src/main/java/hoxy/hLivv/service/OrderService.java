@@ -55,6 +55,20 @@ public class OrderService {
     }
 
     @Transactional
+    public void orderDataGen(OrderReqDto orderReqDto, Member member) {
+        Coupon coupon = getCoupon(orderReqDto.getCouponId());
+
+        // 2. 상품과 수량 조회 및 재고 감소
+        List<Product> products = decreaseProductsStock(orderReqDto.getProductList());
+
+        // 3. 주문 생성
+        Order order = createOrder(orderReqDto, member, coupon, products);
+
+        // 4. 주문 저장
+        orderRepository.save(order);
+    }
+
+    @Transactional
     public Order createOrder(OrderReqDto orderReqDto, Member member, Coupon coupon, List<Product> products) {
         Order order = orderReqDto.testPrepareOrder(member, coupon);
 
