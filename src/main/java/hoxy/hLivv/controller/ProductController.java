@@ -63,7 +63,7 @@ public class ProductController {
     @GetMapping("/product")
     public ResponseEntity<List<ProductDto>> getProduct(
             @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
-            @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+            @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(40) int pageSize,
             @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
         return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize, sortCriteria));
     }

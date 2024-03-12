@@ -2,8 +2,8 @@ spring:
   profiles:
     active: pay
   jpa:
-    #    hibernate:
-    #      ddl-auto: none
+    hibernate:
+      ddl-auto: none
 
     properties:
       hibernate:
