@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @since 2024.02.15
+ * @author 반정현
+ */
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

@@ -6,6 +6,7 @@ import hoxy.hLivv.dto.order.OrderReqDto;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,10 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "결제 요청")
     @PutMapping("/order/payment/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> validatePayment(@PathVariable String orderId, @PathVariable String impUid) {
@@ -33,6 +38,10 @@ public class OrderController {
         }
     }
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "주문 생성")
     @PostMapping("/order")
     public ResponseEntity<OrderResDto> createOrder(@RequestBody OrderReqDto orderReqDto) {
@@ -40,6 +49,10 @@ public class OrderController {
         return ResponseEntity.ok(orderResDto);
     }
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "결제 취소 요청")
     @PutMapping("/order/payment/cancel/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> requestCancelPayment(@PathVariable String orderId, @PathVariable String impUid) {
@@ -51,6 +64,10 @@ public class OrderController {
         }
     }
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "주문의 결제 취소 요청")
     @PutMapping("/order/payment/cancel/{orderId}")
     public ResponseEntity<OrderResDto> requestCancelPaymentByOrder(@PathVariable String orderId) {

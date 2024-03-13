@@ -17,6 +17,9 @@ import java.util.List;
 
 import static hoxy.hLivv.entity.Delivery.prepareDelivery;
 
+/**
+ * @author 이상원, 반정현
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "orders")
@@ -75,6 +78,9 @@ public class Order {
     @Column(length = 50, unique = true)
     private String impUid;
 
+    /**
+     * @author 반정현
+     */
     public void applyCoupon(MemberCoupon memberCoupon) {
         memberCoupon.use();
         Coupon coupon = memberCoupon.getCoupon();
@@ -82,6 +88,9 @@ public class Order {
         calculateTotal(coupon.getDiscountRate());
     }
 
+    /**
+     * @author 반정현
+     */
     public void calculateTotal(int discountRate) {
         Pair<Long, Long> totalPrices = this.products.stream()
                                                     .map(orderProduct -> {
@@ -118,7 +127,9 @@ public class Order {
         this.orderCash = this.orderTotal - this.orderPoint;
     }
 
-
+    /**
+     * @author 반정현
+     */
     public void addProduct(Product product, Integer quantity) {
         OrderProduct orderProduct = OrderProduct.builder()
                                                 .order(this)
@@ -129,19 +140,31 @@ public class Order {
         this.products.add(orderProduct);
     }
 
-    public void updateOrderCompletedStatus() {
-        this.orderStatus = OrderStatus.구매확정;
+    /**
+     * @author 반정현
+     */
+    public void updateOrderCompletedStatus(){
+        this.orderStatus= OrderStatus.구매확정;
     }
 
-    public void updatePaymentCompleteStatus() {
-        this.orderStatus = OrderStatus.주문접수;
+    /**
+     * @author 반정현
+     */
+    public void updatePaymentCompleteStatus(){
+        this.orderStatus= OrderStatus.주문접수;
     }
 
-    public void updatePaymentImUid(String impUid) {
-        this.impUid = impUid;
+    /**
+     * @author 반정현
+     */
+    public void updatePaymentImUid(String impUid){
+        this.impUid=impUid;
     }
 
-    public void updatePaymentCancelStatus() {
-        this.orderStatus = OrderStatus.결제실패;
+    /**
+     * @author 반정현
+     */
+    public void updatePaymentCancelStatus(){
+        this.orderStatus= OrderStatus.결제실패;
     }
 }

@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author 반정현
+ */
 @Getter
 @Builder
 @AllArgsConstructor

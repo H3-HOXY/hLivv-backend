@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @since 2024.03.08
+ * @author 반정현
+ */
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

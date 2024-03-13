@@ -7,6 +7,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+
+/**
+ * @author 이상원, 반정현
+ */
 @Entity
 @Table(name = "member_coupon")
 @Getter
@@ -34,6 +38,9 @@ public class MemberCoupon {
 
     // 생성자, 게터, 세터는 Lombok 어노테이션으로 대체
 
+    /**
+     * @author 반정현
+     */
     public static MemberCoupon issue(Member member, Coupon coupon) {
         LocalDate expireDate = LocalDate.now().plusDays(coupon.getCouponDuration());
 
@@ -46,6 +53,9 @@ public class MemberCoupon {
                 .build();
     }
 
+    /**
+     * @author 반정현
+     */
     public void use() {
         if (isUsed) {
             throw new AlreadyUsedCouponException("Coupon is already used.");

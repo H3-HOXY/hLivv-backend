@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * @since 2024. 03. 04
+ * @author 최정윤
+ */
+
 @Getter
 @Setter
 @Builder

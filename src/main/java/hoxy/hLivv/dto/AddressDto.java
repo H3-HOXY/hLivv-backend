@@ -3,6 +3,11 @@ package hoxy.hLivv.dto;
 import hoxy.hLivv.entity.Address;
 import lombok.*;
 
+/**
+ * @since 2024. 03. 04
+ * @author 최정윤
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

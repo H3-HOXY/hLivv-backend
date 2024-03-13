@@ -11,7 +11,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
+/**
+ * @author 반정현
+ */
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
     //Page<MemberCoupon> findByMemberAndIsUsedFalse(Member member, Pageable pageable);
     @Query("SELECT mc FROM MemberCoupon mc WHERE mc.member = :member AND mc.isUsed = false AND mc.expireDate >= :today")

@@ -12,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DeliveryService {
     private final DeliveryRepository deliveryRepository;
+
+    /**
+     * @author 반정현
+     */
     @Transactional
     public DeliveryDto updateDeliveryToInProgress(Long deliveryId) {
         Delivery delivery = deliveryRepository.findById(deliveryId)
@@ -20,6 +24,9 @@ public class DeliveryService {
         return DeliveryDto.from(delivery);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public DeliveryDto updateDeliveryToCompleted(Long deliveryId) {
         Delivery delivery = deliveryRepository.findById(deliveryId)

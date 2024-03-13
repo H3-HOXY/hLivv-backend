@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * @author 반정현
+ */
 @Getter
 @Setter
 @Builder
@@ -25,6 +28,9 @@ public class OrderRequesterDto {
     private Long expectedPoints;
     private MemberGrade grade;
 
+    /**
+     * @author 반정현
+     */
     public static OrderRequesterDto from(Member member, Long plusPoints) {
         if (member == null) return null;
         return OrderRequesterDto.builder()

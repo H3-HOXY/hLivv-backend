@@ -79,6 +79,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cart> carts;
 
+    /**
+     * @author 반정현
+     */
     public Cart addProductToCart(Product product, Integer qty) {
         Cart cart = Cart.builder()
                 .cartId(new CartId(this.getMemberId(), product.getId()))
@@ -90,10 +93,16 @@ public class Member {
         return cart;
     }
 
+    /**
+     * @author 반정현
+     */
     public void removeCart(Cart cart) {
         this.carts.remove(cart);
     }
 
+    /**
+     * @author 반정현
+     */
     public Long usePoints(Long pointsToUse) {
         if (this.points!=0 && this.points < 100) {
             throw new InvalidPointException("Minimum 100 points are required to use points.");
@@ -105,6 +114,9 @@ public class Member {
         return pointsToUse;
     }
 
+    /**
+     * @author 반정현
+     */
     public void increasePoints(Long amount) {
         this.points += amount;
     }

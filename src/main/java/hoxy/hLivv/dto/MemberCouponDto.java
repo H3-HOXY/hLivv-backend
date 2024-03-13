@@ -21,6 +21,9 @@ public class MemberCouponDto {
     private Integer discountRate;
     private boolean isUsed;
 
+    /**
+     * @author 반정현
+     */
     public static MemberCouponDto from(MemberCoupon memberCoupon) {
         return MemberCouponDto.builder()
                               .couponId(memberCoupon.getCoupon()

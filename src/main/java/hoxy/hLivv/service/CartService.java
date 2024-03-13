@@ -27,7 +27,9 @@ public class CartService {
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
 
-
+    /**
+     * @author 반정현
+     */
     @Transactional
     public CartDto addProductToCart(Long productId, Integer qty) {
         Member member = getMember();
@@ -38,12 +40,18 @@ public class CartService {
         return CartDto.from(cart);
     }
 
+    /**
+     * @author 반정현
+     */
     // 장바구니 상품 수량 갱신
     private Cart updateCart(Cart cart, Integer qty) {
         cart.updateQuantity(cart.getCartQty() + qty);
         return cart;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public CartDto updateCart(Long productId, Integer qty) {
         Member member = getMember();
@@ -56,6 +64,9 @@ public class CartService {
         return CartDto.from(cart);
     }
 
+    /**
+     * @author 반정현
+     */
     // 장바구니 상품 삭제
     @Transactional
     public void deleteFromCart(Long productId) {
@@ -64,6 +75,9 @@ public class CartService {
         member.removeCart(cart);
     }
 
+    /**
+     * @author 반정현
+     */
     // 장바구니 상품 목록 삭제
     @Transactional
     public void deleteListFromCart(List<Long> productIds) {
@@ -74,12 +88,18 @@ public class CartService {
         carts.forEach(member::removeCart);
     }
 
+    /**
+     * @author 반정현
+     */
     private Member getMember() {
         return SecurityUtil.getCurrentUsername()
                 .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                 .orElseThrow(() -> new NotFoundMemberException("Member not found"));
     }
 
+    /**
+     * @author 반정현
+     */
     private Cart getCart(Long memberId,Long productId){
         return cartRepository.findById(new CartId(memberId, productId))
                 .orElseThrow(() -> new NotFoundCartItemException("장바구니에 해당 상품이 없습니다."));

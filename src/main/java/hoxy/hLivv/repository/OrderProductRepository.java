@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * @author 반정현
+ */
 public interface OrderProductRepository extends JpaRepository<OrderProduct, Long> {
 
     @Query("SELECT op FROM OrderProduct op WHERE op.delivery.deliveryStatus = :status")

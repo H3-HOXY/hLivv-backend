@@ -8,6 +8,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.Date;
 
+/**
+ * @author 이상원, 반정현
+ */
 @Entity
 @Table(name = "delivery")
 @Getter
@@ -31,6 +34,9 @@ public class Delivery {
     @Column(name = "delivery_end")
     private LocalDate deliveryEnd;
 
+    /**
+     * @author 반정현
+     */
     public static Delivery prepareDelivery(){
         return Delivery.builder()
                 .deliveryStatus(DeliveryStatus.배송접수)
@@ -38,7 +44,9 @@ public class Delivery {
     }
 
 
-
+    /**
+     * @author 반정현
+     */
     public void updateDeliveryCompletedStatus(){
         if (this.deliveryStatus==DeliveryStatus.배송중){
             this.deliveryStatus=DeliveryStatus.배송완료;
@@ -47,6 +55,9 @@ public class Delivery {
         }
     }
 
+    /**
+     * @author 반정현
+     */
     public void updateDeliveryProgressStatus(){
         if (this.deliveryStatus==DeliveryStatus.배송접수){
             this.deliveryStatus=DeliveryStatus.배송중;
