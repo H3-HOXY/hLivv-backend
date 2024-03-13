@@ -18,6 +18,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,7 +29,7 @@ import java.util.List;
 @AllArgsConstructor
 @Tag(name = "주소록 API", description = "주소록 관리와 관련된 작업들")
 public class AddressController {
-	private final AddressService addressService;
+    private final AddressService addressService;
 
 	@Operation(summary = "주소록 생성")
 	@PostMapping("/address")
@@ -47,11 +50,17 @@ public class AddressController {
 		var address = addressService.getAddressWith(addressId);
 		return ResponseEntity.ok(address);
 	}
+    @Operation(summary = "내 주소록 조회")
+    @GetMapping("/address/my")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity<List<AddressDto>> getMyAddress() {
+        return ResponseEntity.ok(addressService.getMyAddress());
+    }
 
-	@Operation(summary = "주문 주소록 조회")
-	@GetMapping("/address/{orderId}")
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	public ResponseEntity<List<AddressDto>> getOrderAddress(@PathVariable Long orderId) {
-		return ResponseEntity.ok(addressService.getOrderAddress(orderId));
-	}
+//	@Operation(summary = "주문 주소록 조회")
+//	@GetMapping("/address/{orderId}")
+//	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+//	public ResponseEntity<List<AddressDto>> getOrderAddress(@PathVariable Long orderId) {
+//		return ResponseEntity.ok(addressService.getOrderAddress(orderId));
+//	}
 }

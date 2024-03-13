@@ -3,7 +3,10 @@ package hoxy.hLivv.entity;
 import hoxy.hLivv.entity.enums.OrderStatus;
 import hoxy.hLivv.entity.enums.ProductType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.util.Pair;
@@ -26,8 +29,8 @@ import static hoxy.hLivv.entity.Delivery.prepareDelivery;
 @NoArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="order_seq")
-    @SequenceGenerator(name="order_seq", sequenceName="order_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
     @Column(name = "order_id")
     private Long orderId;
 
@@ -80,7 +83,7 @@ public class Order {
      */
     public void applyCoupon(MemberCoupon memberCoupon) {
         memberCoupon.use();
-        Coupon coupon=memberCoupon.getCoupon();
+        Coupon coupon = memberCoupon.getCoupon();
         this.orderCoupon = coupon;
         calculateTotal(coupon.getDiscountRate());
     }
@@ -90,34 +93,37 @@ public class Order {
      */
     public void calculateTotal(int discountRate) {
         Pair<Long, Long> totalPrices = this.products.stream()
-                .map(orderProduct -> {
-                    long originalPrice = 0L;
-                    long discountedPrice = 0L;
-                    Product product = orderProduct.getProduct();
-                    if (ProductType.getProductType(product) == ProductType.COLLABO) {
-                        if (product instanceof Collabo collabo) {
-                            for (ProductCollabo productCollabo : collabo.getProductCollabo()) {
-                                if (productCollabo.getProduct() != null && productCollabo.getQuantity() != null) {
-                                    Product product1 = productCollabo.getProduct();
-                                    originalPrice += (long) product1.getPrice() * productCollabo.getQuantity()* orderProduct.getOrderProductQty();
-                                }
-                            }
-                            discountedPrice += (long)(originalPrice * (1 - (collabo.getDiscountPercent()*0.01)));
-                        }
-                    } else {
-                        originalPrice = (long) product.getPrice() * orderProduct.getOrderProductQty();
-                        discountedPrice = (long)(originalPrice * (1 - (product.getDiscountPercent()*0.01)));
-                    }
+                                                    .map(orderProduct -> {
+                                                        long originalPrice = 0L;
+                                                        long discountedPrice = 0L;
+                                                        Product product = orderProduct.getProduct();
+                                                        if (ProductType.getProductType(
+                                                                product) == ProductType.COLLABO) {
+                                                            if (product instanceof Collabo collabo) {
+                                                                for (ProductCollabo productCollabo : collabo.getProductCollabo()) {
+                                                                    if (productCollabo.getProduct() != null && productCollabo.getQuantity() != null) {
+                                                                        Product product1 = productCollabo.getProduct();
+                                                                        originalPrice += (long) product1.getPrice() * productCollabo.getQuantity() * orderProduct.getOrderProductQty();
+                                                                    }
+                                                                }
+                                                                discountedPrice += (long) (originalPrice * (1 - (collabo.getDiscountPercent() * 0.01)));
+                                                            }
+                                                        } else {
+                                                            originalPrice = (long) product.getPrice() * orderProduct.getOrderProductQty();
+                                                            discountedPrice = (long) (originalPrice * (1 - (product.getDiscountPercent() * 0.01)));
+                                                        }
 
-                    return Pair.of(originalPrice, discountedPrice);
-                })
-                .reduce(Pair.of(0L, 0L), (a, b) -> Pair.of(a.getFirst() + b.getFirst(), a.getSecond() + b.getSecond()));
+                                                        return Pair.of(originalPrice, discountedPrice);
+                                                    })
+                                                    .reduce(Pair.of(0L, 0L),
+                                                            (a, b) -> Pair.of(a.getFirst() + b.getFirst(),
+                                                                              a.getSecond() + b.getSecond()));
 
         long subTotal = totalPrices.getFirst();
         long discountedTotal = totalPrices.getSecond();
 
         this.subTotal = subTotal;
-        this.orderTotal = (long) (discountedTotal * (1 - (discountRate*0.01)));
+        this.orderTotal = (long) (discountedTotal * (1 - (discountRate * 0.01)));
         this.orderCash = this.orderTotal - this.orderPoint;
     }
 
@@ -126,11 +132,11 @@ public class Order {
      */
     public void addProduct(Product product, Integer quantity) {
         OrderProduct orderProduct = OrderProduct.builder()
-                .order(this)
-                .product(product)
-                .orderProductQty(quantity)
-                .delivery(prepareDelivery())
-                .build();
+                                                .order(this)
+                                                .product(product)
+                                                .orderProductQty(quantity)
+                                                .delivery(prepareDelivery())
+                                                .build();
         this.products.add(orderProduct);
     }
 

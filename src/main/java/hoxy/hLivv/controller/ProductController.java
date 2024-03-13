@@ -3,6 +3,7 @@ package hoxy.hLivv.controller;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.dto.review.ReviewDto;
+import hoxy.hLivv.dto.review.ReviewImageDto;
 import hoxy.hLivv.dto.review.WriteReview;
 import hoxy.hLivv.service.ProductService;
 import hoxy.hLivv.service.S3Service;
@@ -17,11 +18,13 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -59,24 +62,35 @@ public class ProductController {
 
     @Operation(summary = "전체 상품 조회")
     @GetMapping("/product")
-    public ResponseEntity<List<ProductDto>> getProduct(@RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
-                                                       @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
-                                                       @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
+    public ResponseEntity<List<ProductDto>> getProduct(
+            @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+            @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(40) int pageSize,
+            @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
         return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize, sortCriteria));
     }
 
     @Operation(summary = "상품에 리뷰 작성")
-    @PostMapping(value = "/product/{productId}/review")
+    @PostMapping(value = "/product/{productId}/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
-    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long
-                                                                             productId,
-                                                                     WriteReview.Request writeReviewRequest,
-                                                                     @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
-        return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest, imageFiles));
+    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long productId,
+                                                                     @RequestParam(name = "reviewText") String reviewText,
+                                                                     @RequestParam(name = "star") Integer star,
+                                                                     @RequestParam(name = "reviewImages", required = false) List<ReviewImageDto> reviewImages,
+                                                                     @RequestPart(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
+        var request = new WriteReview.Request();
+        request.setReviewText(reviewText);
+        request.setStar(star);
+        if (reviewImages == null) {
+            reviewImages = List.of();
+        }
+        request.setReviewImages(reviewImages);
+        return ResponseEntity.ok(productService.writeReviewToProduct(productId, request,
+                                                                     Arrays.stream(imageFiles)
+                                                                           .toList()));
     }
 
 
-    @Operation(summary = "상품 리뷰 조회")
+    //@Operation(summary = "상품 리뷰 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/product/{productId}/review")
     public ResponseEntity<List<ReviewDto>> getReviewsByProductId(@PathVariable(name = "productId") Long productId) {
         return ResponseEntity.ok(productService.getReviewsByProductId(productId));

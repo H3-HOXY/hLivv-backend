@@ -221,9 +221,6 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    /**
-     * @author 반정현
-     */
     @Transactional(readOnly = true)
     public Page<MemberCouponDto> getUnusedCoupons(Pageable pageable) {
         Member member = getMember();

@@ -1,6 +1,5 @@
 package hoxy.hLivv.service;
 
-import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.restore.RestoreDto;
 import hoxy.hLivv.dto.restore.RestoreRegisterDto;
 import hoxy.hLivv.dto.restore.RestoreStatusDto;
@@ -29,11 +28,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +41,7 @@ public class RestoreService {
     private final ProductRepository productRepository;
     private final RestoreRepository restoreRepository;
     private final RestoreImageRepository restoreImageRepository;
+    private final S3Service s3Service;
     @PersistenceContext
     private final EntityManager em;
 
@@ -56,6 +54,8 @@ public class RestoreService {
         if (!product.isRestore()) {
             throw new NotFoundProductException("Re-store unavailable product");
         }
+        //upload restore image
+
         Restore restore = Restore.builder()
                 .member(SecurityUtil.getCurrentUsername()
                         .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)

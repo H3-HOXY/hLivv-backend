@@ -4,7 +4,6 @@ import hoxy.hLivv.dto.CouponDto;
 import hoxy.hLivv.dto.MemberCouponDto;
 import hoxy.hLivv.service.CouponService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
