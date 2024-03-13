@@ -22,27 +22,27 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 
     @Query("SELECT new hoxy.hLivv.dto.order.MonthlyOrderSummaryDto(" +
-            "YEAR(o.orderDate) AS year, " +
-            "MONTH(o.orderDate) AS month, " +
+            "YEAR(o.requestDate) AS year, " +
+            "MONTH(o.requestDate) AS month, " +
             "0 AS day, " +
             "SUM(o.orderTotal) AS orderTotal, " +
             "COUNT(*) AS cnt) " +
             "FROM Order o " +
-            "where YEAR(o.orderDate) = 2024 " +
-            "GROUP BY YEAR(o.orderDate), MONTH(o.orderDate) " +
-            "ORDER BY YEAR(o.orderDate), MONTH(o.orderDate)")
+            "where YEAR(o.requestDate) = 2024 " +
+            "GROUP BY YEAR(o.requestDate), MONTH(o.requestDate) " +
+            "ORDER BY YEAR(o.requestDate), MONTH(o.requestDate)")
     List<MonthlyOrderSummaryDto> findMonthlyOrderSummaries();
 
 
     @Query("SELECT new hoxy.hLivv.dto.order.MonthlyOrderSummaryDto(" +
-            "YEAR(o.orderDate) AS year, " +
-            "MONTH(o.orderDate) AS month, " +
-            "DAY(o.orderDate) AS day, " +
+            "YEAR(o.requestDate) AS year, " +
+            "MONTH(o.requestDate) AS month, " +
+            "DAY(o.requestDate) AS day, " +
             "SUM(o.orderTotal) AS orderTotal, " +
             "COUNT(*) AS cnt) " +
             "FROM Order o " +
-            "where o.orderDate >= CURRENT_DATE " +
-            "GROUP BY YEAR(o.orderDate), MONTH(o.orderDate), DAY(o.orderDate) " +
-            "ORDER BY YEAR(o.orderDate), MONTH(o.orderDate), DAY(o.orderDate)")
+            "where o.requestDate >= CURRENT_DATE " +
+            "GROUP BY YEAR(o.requestDate), MONTH(o.requestDate), DAY(o.requestDate) " +
+            "ORDER BY YEAR(o.requestDate), MONTH(o.requestDate), DAY(o.requestDate)")
     MonthlyOrderSummaryDto findTodayOrderSummaries();
 }
