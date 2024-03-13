@@ -7,6 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/**
+ * @since 2024. 03. 04
+ * @author 최정윤
+ */
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
