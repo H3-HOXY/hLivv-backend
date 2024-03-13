@@ -62,6 +62,17 @@ public class CollaboController {
         return ResponseEntity.ok(collaboService.getAllCollaboProduct(pageNo, pageSize, sortCriteria));
     }
 
+    @GetMapping("/collabo/season/{categoryId}")
+    @PermitAll
+    public ResponseEntity<List<CollaboDto>> getCollaboProductsByCategoryId(
+            @PathVariable(name = "categoryId") String categoryId,
+            @Parameter(description = "몇번째 페이지", example = "1") @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
+            @Parameter(description = "한번에 조회할 항목의 개수", example = "20") @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+            @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
+        return ResponseEntity.ok(
+                collaboService.getCollaboProductsWithCategoryId(categoryId, pageNo, pageSize, sortCriteria));
+    }
+
 
     @Operation(summary = "콜라보 상품 수정")
     @PutMapping("/collabo")
