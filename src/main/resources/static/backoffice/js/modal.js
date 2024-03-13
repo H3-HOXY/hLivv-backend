@@ -66,7 +66,9 @@ $(document).ready(function() {
         var points = $(this).attr('data-points') || '0';
         var signupDate = $(this).attr('data-signupdate') || 'N/A';
         var interiorType = $(this).attr('data-interiortype') || 'N/A';
-        var grade = $(this).data('data-grade') || '';
+        var grade = $(this).attr('data-grade') || 'FLOWER';
+
+        console.log(grade)
         // 모달의 각 필드에 값을 설정
         console.log(points.toLocaleString())
         $('#userDetailModal #loginId').text(loginId);
@@ -159,12 +161,15 @@ $(document).ready(function() {
         var sellingPrice = price - price*(discountPercent/100)
         // 모달의 각 필드에 값을 설정
         $('#productDetailModal #productName').text(name);
-        $('#productDetailModal #productPrice').text(price);
+        // $('#productDetailModal #productPrice').text(price);
+        $('#productDetailModal #productPrice').text(parseInt(price, 10).toLocaleString());
         $('#productDetailModal #discountPercent').text(discountPercent);
         $('#productDetailModal #category').text(category);
         $('#productDetailModal #stockQuantity').text(stockQuantity);
         $('#productDetailModal #productBrand').text(productBrand);
-        $('#productDetailModal #sellingPrice').text(sellingPrice);
+        // $('#productDetailModal #sellingPrice').text(sellingPrice);
+        $('#productDetailModal #sellingPrice').text(parseInt(sellingPrice, 10).toLocaleString());
+        // $('#userDetailModal #point').text();
 
         $.ajax({
             type: 'get',
@@ -222,11 +227,14 @@ $(document).ready(function() {
 
                 $('#productDetailModal #productName').text(response.name);
                 $('#productDetailModal #productPrice').text(response.price);
+                $('#productDetailModal #productPrice').text(parseInt(response.price, 10).toLocaleString());
                 $('#productDetailModal #discountPercent').text(response.discountPercent);
                 $('#productDetailModal #category').text(response.category.name);
                 $('#productDetailModal #stockQuantity').text(response.stockQuantity);
                 $('#productDetailModal #productBrand').text(response.productBrand);
-                $('#productDetailModal #sellingPrice').text(sellingPrice);
+                // $('#productDetailModal #sellingPrice').text(sellingPrice);
+                $('#productDetailModal #sellingPrice').text(parseInt(response.sellingPrice, 10).toLocaleString());
+                $('#userDetailModal #point').text();
 
                 $('#productDetailModal .radio_buttons input[type="radio"]').prop('checked', false);
                 // 추출한 grade 값에 해당하는 라디오 버튼을 체크
@@ -261,7 +269,7 @@ $(document).ready(function() {
         e.preventDefault(); // 기본 앵커 동작 방지
 
         var name = $('#productDetailModal #productName').text();
-        var price = $('#productDetailModal #productPrice').text();
+        var price = $('#productDetailModal #productPrice').text().replace(/,/g, '');
         var discountPercent = $('#productDetailModal #discountPercent').text();
         var category = $('#productDetailModal #category').text();
         var stockQuantity = $('#productDetailModal #stockQuantity').text();
@@ -282,9 +290,11 @@ $(document).ready(function() {
             }
         });
     });
+
     var originStatus = null
     var restoreId = null
     var productPrice = null
+
     $('.restore-modal').on('click', function () {
         // 클릭된 행에서 데이터 속성 값 추출
         restoreId = $(this).attr('data-restoreId') || '0';

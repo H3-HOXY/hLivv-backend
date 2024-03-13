@@ -6,6 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * @since 2024. 03. 04
+ * @author 최정윤
+ */
+
 @Getter
 @Builder
 @AllArgsConstructor

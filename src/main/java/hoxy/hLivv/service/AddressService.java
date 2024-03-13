@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @since 2024. 03. 04
+ * @author 최정윤
+ */
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -28,17 +33,20 @@ public class AddressService {
 
     @Transactional
     public AddressDto saveAddress(AddressReqDto addressReqDto) {
-        // 	1. DTO로부터 정보 추출
+        // 	1. DTO로부터 정보 추출 -> 상원(DTO로부터는 아니고 현재 로그인 된 유저정보임)
         Member member = getMember();
-
+        // 코드 리팩토링
+        return AddressDto.from(addressRepository.save(addressReqDto.prepareAddress(member)));
         // 	2. 주소록 생성
-        Address address = createAddress(addressReqDto, member);
+//        Address address = createAddress(addressReqDto, member);
 
         //  3. 주소록 저장
-        address = addressRepository.save(address);
+//        address = addressRepository.save(address);
+
 
         // 	4. 생성된 주소 반환
-        return AddressDto.from(address);
+//        return AddressDto.from(address);
+
     }
 
     @Transactional

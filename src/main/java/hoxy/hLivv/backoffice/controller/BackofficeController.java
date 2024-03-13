@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -162,7 +163,8 @@ public class BackofficeController {
     @GetMapping("/restores")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public String restores(Model model, @PageableDefault(size = 50, sort = "regDate", direction = Sort.Direction.DESC) Pageable pageable) {
-        model.addAttribute("restores", restoreService.getAllProductsWithPagination(pageable));
+        Page<RestoreDto> allProductsWithPagination = restoreService.getAllProductsWithPagination(pageable);
+        model.addAttribute("restores", allProductsWithPagination);
         return "backoffice/restore";
     }
 
@@ -210,6 +212,10 @@ public class BackofficeController {
             if (inspectedGrade != null) {
                 insGrade = inspectedGrade.name() + "등급";
             }
+            String payback = "0";
+            if (restoreDto.getPayback() != null) {
+                payback = formatter.format(restoreDto.getPayback());
+            }
 
             String inspectMessage = String.format("""
                     [H.Livv]
@@ -228,7 +234,7 @@ public class BackofficeController {
                     , productDto.getName()
                     , restoreDto.getRequestGrade()
                     , insGrade
-                    , formatter.format(restoreDto.getPayback()) + "원"
+                    , payback + "원"
                     , msg
             );
 

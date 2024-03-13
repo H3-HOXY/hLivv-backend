@@ -3,6 +3,11 @@ package hoxy.hLivv.dto;
 import hoxy.hLivv.entity.Address;
 import lombok.*;
 
+/**
+ * @since 2024. 03. 04
+ * @author 최정윤
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +22,6 @@ public class AddressDto {
     private String telephoneNumber;
     private String mobilePhoneNumber;
     private String requestMsg;
-    private String order_id;
     private boolean defaultYn;
 
     public static AddressDto from(Address address) {

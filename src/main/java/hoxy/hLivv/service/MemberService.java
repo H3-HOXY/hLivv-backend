@@ -3,7 +3,10 @@ package hoxy.hLivv.service;
 import hoxy.hLivv.dto.CartDto;
 import hoxy.hLivv.dto.DeliveryResDto;
 import hoxy.hLivv.dto.MemberCouponDto;
+import hoxy.hLivv.dto.address.AddressReqDto;
 import hoxy.hLivv.dto.member.*;
+import hoxy.hLivv.dto.order.OrderProductReqDto;
+import hoxy.hLivv.dto.order.OrderReqDto;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.*;
 import hoxy.hLivv.entity.compositekey.CartId;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +40,10 @@ public class MemberService {
     private final AuthorityRepository authorityRepository;
     private final PasswordEncoder passwordEncoder;
     private final OrderProductRepository orderProductRepository;
-    private final DeliveryRepository deliveryRepository;
+    private final AddressService addressService;
+    private final AddressRepository addressRepository;
+    private final OrderService orderService;
+    private final ProductRepository productRepository;
 
     @Transactional
     public MemberDto signup(SignupDto signupDto) {
@@ -76,8 +83,13 @@ public class MemberService {
         return MemberDto.from(memberRepository.save(member));
     }
 
+
+
     @Transactional
     public void signupDataGen(List<SignupDataGenDto> signupDtos) {
+
+        List<Long> productIds = productRepository.findAll().stream().map(Product::getId).toList();
+        Random random = new Random();
         for (SignupDataGenDto signupDto : signupDtos) {
             if (memberRepository.findOneWithAuthoritiesByLoginId(signupDto.getLoginId())
                                 .orElse(null) != null) {
@@ -112,7 +124,38 @@ public class MemberService {
             auth.getMemberAuthorities()
                 .add(memberAuthority);
             member.setAuthorities(Collections.singleton(memberAuthority));
-            memberRepository.save(member);
+//            memberRepository.save(member);
+            AddressReqDto addressReqDto = AddressReqDto.builder()
+                    .defaultYn(true)
+                    .streetAddress(signupDto.getStreetAddress())
+                    .detailedAddress("")
+                    .mobilePhoneNumber(member.getPhone())
+                    .telephoneNumber(member.getPhone())
+                    .requestMsg("")
+                    .zipCode(signupDto.getZipCode())
+                    .build();
+            // 1. 멤버 데이터 생성
+            Member SavedMember = memberRepository.save(member);
+            // 2. 생성된 멤버에 대한 주소록 데이터 생성
+            Address address = addressRepository.save(addressReqDto.prepareAddress(SavedMember));
+            // 3. 주문에서 주문한 상품 Dto 생성
+
+            int randomIndex = random.nextInt(productIds.size());
+            OrderProductReqDto orderProductReqDto = OrderProductReqDto.builder()
+                    .productId(productIds.get(randomIndex))//프로덕트 id 랜덤으로 받아오기
+                    .productQty(1)
+                    .build();
+            List<OrderProductReqDto> orderProductReqDtos = new ArrayList<>();
+            orderProductReqDtos.add(orderProductReqDto);
+            // 4. 주문 Dto 생성
+            OrderReqDto orderReqDto = OrderReqDto.builder()
+                    .productList(orderProductReqDtos)
+                    .orderPoint(0L)
+                    .requestDate(signupDto.getSignupDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1))
+                    .build();
+            // 5. 주문 저장
+            orderService.orderDataGen(orderReqDto, SavedMember,address);
+            // 6. 메인 DB에서 프로시져, 트리거 만들고 실행하기
         }
 
     }
