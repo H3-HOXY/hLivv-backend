@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * @author 반정현
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -30,7 +32,9 @@ public class OrderResDto {
     private LocalDate requestDate;
     private List<OrderProductResDto> products;
 
-
+    /**
+     * @author 반정현
+     */
     public static OrderResDto from(Order order){
         List<OrderProductResDto> productResDtoList = order.getProducts().stream()
                 .map(OrderProductResDto::from)

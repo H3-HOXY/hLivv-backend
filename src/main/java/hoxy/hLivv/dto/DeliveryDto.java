@@ -17,6 +17,9 @@ public class DeliveryDto {
     private LocalDate deliveryStart;
     private LocalDate deliveryEnd;
 
+    /**
+     * @author 반정현
+     */
     public static DeliveryDto from(Delivery delivery){
         return DeliveryDto.builder()
                 .deliveryId(delivery.getDeliveryId())

@@ -21,6 +21,9 @@ public class OrderProductDto {
     private Integer productQty;
     private DeliveryDto deliveryDto;
 
+    /**
+     * @author 반정현
+     */
     public static OrderProductDto from(OrderProduct orderProduct){
         return OrderProductDto.builder()
                 .orderId(orderProduct.getOrder().getOrderId())

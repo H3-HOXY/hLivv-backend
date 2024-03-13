@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * @author 반정현
+ */
 public interface CartRepository extends JpaRepository<Cart, CartId> {
     @Query("SELECT c FROM Cart c WHERE c.member = :member ORDER BY COALESCE(c.lastModifiedDate, c.createdDate) DESC")
     Page<Cart> findByMember(@Param("member") Member member, Pageable pageable);

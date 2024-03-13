@@ -27,6 +27,9 @@ public class CartDto {
     private boolean isEco;
 
 
+    /**
+     * @author 반정현
+     */
     public static CartDto from(Cart cart) {
         Product product = cart.getProduct();
         long price = 0L;

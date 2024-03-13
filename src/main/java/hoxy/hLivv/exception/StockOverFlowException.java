@@ -1,5 +1,7 @@
 package hoxy.hLivv.exception;
-
+/**
+ * @author 반정현
+ */
 public class StockOverFlowException extends RuntimeException {
     public StockOverFlowException() {
         super();

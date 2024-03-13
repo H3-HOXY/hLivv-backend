@@ -23,6 +23,10 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "결제 요청")
     @PutMapping("/order/payment/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> validatePayment(@PathVariable String orderId, @PathVariable String impUid) {
@@ -34,6 +38,10 @@ public class OrderController {
         }
     }
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "주문 생성")
     @PostMapping("/order")
     public ResponseEntity<OrderResDto> createOrder(@RequestBody OrderReqDto orderReqDto) {
@@ -41,6 +49,10 @@ public class OrderController {
         return ResponseEntity.ok(orderResDto);
     }
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "결제 취소 요청")
     @PutMapping("/order/payment/cancel/{orderId}/{impUid}")
     public ResponseEntity<OrderResDto> requestCancelPayment(@PathVariable String orderId, @PathVariable String impUid) {
@@ -52,6 +64,10 @@ public class OrderController {
         }
     }
 
+    /**
+     * @since 2024.02.24
+     * @author 반정현
+     */
     @Operation(summary = "주문의 결제 취소 요청")
     @PutMapping("/order/payment/cancel/{orderId}")
     public ResponseEntity<OrderResDto> requestCancelPaymentByOrder(@PathVariable String orderId) {

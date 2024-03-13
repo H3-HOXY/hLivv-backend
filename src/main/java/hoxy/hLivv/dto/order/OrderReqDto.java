@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
+/**
+ * @author 반정현
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -22,6 +24,9 @@ public class OrderReqDto {
     private List<OrderProductReqDto> productList;
     private Long couponId;
 
+    /**
+     * @author 반정현
+     */
     public Order prepareOrder(Member member, Address address, Coupon coupon, String impUid){
         Order order = Order.builder()
                 .member(member)
@@ -38,6 +43,9 @@ public class OrderReqDto {
         return order;
     }
 
+    /**
+     * @author 반정현
+     */
     public Order testPrepareOrder(Member member, Address address, Coupon coupon){
         Order order = Order.builder()
                 .member(member)

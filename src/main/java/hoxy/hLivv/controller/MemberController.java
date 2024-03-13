@@ -67,7 +67,10 @@ public class MemberController {
         return ResponseEntity.ok(memberResponseDto);
     }
 
-
+    /**
+     * @since 2024.02.14
+     * @author 반정현
+     */
     @Operation(summary = "로그인 된 멤버 미사용 쿠폰 조회")
     @GetMapping("/member/coupons")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -78,6 +81,10 @@ public class MemberController {
         return ResponseEntity.ok(coupons);
     }
 
+    /**
+     * @since 2024.02.15
+     * @author 반정현
+     */
     @Operation(summary = "로그인 된 멤버 장바구니 목록 조회")
     @GetMapping("member/cart")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -88,6 +95,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getCartsByMember(pageable));
     }
 
+    /**
+     * @since 2024.03.04
+     * @author 반정현
+     */
     @Operation(summary = "로그인 된 멤버 주문 목록 조회")
     @GetMapping("member/cart/all")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -95,6 +106,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getAllCartsByMember());
     }
 
+    /**
+     * @since 2024.02.22
+     * @author 반정현
+     */
     @Operation(summary = "전체 주문 목록 조회")
     @GetMapping("member/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -104,6 +119,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getOrdersByMember(pageable));
     }
 
+    /**
+     * @since 2024.02.22
+     * @author 반정현
+     */
     @Operation(summary = "선택된 상품 목록 조회")
     @PostMapping("member/cart/order")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -139,6 +158,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMonthlyMemberRegi());
     }
 
+    /**
+     * @since 2024.03.08
+     * @author 반정현
+     */
     @Operation(summary = "배송 완료 목록 조회")
     @GetMapping("member/delivery/completed")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -148,6 +171,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findCompletedDeliveriesByMemberId(pageable));
     }
 
+    /**
+     * @since 2024.03.08
+     * @author 반정현
+     */
     @Operation(summary = "배송 중 목록 조회")
     @GetMapping("member/delivery/progress")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -157,6 +184,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findInProgressDeliveriesByMemberId(pageable));
     }
 
+    /**
+     * @since 2024.03.08
+     * @author 반정현
+     */
     @Operation(summary = "주문 조회")
     @GetMapping("member/order/{orderId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -164,6 +195,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findOrderById(orderId));
     }
 
+    /**
+     * @since 2024.03.08
+     * @author 반정현
+     */
     @Operation(summary = "배송 조회")
     @GetMapping("member/delivery/{deliveryId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -171,6 +206,10 @@ public class MemberController {
         return ResponseEntity.ok(memberService.findDeliveryById(deliveryId));
     }
 
+    /**
+     * @since 2024.03.08
+     * @author 반정현
+     */
     @Operation(summary = "전체 배송 목록 조회")
     @GetMapping("member/delivery")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")

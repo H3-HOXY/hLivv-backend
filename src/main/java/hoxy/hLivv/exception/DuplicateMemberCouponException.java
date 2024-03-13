@@ -1,5 +1,8 @@
 package hoxy.hLivv.exception;
 
+/**
+ * @author 반정현
+ */
 public class DuplicateMemberCouponException extends RuntimeException {
     public DuplicateMemberCouponException() {
         super();

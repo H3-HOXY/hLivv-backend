@@ -4,6 +4,9 @@ import hoxy.hLivv.entity.OrderProduct;
 import hoxy.hLivv.entity.Product;
 import lombok.*;
 
+/**
+ * @author 반정현
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -13,6 +16,9 @@ public class OrderProductResDto {
     private Integer productQty;
     private Long productPrice;
 
+    /**
+     * @author 반정현
+     */
     public static OrderProductResDto from(OrderProduct orderProduct){
         Product product=orderProduct.getProduct();
         return OrderProductResDto.builder()
