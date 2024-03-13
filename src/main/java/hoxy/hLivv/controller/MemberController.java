@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author 이상원, 반정현
+ */
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -32,12 +35,18 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
 
+    /**
+     * @author 이상원
+     */
     @Operation(summary = "회원 가입")
     @PostMapping("/signup")
     public ResponseEntity<MemberDto> signup(@Valid @RequestBody SignupDto signupDto) {
         return ResponseEntity.ok(memberService.signup(signupDto));
     }
 
+    /**
+     * @author 이상원
+     */
     @Operation(summary = "회원 가입 데이터 생성")
     @PostMapping("/signup-data-gen")
     public ResponseEntity<String> signupDataGen(@Valid @RequestBody List<SignupDataGenDto> signupDataGenDtos) {
@@ -45,6 +54,9 @@ public class MemberController {
         return ResponseEntity.ok("성공");
     }
 
+    /**
+     * @author 이상원
+     */
     @Operation(summary = "로그인 된 멤버 정보 조회")
     @GetMapping("/member")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -52,6 +64,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMyMemberWithAuthorities());
     }
 
+    /**
+     * @author 이상원
+     */
     @Operation(summary = "특정 회원 정보 조회")
     @GetMapping("/member/{loginId}")
     @PreAuthorize("hasAnyRole('ADMIN')")

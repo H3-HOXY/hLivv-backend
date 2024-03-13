@@ -13,7 +13,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * @author 이상원
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor

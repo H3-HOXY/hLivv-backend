@@ -10,6 +10,9 @@ import lombok.*;
 
 import java.util.Date;
 
+/**
+ * @author 이상원
+ */
 @Getter
 @Setter
 @Builder

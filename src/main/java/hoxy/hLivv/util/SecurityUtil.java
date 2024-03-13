@@ -8,7 +8,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
-
+/**
+ * @author 이상원
+ */
 @Slf4j
 
 public class SecurityUtil {

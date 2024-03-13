@@ -10,7 +10,9 @@ import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * @author 이상원
+ */
 @Entity
 @Table(name = "authority")
 @Getter

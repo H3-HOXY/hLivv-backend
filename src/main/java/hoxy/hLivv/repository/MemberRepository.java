@@ -14,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * @author 이상원
+ */
 public interface MemberRepository extends JpaRepository<Member, Long> {
     @EntityGraph(attributePaths = "authorities")
         // lazy가 아닌 eager 조회

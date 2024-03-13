@@ -4,7 +4,9 @@ package hoxy.hLivv.dto.restore;
 import hoxy.hLivv.entity.enums.RestoreProductStatus;
 import lombok.*;
 
-
+/**
+ * @author 이상원
+ */
 @Getter
 @Setter
 @Builder

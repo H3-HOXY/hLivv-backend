@@ -1,5 +1,7 @@
 package hoxy.hLivv.entity.enums;
-
+/**
+ * @author 이상원,반정현
+ */
 public enum OrderStatus {
     주문접수,
     상품준비중,

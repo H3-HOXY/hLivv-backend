@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
+/**
+ * @author 이상원
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class MethodArgumentNotValidExceptionHandler {

@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * @author 이상원
+ */
 @Configuration
 @Slf4j
 //@PropertySource("classpath:smtp.properties")

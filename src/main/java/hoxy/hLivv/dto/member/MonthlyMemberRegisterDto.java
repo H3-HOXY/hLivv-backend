@@ -2,7 +2,9 @@ package hoxy.hLivv.dto.member;
 
 
 import lombok.*;
-
+/**
+ * @author 이상원
+ */
 @Getter
 @Setter
 @Builder

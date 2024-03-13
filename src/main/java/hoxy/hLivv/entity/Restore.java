@@ -7,7 +7,9 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * @author 이상원
+ */
 @Entity
 @Table(name = "restore")
 @Getter

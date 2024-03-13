@@ -6,7 +6,9 @@ import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author 이상원
+ */
 @Getter
 @RequiredArgsConstructor
 public class ErrorDto {

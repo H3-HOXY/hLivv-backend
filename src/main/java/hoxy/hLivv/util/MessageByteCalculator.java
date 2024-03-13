@@ -1,5 +1,7 @@
 package hoxy.hLivv.util;
-
+/**
+ * @author 이상원
+ */
 public class MessageByteCalculator {
     public static int byteCalc(String message) {
 //        String message = "안녕하세요 저는 lee입니다.";

@@ -1,5 +1,7 @@
 package hoxy.hLivv.exception;
-
+/**
+ * @author 이상원
+ */
 public class DuplicateMemberException extends RuntimeException {
     public DuplicateMemberException() {
         super();

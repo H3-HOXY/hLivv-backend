@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author 이상원
+ */
 @Data
 public class MemberResponseDto {
     private String loginId;

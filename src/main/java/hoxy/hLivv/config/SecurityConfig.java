@@ -19,6 +19,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * @author 이상원
+ */
 @EnableWebSecurity
 @EnableMethodSecurity
 @Configuration

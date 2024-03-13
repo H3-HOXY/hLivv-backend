@@ -10,7 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * @author 이상원
+ */
 public interface RestoreRepository extends JpaRepository<Restore, Long> {
     List<Restore> findByMember(Member member);
 

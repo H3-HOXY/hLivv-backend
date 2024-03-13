@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+/**
+ * @author 이상원
+ */
 @ControllerAdvice(assignableTypes = {BackofficeController.class})
 @RequiredArgsConstructor
 public class BackofficeControllerAdvice {
