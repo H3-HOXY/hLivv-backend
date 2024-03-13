@@ -3,6 +3,8 @@ package hoxy.hLivv.service;
 import hoxy.hLivv.dto.product.CollaboDto;
 import hoxy.hLivv.dto.product.ProductImageDto;
 import hoxy.hLivv.dto.product.ProductSortCriteria;
+import hoxy.hLivv.entity.Category;
+import hoxy.hLivv.repository.CategoryRepository;
 import hoxy.hLivv.repository.CollaboRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import java.util.List;
 public class CollaboService {
 
     private final CollaboRepository collaboRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductService productService;
 
     @Transactional
@@ -40,7 +43,8 @@ public class CollaboService {
 
         var imageDtos = collaboDto.getCollaboProduct()
                                   .stream()
-                                  .map(productCollaboDto -> productService.getProductWith(productCollaboDto.getProductId())
+                                  .map(productCollaboDto -> productService.getProductWith(
+                                                                                  productCollaboDto.getProductId())
                                                                           .getProductImages())
                                   .flatMap(List::stream)
                                   .map(ProductImageDto::getImageUrl)
@@ -63,6 +67,19 @@ public class CollaboService {
         Sort sort = sortCriteria.toOrder();
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         return collaboRepository.findAll(pageable)
+                                .stream()
+                                .map(CollaboDto::from)
+                                .toList();
+    }
+
+    @Transactional
+    public List<CollaboDto> getCollaboProductsWithCategoryId(String categoryId, int pageNo, int pageSize,
+                                                             ProductSortCriteria sortCriteria) {
+        Sort sort = sortCriteria.toOrder();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Category category = categoryRepository.getReferenceById(categoryId);
+        return collaboRepository.getCollabosByCategory(category, pageable)
                                 .stream()
                                 .map(CollaboDto::from)
                                 .toList();
