@@ -3,6 +3,7 @@ package hoxy.hLivv.controller;
 import hoxy.hLivv.dto.product.ProductDto;
 import hoxy.hLivv.dto.product.ProductSortCriteria;
 import hoxy.hLivv.dto.review.ReviewDto;
+import hoxy.hLivv.dto.review.ReviewImageDto;
 import hoxy.hLivv.dto.review.WriteReview;
 import hoxy.hLivv.service.ProductService;
 import hoxy.hLivv.service.S3Service;
@@ -62,7 +63,7 @@ public class ProductController {
     @GetMapping("/product")
     public ResponseEntity<List<ProductDto>> getProduct(
             @RequestParam(required = false, defaultValue = "1") @Min(0) int pageNo,
-            @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(20) int pageSize,
+            @RequestParam(required = false, defaultValue = "20") @Min(10) @Max(40) int pageSize,
             @RequestParam(required = false, defaultValue = "PRICE_DESC") ProductSortCriteria sortCriteria) {
         return ResponseEntity.ok(productService.getAllProduct(pageNo, pageSize, sortCriteria));
     }
@@ -70,11 +71,19 @@ public class ProductController {
     @Operation(summary = "상품에 리뷰 작성")
     @PostMapping(value = "/product/{productId}/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyRole('USER','ADMIN', 'MANAGER')")
-    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long
-                                                                             productId,
-                                                                     WriteReview.Request writeReviewRequest,
-                                                                     @RequestParam(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
-        return ResponseEntity.ok(productService.writeReviewToProduct(productId, writeReviewRequest,
+    public ResponseEntity<WriteReview.Response> writeReviewToProduct(@PathVariable(name = "productId") Long productId,
+                                                                     @RequestParam(name = "reviewText") String reviewText,
+                                                                     @RequestParam(name = "star") Integer star,
+                                                                     @RequestParam(name = "reviewImages", required = false) List<ReviewImageDto> reviewImages,
+                                                                     @RequestPart(value = "imageFiles", required = false) MultipartFile[] imageFiles) {
+        var request = new WriteReview.Request();
+        request.setReviewText(reviewText);
+        request.setStar(star);
+        if (reviewImages == null) {
+            reviewImages = List.of();
+        }
+        request.setReviewImages(reviewImages);
+        return ResponseEntity.ok(productService.writeReviewToProduct(productId, request,
                                                                      Arrays.stream(imageFiles)
                                                                            .toList()));
     }

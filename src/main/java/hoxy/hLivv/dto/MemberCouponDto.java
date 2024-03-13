@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberCouponDto {
+    private Long couponId;
     @Temporal(TemporalType.DATE)
     private LocalDate expireDate;
     private String couponDesc;
@@ -22,6 +23,8 @@ public class MemberCouponDto {
 
     public static MemberCouponDto from(MemberCoupon memberCoupon) {
         return MemberCouponDto.builder()
+                              .couponId(memberCoupon.getCoupon()
+                                                    .getCouponId())
                 .expireDate(memberCoupon.getExpireDate())
                 .couponDesc(memberCoupon.getCoupon().getCouponDesc())
                 .discountRate(memberCoupon.getCoupon().getDiscountRate())
