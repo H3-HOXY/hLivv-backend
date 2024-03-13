@@ -16,6 +16,9 @@ public class CouponDto {
     private String couponDesc;
     private Integer discountRate;
 
+    /**
+     * @author 반정현
+     */
     public static CouponDto from(Coupon coupon) {
         return CouponDto.builder()
                 .couponDuration(coupon.getCouponDuration())
@@ -24,6 +27,9 @@ public class CouponDto {
                 .build();
     }
 
+    /**
+     * @author 반정현
+     */
     public Coupon toCoupon() {
         return Coupon.builder()
                 .couponDuration(this.getCouponDuration())

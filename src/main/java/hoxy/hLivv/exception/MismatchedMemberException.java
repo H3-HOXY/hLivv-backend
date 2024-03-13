@@ -1,5 +1,8 @@
 package hoxy.hLivv.exception;
 
+/**
+ * @author 반정현
+ */
 public class MismatchedMemberException extends RuntimeException {
     public MismatchedMemberException() {
         super();

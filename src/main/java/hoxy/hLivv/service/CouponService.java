@@ -26,6 +26,9 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final MemberCouponRepository memberCouponRepository;
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public MemberCouponDto issueCoupon(Long couponId) {
         Member member = SecurityUtil.getCurrentUsername()
@@ -44,6 +47,9 @@ public class CouponService {
     }
 
     //C
+    /**
+     * @author 반정현
+     */
     @Transactional
     public CouponDto saveCoupon(CouponDto couponDto) {
         Coupon coupon = couponRepository.save(couponDto.toCoupon());
@@ -51,11 +57,17 @@ public class CouponService {
     }
 
     //R
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public CouponDto getCouponBy(Long couponId) {
         return CouponDto.from(couponRepository.findById(couponId).orElseThrow(() -> new NotFoundCouponException("Coupon not found")));
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public List<CouponDto> getAllCoupon() {
         return couponRepository.findAll()
@@ -65,6 +77,9 @@ public class CouponService {
     }
 
     //U
+    /**
+     * @author 반정현
+     */
     @Transactional
     public CouponDto updateCoupon(Long couponId, CouponDto couponDto) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NotFoundCouponException("Coupon not found"));
@@ -73,6 +88,9 @@ public class CouponService {
     }
 
     //D
+    /**
+     * @author 반정현
+     */
     @Transactional
     public void deleteCoupon(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NotFoundCouponException("Coupon not found"));

@@ -1,5 +1,7 @@
 package hoxy.hLivv.exception;
-
+/**
+ * @author 반정현
+ */
 public class NotFoundOrderException extends RuntimeException {
     public NotFoundOrderException() {
         super();

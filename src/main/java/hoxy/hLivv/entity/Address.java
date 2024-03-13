@@ -49,6 +49,7 @@ public class Address {
 
     @Column(name = "default_yn")
     private boolean defaultYn;
+
 }
 
 //

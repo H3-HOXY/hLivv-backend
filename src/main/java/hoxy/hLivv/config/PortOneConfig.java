@@ -4,7 +4,10 @@ import com.siot.IamportRestClient.IamportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+/**
+ * @since 2024.02.22
+ * @author  반정현
+ */
 @Configuration
 public class PortOneConfig {
     @Value("${iamport.key}")

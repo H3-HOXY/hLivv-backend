@@ -271,6 +271,9 @@ public class MemberService {
                                      .map(MemberCouponDto::from);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public Page<CartDto> getCartsByMember(Pageable pageable) {
         Member member = getMember();
@@ -278,6 +281,9 @@ public class MemberService {
                              .map(CartDto::from);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public List<CartDto> getAllCartsByMember() {
         Member member = getMember();
@@ -288,6 +294,9 @@ public class MemberService {
     }
 
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public Page<OrderResDto> getOrdersByMember(Pageable pageable) {
         Member member = getMember();
@@ -303,6 +312,9 @@ public class MemberService {
         return season;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public List<CartDto> getSelectedItems(List<Long> productIds) {
         Member member = getMember();
@@ -317,7 +329,9 @@ public class MemberService {
                     .collect(Collectors.toList());
     }
 
-
+    /**
+     * @author 반정현
+     */
     private Member getMember() {
         return SecurityUtil.getCurrentUsername()
                            .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
@@ -334,6 +348,9 @@ public class MemberService {
         return memberRepository.findMonthlyMemberRegi();
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public Page<DeliveryResDto> findCompletedDeliveriesByMemberId(Pageable pageable) {
         Member member = getMember();
@@ -341,6 +358,9 @@ public class MemberService {
                 .map(DeliveryResDto::from);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public Page<DeliveryResDto> findInProgressDeliveriesByMemberId(Pageable pageable) {
         Member member = getMember();
@@ -348,6 +368,9 @@ public class MemberService {
                 .map(DeliveryResDto::from);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public OrderResDto findOrderById(Long orderId) {
         Member member=getMember();
@@ -361,6 +384,9 @@ public class MemberService {
         return OrderResDto.from(order);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public List<DeliveryResDto> findDeliveryById(Long deliveryId) {
         Member member = getMember();
@@ -378,6 +404,9 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public Page<DeliveryResDto> findDeliveriesByMemberId(Pageable pageable) {
         Member member = getMember();

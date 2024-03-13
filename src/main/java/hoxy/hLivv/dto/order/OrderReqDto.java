@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-
+/**
+ * @author 반정현
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -24,7 +27,10 @@ public class OrderReqDto {
     private List<OrderProductReqDto> productList;
     private Long couponId;
 
-    public Order prepareOrder(Member member, Address address, Coupon coupon, String impUid) {
+    /**
+     * @author 반정현
+     */
+    public Order prepareOrder(Member member, Address address, Coupon coupon, String impUid){
         Order order = Order.builder()
                            .member(member)
                            .address(address)
@@ -40,7 +46,10 @@ public class OrderReqDto {
         return order;
     }
 
-    public Order testPrepareOrder(Member member, Address address, Coupon coupon) {
+    /**
+     * @author 반정현
+     */
+    public Order testPrepareOrder(Member member, Address address, Coupon coupon){
         Order order = Order.builder()
                            .member(member)
                            .address(address)

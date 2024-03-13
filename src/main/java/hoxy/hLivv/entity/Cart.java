@@ -9,6 +9,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author 반정현
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "cart")
@@ -41,10 +44,16 @@ public class Cart {
     private LocalDateTime lastModifiedDate;
 
 
+    /**
+     * @author 반정현
+     */
     public void updateQuantity(Integer qty) {
         this.cartQty = qty;
     }
 
+    /**
+     * @author 반정현
+     */
     public boolean isEmpty() {
         return this.cartQty == 0;
     }

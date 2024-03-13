@@ -4,6 +4,9 @@ import hoxy.hLivv.entity.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * @author 이상원, 반정현
+ */
 @Entity
 @Table(name = "order_product")
 @Getter
@@ -28,10 +31,13 @@ public class OrderProduct {
     @Column(name="order_product_qty")
     private Integer orderProductQty;
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
+
+    /**
+     * @author 반정현
+     */
     public void confirmPurchase() {
         if (this.delivery.getDeliveryStatus() == DeliveryStatus.배송완료) {
             this.order.updateOrderCompletedStatus();

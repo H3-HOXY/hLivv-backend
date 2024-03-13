@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * @author 반정현
+ */
 @Embeddable
 @Getter
 @NoArgsConstructor

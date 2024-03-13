@@ -34,7 +34,9 @@ public class OrderService {
     private final AddressRepository addressRepository;
     private final IamportClient iamportClient;
 
-
+    /**
+     * @author 반정현
+     */
     @Transactional
     public OrderResDto saveOrder(OrderReqDto orderReqDto) {
         // 1. DTO로부터 정보 추출
@@ -55,6 +57,9 @@ public class OrderService {
         return OrderResDto.from(order);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public void orderDataGen(OrderReqDto orderReqDto, Member member, Address address) {
         Coupon coupon = getCoupon(orderReqDto.getCouponId());
@@ -97,6 +102,9 @@ public class OrderService {
 
 
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public OrderResDto testSaveOrder(String impUid, OrderReqDto orderReqDto) {
         // 1. DTO로부터 정보 추출
@@ -117,7 +125,9 @@ public class OrderService {
         return OrderResDto.from(order);
     }
 
-
+    /**
+     * @author 반정현
+     */
     @Transactional
     public OrderResDto requestPayment(String orderId, String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = getPaymentInfo(impUid);
@@ -138,6 +148,9 @@ public class OrderService {
         return orderResDto;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public OrderResDto paymentValidation(String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = getPaymentInfo(impUid);
@@ -158,18 +171,27 @@ public class OrderService {
         return orderResDto;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional(readOnly = true)
     public IamportResponse getPaymentInfo(String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = iamportClient.paymentByImpUid(impUid);
         return response;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public void cancelPayment(String impUid) throws IamportResponseException, IOException {
         CancelData cancelData = new CancelData(impUid, true);
         iamportClient.cancelPaymentByImpUid(cancelData);
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public OrderResDto requestCancelPayment(String orderId,
                                             String impUid) throws IamportResponseException, IOException {
@@ -181,6 +203,9 @@ public class OrderService {
         return orderResDto;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public OrderResDto requestCancelPaymentByOrder(String orderId) {
         Order order = orderRepository.getById(Long.valueOf(orderId));
@@ -189,14 +214,18 @@ public class OrderService {
         return orderResDto;
     }
 
-
+    /**
+     * @author 반정현
+     */
     private Member getMember() {
         return SecurityUtil.getCurrentUsername()
                            .flatMap(memberRepository::findOneWithAuthoritiesByLoginId)
                            .orElseThrow(() -> new NotFoundMemberException("Member not found"));
     }
 
-
+    /**
+     * @author 반정현
+     */
     private Address getAddress(Long addressId) {
         return addressRepository.findById(addressId)
                                 .orElseThrow(() -> new IllegalArgumentException("Invalid address ID"));
@@ -207,6 +236,9 @@ public class OrderService {
 //                .orElseThrow(() -> new NotFoundCouponException("Coupon not found"));
 //    }
 
+    /**
+     * @author 반정현
+     */
     private Coupon getCoupon(Long couponId) {
         if (couponId == null) {
             return null;
@@ -215,12 +247,17 @@ public class OrderService {
                                .orElseThrow(() -> new NotFoundCouponException("Coupon not found"));
     }
 
+    /**
+     * @author 반정현
+     */
     private Order getOrder(String impUid) {
         return orderRepository.findByImpUid(impUid)
                               .orElseThrow(() -> new NotFoundOrderException("Order not found"));
     }
 
-
+    /**
+     * @author 반정현
+     */
     @Transactional
     public List<Product> decreaseProductsStock(List<OrderProductReqDto> orderProductReqDtoList) {
         return orderProductReqDtoList.stream()
@@ -228,6 +265,9 @@ public class OrderService {
                                      .collect(Collectors.toList());
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public Product getProductAndDecreaseStock(OrderProductReqDto orderProductReqDto) {
         Product product = (Product) productRepository.findByIdWithLock(orderProductReqDto.getProductId())
@@ -237,6 +277,9 @@ public class OrderService {
         return product;
     }
 
+    /**
+     * @author 반정현
+     */
     @Transactional
     public Order testCreateOrder(OrderReqDto orderReqDto, Member member, Address address, Coupon coupon,
                                  List<Product> products, String imUid) {

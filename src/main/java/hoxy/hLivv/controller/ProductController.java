@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -89,7 +90,7 @@ public class ProductController {
     }
 
 
-    @Operation(summary = "상품 리뷰 조회")
+    //@Operation(summary = "상품 리뷰 조회", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/product/{productId}/review")
     public ResponseEntity<List<ReviewDto>> getReviewsByProductId(@PathVariable(name = "productId") Long productId) {
         return ResponseEntity.ok(productService.getReviewsByProductId(productId));

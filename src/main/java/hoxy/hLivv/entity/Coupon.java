@@ -3,6 +3,9 @@ package hoxy.hLivv.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * @author 이상원, 반정현
+ */
 @Entity
 @Table(name = "coupon")
 @Getter
@@ -23,6 +26,9 @@ public class Coupon {
     private Integer discountRate;
     //private Long raffleProduct;
 
+    /**
+     * @author 반정현
+     */
     public void update(Integer duration, String desc, Integer discountRate) {
         this.couponDuration = duration;
         this.couponDesc = desc;
