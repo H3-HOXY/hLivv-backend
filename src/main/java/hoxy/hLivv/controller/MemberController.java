@@ -100,7 +100,7 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<OrderResDto>> getOrders(@RequestParam("page") int pageNo,
                                                        @RequestParam("pageSize") int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "orderDate"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "requestDate"));
         return ResponseEntity.ok(memberService.getOrdersByMember(pageable));
     }
 
@@ -144,7 +144,7 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<DeliveryResDto>> getCompletedDeliveries(@RequestParam("page") int pageNo,
                                                           @RequestParam("pageSize") int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "order.orderDate"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "order.requestDate"));
         return ResponseEntity.ok(memberService.findCompletedDeliveriesByMemberId(pageable));
     }
 
@@ -153,7 +153,7 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<Page<DeliveryResDto>> getProgressDeliveries(@RequestParam("page") int pageNo,
                                                                        @RequestParam("pageSize") int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "order.orderDate"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "order.requestDate"));
         return ResponseEntity.ok(memberService.findInProgressDeliveriesByMemberId(pageable));
     }
 
@@ -176,7 +176,7 @@ public class MemberController {
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public  ResponseEntity<Page<DeliveryResDto>> getDeliveries(@RequestParam("page") int pageNo,
                                                                @RequestParam("pageSize") int pageSize){
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "order.orderDate"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "order.requestDate"));
         return ResponseEntity.ok(memberService.findDeliveriesByMemberId(pageable));
     }
 

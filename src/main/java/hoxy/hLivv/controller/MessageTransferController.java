@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -16,17 +17,20 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-//@Tag(name = "메시지 전송 API", description = "메시지 전송과 관련된 작업들")
+@Tag(name = "메시지 전송 API", description = "메시지 전송과 관련된 작업들")
+@Slf4j
 public class MessageTransferController {
 
     private final MessageTransferService messageTransferService;
 
-    //@Operation(summary = "문자 메시지 전송")
+    @Operation(summary = "문자 메시지 전송")
     @PostMapping("/messageTransfer")
     public void transferRestoreMessage(
             @RequestParam String toNumber,
             @RequestParam String contents
     ) {
+        log.info("전송 번호" + toNumber);
+        log.info("전송 컨텐츠" + contents);
         messageTransferService.messageTransfer(toNumber, contents);
     }
 }

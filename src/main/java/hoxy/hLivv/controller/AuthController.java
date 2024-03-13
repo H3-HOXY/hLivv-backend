@@ -31,7 +31,7 @@ public class AuthController {
     }
 
 
-    //@Operation(summary = "현재 로그인 된 유저 ID 조회")
+    @Operation(summary = "현재 로그인 된 유저 ID 조회")
     @GetMapping("/login/member")
     public ResponseEntity<String> helloCurr() {
         return ResponseEntity.ok(SecurityUtil.getCurrentUsername().orElse("not logined"));

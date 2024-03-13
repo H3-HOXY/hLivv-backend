@@ -34,6 +34,8 @@ public class MessageTransferService {
         }
         String encodedContents = URLEncoder.encode(contents, StandardCharsets.UTF_8);
 
+
+
         String messageTransferUrl = String.format(
                 url,
                 sendType, toNumber, encodedContents);

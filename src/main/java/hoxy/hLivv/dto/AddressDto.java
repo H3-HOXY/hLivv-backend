@@ -17,7 +17,6 @@ public class AddressDto {
     private String telephoneNumber;
     private String mobilePhoneNumber;
     private String requestMsg;
-    private String order_id;
     private boolean defaultYn;
 
     public static AddressDto from(Address address) {

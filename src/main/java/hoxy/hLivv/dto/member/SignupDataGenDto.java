@@ -22,21 +22,20 @@ public class SignupDataGenDto {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //쓰기 전용
     @NotNull
-//    @Size(min = 5, max = 100)
 //    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "비밀번호는 8글자 이상으로 설정해야 하며, 적어도 하나의 문자와 하나의 숫자를 포함해야 합니다.")
     private String loginPw;
 
     @NotNull
-//    @Size(min = 3, max = 20)
+
     private String name;
-
     private String phone;
-
-//    @Email//개발 단계에서는 빼고 함
     private String email;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date signupDate;
+
+    private String streetAddress;
+    private String zipCode;
 
     public static SignupDataGenDto from(Member member) {
         if (member == null) return null;

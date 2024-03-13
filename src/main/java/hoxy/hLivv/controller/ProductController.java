@@ -94,5 +94,4 @@ public class ProductController {
     public ResponseEntity<List<ReviewDto>> getReviewsByProductId(@PathVariable(name = "productId") Long productId) {
         return ResponseEntity.ok(productService.getReviewsByProductId(productId));
     }
-
 }
