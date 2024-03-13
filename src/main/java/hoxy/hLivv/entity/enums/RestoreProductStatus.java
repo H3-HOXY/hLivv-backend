@@ -1,5 +1,7 @@
 package hoxy.hLivv.entity.enums;
-
+/**
+ * @author 이상원
+ */
 public enum RestoreProductStatus {
     S,A,B,C
     //S-> 구성품이 모두 있으며 흠집 없음

@@ -18,6 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author 이상원
+ */
 @RestController
 @RequestMapping("/api")
 @Tag(name = "인증 API", description = "인증 관리와 관련된 API 목록")

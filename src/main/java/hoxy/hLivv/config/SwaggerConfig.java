@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 
+/**
+ * @author 이상원
+ */
 @OpenAPIDefinition(
         info = @Info(
                 title = "현대IT&E 3차 프로젝트 API 명세서",

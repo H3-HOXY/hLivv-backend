@@ -7,6 +7,9 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 
+/**
+ * @author 이상원
+ */
 @Configuration
 public class TemplateConfig {
     @Bean

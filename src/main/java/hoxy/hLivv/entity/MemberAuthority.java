@@ -2,7 +2,9 @@ package hoxy.hLivv.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+/**
+ * @author 이상원
+ */
 @Entity
 @Table(name = "member_authority")
 @Getter

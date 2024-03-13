@@ -19,7 +19,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
-
+/**
+ * @author 이상원
+ */
 @Component
 public class TokenProvider implements InitializingBean {
 

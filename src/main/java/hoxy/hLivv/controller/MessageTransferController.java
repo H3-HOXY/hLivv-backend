@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 이상원
+ */
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

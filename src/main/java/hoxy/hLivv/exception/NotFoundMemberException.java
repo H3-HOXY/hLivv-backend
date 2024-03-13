@@ -1,5 +1,7 @@
 package hoxy.hLivv.exception;
-
+/**
+ * @author 이상원
+ */
 public class NotFoundMemberException extends RuntimeException {
     public NotFoundMemberException() {
         super();

@@ -1,5 +1,7 @@
 package hoxy.hLivv.entity.enums;
-
+/**
+ * @author 이상원
+ */
 public enum RestoreStatus {
     접수완료,
     배송받는중,

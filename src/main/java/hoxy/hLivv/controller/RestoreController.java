@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
+/**
+ * @author 이상원
+ */
 @RestController
 @RequestMapping("/api")
 @AllArgsConstructor

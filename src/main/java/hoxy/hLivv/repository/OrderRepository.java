@@ -26,7 +26,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      */
     Optional<Order> findByImpUid(String impUid);
 
-
+    /**
+     * @author 이상원
+     */
     @Query("SELECT new hoxy.hLivv.dto.order.MonthlyOrderSummaryDto(" +
             "YEAR(o.requestDate) AS year, " +
             "MONTH(o.requestDate) AS month, " +
@@ -39,7 +41,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY YEAR(o.requestDate), MONTH(o.requestDate)")
     List<MonthlyOrderSummaryDto> findMonthlyOrderSummaries();
 
-
+    /**
+     * @author 이상원
+     */
     @Query("SELECT new hoxy.hLivv.dto.order.MonthlyOrderSummaryDto(" +
             "YEAR(o.requestDate) AS year, " +
             "MONTH(o.requestDate) AS month, " +

@@ -3,7 +3,9 @@ package hoxy.hLivv.dto.restore;
 import hoxy.hLivv.entity.Restore;
 import hoxy.hLivv.entity.RestoreImage;
 import lombok.*;
-
+/**
+ * @author 이상원
+ */
 @Getter
 @Setter
 @Builder

@@ -3,6 +3,9 @@ import hoxy.hLivv.dto.restore.RestoreDto;
 import hoxy.hLivv.dto.restore.RestoreImageDto;
 import jakarta.persistence.*;
 import lombok.*;
+/**
+ * @author 이상원
+ */
 @Entity
 @Table(name = "restore_image")
 @Getter
