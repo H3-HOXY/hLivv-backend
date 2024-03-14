@@ -10,7 +10,6 @@ import hoxy.hLivv.dto.order.OrderProductReqDto;
 import hoxy.hLivv.dto.order.OrderReqDto;
 import hoxy.hLivv.dto.order.OrderResDto;
 import hoxy.hLivv.entity.*;
-import hoxy.hLivv.entity.enums.DeliveryStatus;
 import hoxy.hLivv.exception.*;
 import hoxy.hLivv.repository.*;
 import hoxy.hLivv.util.SecurityUtil;
@@ -60,18 +59,6 @@ public class OrderService {
     /**
      * @author 반정현
      */
-    @Transactional
-    public void orderDataGen(OrderReqDto orderReqDto, Member member, Address address) {
-        Coupon coupon = getCoupon(orderReqDto.getCouponId());
-        // 2. 상품과 수량 조회 및 재고 감소
-        List<Product> products = decreaseProductsStock(orderReqDto.getProductList());
-        // 3. 주문 생성
-        Order order = createOrder(orderReqDto, member, address,coupon, products);
-
-        // 4. 주문 저장
-        orderRepository.save(order);
-    }
-
     @Transactional
     public void orderDataGen(OrderReqDto orderReqDto, Member member, Address address) {
         Coupon coupon = getCoupon(orderReqDto.getCouponId());

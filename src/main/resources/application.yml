@@ -3,14 +3,11 @@ spring:
     active: pay
   jpa:
     hibernate:
-    ddl-auto: none
+      ddl-auto: none
 
     properties:
       hibernate:
-        format_sql: true
         dialect: org.hibernate.dialect.OracleDialect
-        show_sql: true
-        type: trace
   sql:
     init:
       mode: always
