@@ -76,7 +76,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="restore : ${restores}">
+                                    <tr th:each="restore, rowStat : ${restores}" th:class="${rowStat.odd ? 'odd-row' : 'even-row'}">
                                         <td th:data-memberId="${restore.memberId}" class="modal-item restore-member-modal" data-toggle="modal" data-target="#userDetailModal" th:text="${restore.memberId}"></td>
                                         <td th:data-productId="${restore.productId}" class="modal-item restore-product-modal" data-toggle="modal" data-target="#productDetailModal" th:text="${restore.productId}"></td>
                                         <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"

@@ -62,3 +62,13 @@
     background-color: #2f4d30;
     color: #fff;
 }
+
+/* 짝수 행 */
+.even-row {
+    background-color: #f2f2f2; /* 변경하고자 하는 색상으로 대체 가능 */
+}
+
+/* 홀수 행 */
+.odd-row {
+    background-color: #ffffff; /* 변경하고자 하는 색상으로 대체 가능 */
+}
