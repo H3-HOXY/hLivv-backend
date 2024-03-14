@@ -70,7 +70,7 @@
                                         th:data-phone="${member.phone}" th:data-points="${member.points}"
                                         th:data-signupdate="${member.signupDate}" th:data-interiortype="${member.interiorType}"
                                         th:data-grade="${member.grade}"
-                                        class="modal-item member-modal" data-toggle="modal" data-target="#userDetailModal" th:each="member : ${members} " >
+                                        th:each="member, rowStat : ${members}" th:class="${rowStat.odd ? 'odd-row modal-item member-modal' : 'even-row modal-item member-modal'}" data-toggle="modal" data-target="#userDetailModal" >
                                         <td>
                                             <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                             <span th:text="${member.name}"></span>

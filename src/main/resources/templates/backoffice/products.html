@@ -89,7 +89,7 @@
                                         th:data-discountPercent="${product.discountPercent}" th:data-productType="${product.productType}"
                                         th:data-category="${product.category.name}" th:data-stockQuantity="${product.stockQuantity}"
                                         th:data-productBrand="${product.productBrand}"
-                                        class="modal-item product-modal" data-toggle="modal" data-target="#productDetailModal" th:each="product : ${products}" >
+                                        th:each="product, rowStat : ${products}" th:class="${rowStat.odd ? 'odd-row modal-item product-modal' : 'even-row modal-item product-modal'}" data-toggle="modal" data-target="#productDetailModal"  >
                                         <td th:text="${product.name}"></td>
 <!--                                        <td th:text="${product.price}"></td>-->
                                         <td th:text="${T(java.lang.String).format('%,d', product.price)} + '원'"></td>
