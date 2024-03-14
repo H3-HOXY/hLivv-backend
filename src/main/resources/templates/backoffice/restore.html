@@ -95,7 +95,7 @@
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.inspectedGrade == null}">검수중</td>
                                         <!-- payback가 null이 아닌 경우 값을 표시하고, null인 경우 '검수중'을 표시 -->
                                         <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
-                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback != null}" th:text="${restore.payback}"></td>
+                                            class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback != null}" th:text="${T(java.lang.String).format('%,d', restore.payback)} + '원'"></td>
                                         <td th:data-restoreId="${restore.restoreId}" th:data-memberId="${restore.memberId}" th:data-productId="${restore.productId}"
                                             class="modal-item restore-modal" data-toggle="modal" data-target="#restoreDetailModal" th:if="${restore.payback == null}">검수중</td>
                                         <!-- whenRejected가 true면 폐기, false면 반송 표기 -->
